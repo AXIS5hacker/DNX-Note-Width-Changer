@@ -5,24 +5,25 @@
 
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 #include<direct.h>
+#include <io.h>
 #else
 #include<unistd.h>
 #endif
 
 #include<vector>
 #include<cstdio>
-#include <io.h>
+
 using namespace std;
 extern int width_change(string fn, double w, string _outf);
 int main(int argc, char* argv[])
 {
 	cout << "Dynamix Chart Width Changer v0.2" << endl;
 	cout << "Created by AXIS5" << endl << endl << endl;
-	char pbuf[_MAX_PATH];
+	char pbuf[260];
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-	_getcwd(pbuf, _MAX_PATH);
+	_getcwd(pbuf, 260);
 #else
-	getcwd(pbuf, _MAX_PATH);
+	getcwd(pbuf, 260);
 #endif
 	string filename, _output = ""; 
 
@@ -99,7 +100,12 @@ int main(int argc, char* argv[])
 		else {
 			cwd = cwd + _output;
 			//cout << cwd << endl;
-			if (_access(cwd.c_str(), 0) == 0) {
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+			if (_access(cwd.c_str(), 0) == 0) 
+#else
+			if (access(cwd.c_str(), 0) == 0) 
+#endif
+			{
 				cout << "Changed chart saved as \"" << cwd << "\"" << endl;
 			}
 			else {
