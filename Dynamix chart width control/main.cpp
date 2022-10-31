@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 	if (help_only) {
 		cout << "usage:" << endl;
 		cout << "filename [-w width_multiplier] [-o output_filename] [-?|-h]" << endl << endl;
-		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number" << endl;
+		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number,absolute" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 		cout << "invalid arguments" << endl;
 		cout << "usage:" << endl;
 		cout << "filename [-w width_multiplier] [-o output_filename] [-?]" << endl << endl;
-		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number" << endl;
+		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number,absolute" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;

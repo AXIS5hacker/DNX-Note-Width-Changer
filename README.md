@@ -11,9 +11,10 @@ Run \Dynamix chart width control\x64\Release\Dynamix chart width control.exe in 
 filename [-w width_multiplier] [-o output_filename] [-?]
 
 
--w width_multiplier     change the width of a chart,width_multiplier is a decimal number
+-w width_multiplier     change the width of a chart,width_multiplier is a decimal number,absolute
 
 -o output_filename      specify the filename of the changed chart
 
 -?                      help
+
 -h                      help, same as -?
