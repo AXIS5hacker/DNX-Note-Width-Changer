@@ -2,7 +2,13 @@
 #include<fstream>
 #include<cstdlib>
 #include<sstream>
+
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 #include<direct.h>
+#else
+#include<unistd.h>
+#endif
+
 #include<vector>
 #include<cstdio>
 #include <io.h>
@@ -13,8 +19,18 @@ int main(int argc, char* argv[])
 	cout << "Dynamix Chart Width Changer v0.2" << endl;
 	cout << "Created by AXIS5" << endl << endl << endl;
 	char pbuf[_MAX_PATH];
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	_getcwd(pbuf, _MAX_PATH);
-	string filename, _output = "", cwd = string(pbuf) + '\\';
+#else
+	getcwd(pbuf, _MAX_PATH);
+#endif
+	string filename, _output = ""; 
+
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+	string cwd = string(pbuf) + '\\';
+#else
+	string cwd = string(pbuf) + '/';
+#endif
 
 	istringstream is;
 	is.str("");
