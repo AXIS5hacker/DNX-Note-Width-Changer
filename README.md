@@ -16,3 +16,4 @@ filename [-w width_multiplier] [-o output_filename] [-?]
 -o output_filename      specify the filename of the changed chart
 
 -?                      help
+-h                      help, same as -?
