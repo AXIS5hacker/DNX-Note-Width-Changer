@@ -17,8 +17,9 @@ using namespace std;
 extern int width_change(string fn, double w, string _outf);
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.2" << endl;
-	cout << "Created by AXIS5" << endl << endl << endl;
+	cout << "Dynamix Chart Width Changer v0.4" << endl;
+	cout << "Created by AXIS5" << endl;
+	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	_getcwd(pbuf, 260);
@@ -73,7 +74,7 @@ int main(int argc, char* argv[])
 	if (help_only) {
 		cout << "usage:" << endl;
 		cout << "filename [-w width_multiplier] [-o output_filename] [-?|-h]" << endl << endl;
-		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number,absolute" << endl;
+		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
 		cout << "invalid arguments" << endl;
 		cout << "usage:" << endl;
 		cout << "filename [-w width_multiplier] [-o output_filename] [-?]" << endl << endl;
-		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number,absolute" << endl;
+		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
@@ -95,6 +96,11 @@ int main(int argc, char* argv[])
 		if (default_filename) {
 			_output = filename.substr(0, filename.length() - 4) + "_out.xml";
 
+		}
+		else {
+			if (_output.substr(_output.length() - 4, 4) != ".xml") { //force xml format
+				_output += ".xml";
+			}
 		}
 		int success = width_change(filename, width, _output);//width=1 as default width multiplier
 		if (success == 1)cout << "Cannot open file." << endl;//file not found or do not have access
