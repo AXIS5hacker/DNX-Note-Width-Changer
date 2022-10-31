@@ -3,7 +3,7 @@ A tool for changing the note width in a Dynamix Fanmade Chart.
 
 Created by AXIS5.
 
-Special thanks to i0ntempest for helping me debugging.
+Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging.
 
 The application is a Windows Console Application.
 
