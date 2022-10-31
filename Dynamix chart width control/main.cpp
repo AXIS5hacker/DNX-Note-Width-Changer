@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 #else
 	getcwd(pbuf, 260);
 #endif
-	string filename, _output = ""; 
+	string filename, _output = "";
 
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	string cwd = string(pbuf) + '\\';
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 	vector<string> arglist;
 	for (int i = 0; i < argc; i++) {
 		arglist.push_back(argv[i]);
-		if (arglist[i] == "-?")help_only = true;
+		if (arglist[i] == "-?" || arglist[i] == "-h")help_only = true;
 		else if (next_width) {//if next argument specifies the width
 			is.str(arglist[i]);
 			is >> width;//convert to number
@@ -72,10 +72,11 @@ int main(int argc, char* argv[])
 	}
 	if (help_only) {
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier] [-o output_filename] [-?]" << endl << endl;
+		cout << "filename [-w width_multiplier] [-o output_filename] [-?|-h]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-?\thelp" << endl;
+		cout << "-h\thelp, same as -?" << endl;
 	}
 	else if (next_width) {
 		cout << "please specify a width multiplier" << endl;
@@ -87,6 +88,7 @@ int main(int argc, char* argv[])
 		cout << "-w width_multiplier\tchange the width of a chart,width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-?\thelp" << endl;
+		cout << "-h\thelp, same as -?" << endl;
 	}
 	else {
 		filename = arglist[1];
@@ -101,9 +103,9 @@ int main(int argc, char* argv[])
 			cwd = cwd + _output;
 			//cout << cwd << endl;
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-			if (_access(cwd.c_str(), 0) == 0) 
+			if (_access(cwd.c_str(), 0) == 0)
 #else
-			if (access(cwd.c_str(), 0) == 0) 
+			if (access(cwd.c_str(), 0) == 0)
 #endif
 			{
 				cout << "Changed chart saved as \"" << cwd << "\"" << endl;
@@ -113,6 +115,10 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
+
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	system("pause");
+#endif
+
 	return 0;
 }
