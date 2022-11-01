@@ -4,3 +4,6 @@
 
 /.vs
 /Dynamix chart width control/.vs/Dynamix chart width control/v16
+/*/x86/
+/*/x64/
+/*/Debug/
