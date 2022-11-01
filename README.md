@@ -1,9 +1,9 @@
 # DNX-Note-Width-Changer
 A tool for changing the note width in a Dynamix Fanmade Chart.
 
-Created by AXIS5.
+Created by AXIS5(a.k.a.AXIS5Hacker).
 
-Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging.
+Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile.
 
 The application is a console application.
 
