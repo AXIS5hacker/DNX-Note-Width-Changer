@@ -11,7 +11,7 @@ The application is a console application.
 
 ### Windows
 
-Download `Dynamix chart width control.exe`  from [Releases](/releases) and run in command prompt to use it, or build manually with Visual Studio.
+Download `Dynamix chart width control.exe`  from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run in command prompt to use it, or build manually with Visual Studio.
 
 ### macOS & Linux
 
