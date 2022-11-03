@@ -13,7 +13,8 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>"C:\Users\AXIS5\Documents\charts\7 夜襲\_map_夜襲_H 90%.xml" -w 0.6 -o "C:\Users\AXIS5\Documents\charts\7 夜襲\_map_夜襲_H bbr.abc"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>
+    </LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
