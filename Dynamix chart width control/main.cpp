@@ -15,9 +15,10 @@
 
 using namespace std;
 extern int width_change(string fn, double w, string _outf);
+extern bool _isNum(string s);
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.4" << endl;
+	cout << "Dynamix Chart Width Changer v0.5" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -37,6 +38,8 @@ int main(int argc, char* argv[])
 	istringstream is;
 	is.str("");
 	double width = 1;
+	double start_time = -1e10;
+	double end_time = 1e10;
 	//triggers
 	bool help_only = false;//if argument -?
 	bool false_usage = false;
@@ -44,12 +47,18 @@ int main(int argc, char* argv[])
 	bool next_width = false;
 	bool next_filename = false;//if specifying filename
 	bool default_filename = true;//if filename not specified
+	bool next_stimestamp = false;//if specifying start time
+	bool next_etimestamp = false;//if specifying end time
 	//trigger end
 	vector<string> arglist;
 	for (int i = 0; i < argc; i++) {
 		arglist.push_back(argv[i]);
 		if (arglist[i] == "-?" || arglist[i] == "-h")help_only = true;
 		else if (next_width) {//if next argument specifies the width
+			if (!_isNum(arglist[i])) {
+				cout << "Invalid width multiplier" << endl;
+				return 0;
+			}
 			is.str(arglist[i]);
 			is >> width;//convert to number
 			//cout << width << endl;

@@ -8,6 +8,20 @@ ifstream fin;
 ofstream fout;
 istringstream mult;
 ostringstream proc;
+bool _isNum(string s) {//detect if the string is a number
+	stringstream _test(s);
+	double d;
+	char c;
+	if (!(_test >> d)) {
+		//extract number failure
+		return false;
+	}
+	if (_test >> c) {
+		//error input
+		return false;
+	}
+	return true;
+}
 int width_change(string fn, double w, string _outf) {
 	/* The function that changes the width of a chart. */
 	string buf;
