@@ -27,12 +27,16 @@ Or build manually:
 
 # Arguments
 
-filename [-w width_multiplier] [-o output_filename] [-?]
+filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h]
 
 
 -w width_multiplier     change the width of a chart, width_multiplier is a decimal number
 
--o output_filename      specify the filename of the changed chart
+-o output_filename     specify the filename of the changed chart
+
+-s start_time(bar)	   specify the start time of the time range you want to change, in the unit of bar
+
+-e end_time(bar)	   specify the end time of the time range you want to change, in the unit of bar
 
 -?                      help
 

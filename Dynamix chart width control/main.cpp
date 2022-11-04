@@ -18,7 +18,7 @@ int width_change(string fn, double w, string _outf, double st, double ed);
 extern bool _isNum(string s);
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.5" << endl;
+	cout << "Dynamix Chart Width Changer v0.6" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -61,6 +61,9 @@ int main(int argc, char* argv[])
 		else if (next_width) {//if next argument specifies the width
 			if (!_isNum(arglist[i])) {
 				cout << "Invalid width multiplier" << endl;
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+				system("pause");
+#endif
 				return 0;
 			}
 			is.str(arglist[i]);
@@ -72,6 +75,9 @@ int main(int argc, char* argv[])
 		else if (next_stimestamp || next_etimestamp) {//if next argument specifies the time range
 			if (!_isNum(arglist[i])) {
 				cout << "Invalid time" << endl;
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+				system("pause");
+#endif
 				return 0;
 			}
 			is.str(arglist[i]);
@@ -91,6 +97,9 @@ int main(int argc, char* argv[])
 			}
 			if (start_time > end_time) {
 				cout << "Invalid time range" << endl;
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+				system("pause");
+#endif
 				return 0;
 			}
 		}
