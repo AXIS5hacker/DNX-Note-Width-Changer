@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
 		}
 		else {
 			if (_output[_output.length() - 1] == '\\' || _output[_output.length() - 1] == '/') {//if directory
-				_output += "_out.xml";
+				_output += "out.xml";
 			}
 			else if (_output.length() < 4 || _output.substr(_output.length() - 4, 4) != ".xml") { //force xml format
 				if (stat(_output.c_str(), &st) == 0) {
