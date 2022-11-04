@@ -34,9 +34,9 @@ filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end
 
 -o output_filename     specify the filename of the changed chart
 
--s start_time(bar)	   specify the start time of the time range you want to change, in the unit of bar
+-s start_time(bar)	   specify the start time of the time range you want to change, in the unit of bar (v0.6.x and newer)
 
--e end_time(bar)	   specify the end time of the time range you want to change, in the unit of bar
+-e end_time(bar)	   specify the end time of the time range you want to change, in the unit of bar (v0.6.x and newer)
 
 -?                      help
 
