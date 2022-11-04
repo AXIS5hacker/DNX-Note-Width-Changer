@@ -166,9 +166,9 @@ int main(int argc, char* argv[])
 				if (stat(_output.c_str(), &st) == 0) {
 					if (st.st_mode & S_IFDIR) {//if a directory exists
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-						_output += "\\_out.xml";
+						_output += "\\out.xml";
 #else
-						_output += "/_out.xml";
+						_output += "/out.xml";
 #endif
 					}
 					else {
