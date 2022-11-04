@@ -3,6 +3,7 @@
 #include<cstdlib>
 #include<sstream>
 
+#include<sys/stat.h>
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 #include<direct.h>
 #include <io.h>
@@ -16,9 +17,11 @@
 using namespace std;
 int width_change(string fn, double w, string _outf, double st, double ed);
 extern bool _isNum(string s);
+struct stat st;
+
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.6" << endl;
+	cout << "Dynamix Chart Width Changer v0.6.2" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -156,8 +159,25 @@ int main(int argc, char* argv[])
 
 		}
 		else {
-			if (_output.substr(_output.length() - 4, 4) != ".xml") { //force xml format
-				_output += ".xml";
+			if (_output[_output.length() - 1] == '\\' || _output[_output.length() - 1] == '/') {//if directory
+				_output += "_out.xml";
+			}
+			else if (_output.length() < 4 || _output.substr(_output.length() - 4, 4) != ".xml") { //force xml format
+				if (stat(_output.c_str(), &st) == 0) {
+					if (st.st_mode & S_IFDIR) {//if a directory exists
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+						_output += "\\_out.xml";
+#else
+						_output += "/_out.xml";
+#endif
+					}
+					else {
+						_output += ".xml";
+					}
+				}
+				else {
+					_output += ".xml";
+				}
 			}
 		}
 		//cout << width << endl;
