@@ -17,7 +17,7 @@ Download `Dynamix chart width control.exe`  from [Releases](https://github.com/A
 
 Install using [MacPorts](https://www.macports.org): `sudo port install dynamix-chart-width-control`
 
-Or download `dynamix-chart-width-control-macos` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run in Terminal
+Or download `dynamix-chart-width-control-macos` (x86_64+arm64 universal binary) from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run in Terminal
 
 Or build manually:
 
