@@ -1,4 +1,7 @@
-﻿#include<iostream>
+﻿/*
+* Creator:AXIS5
+*/
+#include<iostream>
 #include<fstream>
 #include<cstdlib>
 #include<sstream>
@@ -52,7 +55,7 @@ int main(int argc, char* argv[])
 	bool default_filename = true;//if filename not specified
 
 	bool def_stimestamp = true;//using default start time
-	bool def_etimestamp = true;//iusing default end time
+	bool def_etimestamp = true;//using default end time
 
 	bool next_stimestamp = false;//if specifying start time
 	bool next_etimestamp = false;//if specifying end time
