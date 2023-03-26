@@ -15,7 +15,7 @@ int chart_store::readfile(string fn) {
 	note* tempnote = NULL;
 	fin.open(fn);//open file
 	if (fin.fail()) {
-		cout << "cannot open file";
+		cout << "Cannot open file, maybe it doesn't exist." << endl;
 		return 1;
 	}
 	else {
@@ -53,7 +53,7 @@ int chart_store::readfile(string fn) {
 					ltype = MULTI;
 				}
 				else {
-					cout << "Read side error";
+					cout << "Read side error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -71,7 +71,7 @@ int chart_store::readfile(string fn) {
 					rtype = MULTI;
 				}
 				else {
-					cout << "Read side error";
+					cout << "Read side error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -87,7 +87,7 @@ int chart_store::readfile(string fn) {
 					note_trigger = true;
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -98,7 +98,7 @@ int chart_store::readfile(string fn) {
 					modes = 0;
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -109,7 +109,7 @@ int chart_store::readfile(string fn) {
 					tempnote = new note;
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -128,7 +128,7 @@ int chart_store::readfile(string fn) {
 						break;
 					default:
 						delete tempnote;
-						cout << "Read notes error";
+						cout << "Read notes error" << endl;
 						fin.close();
 						return 1;
 					}
@@ -136,7 +136,7 @@ int chart_store::readfile(string fn) {
 					note_reading = false;
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -149,7 +149,7 @@ int chart_store::readfile(string fn) {
 					extr >> tempnote->id;//read current note id
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -174,7 +174,7 @@ int chart_store::readfile(string fn) {
 					}
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -188,7 +188,7 @@ int chart_store::readfile(string fn) {
 					extr.clear();
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -202,7 +202,7 @@ int chart_store::readfile(string fn) {
 					extr.clear();
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -216,7 +216,7 @@ int chart_store::readfile(string fn) {
 					extr.clear();
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -230,7 +230,7 @@ int chart_store::readfile(string fn) {
 					extr.clear();
 				}
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -239,7 +239,7 @@ int chart_store::readfile(string fn) {
 			else if (buf.find("<m_notesLeft>", 0) != buf.npos) {//left notes
 				if (modes == 0)modes = 2;
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -247,7 +247,7 @@ int chart_store::readfile(string fn) {
 			else if (buf.find("</m_notesLeft>", 0) != buf.npos) {//left notes end
 				if (modes == 2)modes = 0;
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -255,7 +255,7 @@ int chart_store::readfile(string fn) {
 			else if (buf.find("<m_notesRight>", 0) != buf.npos) {//right notes
 				if (modes == 0)modes = 3;
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
@@ -263,7 +263,7 @@ int chart_store::readfile(string fn) {
 			else if (buf.find("</m_notesRight>", 0) != buf.npos) {//right notes end
 				if (modes == 3)modes = 0;
 				else {
-					cout << "Read notes error";
+					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
