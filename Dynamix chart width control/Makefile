@@ -1,5 +1,5 @@
 .SUFFIXES:
-.SUFFIXES: .cpp .o .h
+.SUFFIXES: .cpp .o
 
 # General variables
 PACKAGE	    = dynamix-chart-width-control
@@ -17,13 +17,13 @@ CXX	    ?= $(shell which g++)
 # Default target
 all: build
 
-chart_store.o: chart_store.cpp width_change.h chart_store.h
+chart_store.o: chart_store.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -c $(DISTDIR)/$< -o $@
 
-width.o: width.cpp width_change.h chart_store.h
+width.o: width.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -c $(DISTDIR)/$< -o $@
 
-main.o: main.cpp width_change.h
+main.o: main.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -c $(DISTDIR)/$< -o $@
 
 $(PACKAGE): width.o main.o chart_store.o
