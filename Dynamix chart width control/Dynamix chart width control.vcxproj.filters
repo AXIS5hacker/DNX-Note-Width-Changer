@@ -21,5 +21,16 @@
     <ClCompile Include="width.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="chart_store.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="chart_store.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="width_change.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

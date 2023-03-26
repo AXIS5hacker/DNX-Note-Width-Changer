@@ -1,21 +1,7 @@
 ﻿/*
 * Creator:AXIS5
 */
-#include<iostream>
-#include<fstream>
-#include<cstdlib>
-#include<sstream>
-
-#include<sys/stat.h>
-#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-#include<direct.h>
-#include <io.h>
-#else
-#include<unistd.h>
-#endif
-
-#include<vector>
-#include<cstdio>
+#include"width_change.h"
 
 using namespace std;
 int width_change(string fn, double w, string _outf, double st, double ed);
@@ -24,7 +10,7 @@ struct stat st;
 
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.6.2" << endl;
+	cout << "Dynamix Chart Width Changer v0.7.0" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -40,7 +26,7 @@ int main(int argc, char* argv[])
 #else
 	string cwd = string(pbuf) + '/';
 #endif
-
+	//cout << cwd << endl;
 	istringstream is;
 	is.str("");
 	double width = 1;

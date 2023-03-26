@@ -1,12 +1,9 @@
 ﻿/*
 * Creator:AXIS5
 */
-#include<iostream>
-#include<fstream>
-#include<cstdlib>
-#include<sstream>
-#include<vector>
-#include<map>
+#include "chart_store.h"
+#include"width_change.h"
+
 using namespace std;
 ifstream fin;
 ofstream fout;
@@ -37,130 +34,127 @@ int width_change(string fn, double w, string _outf, double st, double ed) {
 	*/
 	string buf;
 
-	int temp_id = 0;//temporarily saves the id of a note
+
 	int temp_sub = 0;//temporarily saves the id of a sub note
 
 	fin.open(fn);//open file
 	double nw = 0, np = 0, t = 0;
-	bool ch_trigger = false;//check if note is in the specified time range
-	bool hold_trigger = false;//check if current note is a hold
-	bool sub_trigger = false;//check if current note is a sub
+	//bool ch_trigger = false;//check if note is in the specified time range
+	chart_store cs;//store the chart
+	int fail = cs.readfile(fn);//open file
+
 	if (fin.fail()) {
 		return 1;
 	}
 	else {
-		fout.open(_outf);
-		if (!fout.fail()) {
-			while (!fin.eof()) {
-				getline(fin, buf);
-				if (buf.find("<m_id>", 0) != buf.npos) {
-					fout << buf << endl;
-					int endp = buf.find("</m_id>", 0);
-					buf = buf.substr(6, endp - 6);
-					mult.str(buf);
-					proc.str("");
-					mult >> temp_id;//read current note id
-					mult.clear();
-				}
-				else if (buf.find("<m_type>", 0) != buf.npos) {
-					fout << buf << endl;
-					int endp = buf.find("</m_type>", 0);
-					buf = buf.substr(8, endp - 8);
-					if (buf == "HOLD")
-					{
-						hold_trigger = true;
-						sub_trigger = false;
-					}
-					else if (buf == "SUB") {//change policy for sub notes
-						hold_trigger = false;
-						sub_trigger = true;
-						it = subs.find(temp_id);
-						if ((*it).second >= st && (*it).second <= ed) {
-							ch_trigger = true;
-						}
-						subs.erase(it);
-					}
-					else {
-						hold_trigger = false;
-						sub_trigger = false;
-					}
-				}
-				else if (buf.find("<m_time>", 0) != buf.npos) {
-					fout << buf << endl;
-					if (!sub_trigger) {
-						int endp = buf.find("</m_time>", 0);
-						buf = buf.substr(8, endp - 8);
-						mult.str(buf);
-						proc.str("");
-						mult >> t;//read time
-						mult.clear();
-						if (t >= st && t <= ed) {
-							ch_trigger = true;
-						}
-					}
-					else {
-						sub_trigger = false;
-					}
-				}
-				else if (buf.find("<m_width>", 0) != buf.npos) {
-					if (ch_trigger) {
-						int endp = buf.find("</m_width>", 0);
-						buf = buf.substr(9, endp - 9);
-						mult.str(buf);
-						proc.str("");
-						mult >> nw;
-						mult.clear();
-						//cout << nw << endl;
-						np += nw * 0.5;
-						nw *= w;
-						np -= nw * 0.5;
-						proc << "<m_position>" << np << "</m_position>" << endl;
-						proc << "<m_width>" << nw << "</m_width>";
-						buf = proc.str();
-						ch_trigger = false;
-						fout << buf << endl;
-					}
-					else {
-						fout << buf << endl;
-					}
-				}
-				else if (buf.find("<m_position>", 0) != buf.npos) {
-					if (ch_trigger) {
-						int endp = buf.find("</m_position>", 0);
-						buf = buf.substr(12, endp - 12);
-						//cout << buf << " " << endp << endl;
-						mult.str(buf);
-						proc.str("");
-						mult >> np;
-						mult.clear();
-					}
-					else {
-						fout << buf << endl;
-					}
-				}
-				else if (buf.find("<m_subId>", 0) != buf.npos && hold_trigger) {
-					fout << buf << endl;
-					int endp = buf.find("</m_subId>", 0);
-					buf = buf.substr(9, endp - 9);
-					//cout << buf << " " << endp << endl;
-					mult.str(buf);
-					proc.str("");
-					mult >> temp_sub;
-					mult.clear();
-					subs.insert(make_pair(temp_sub, t));//add a sub and its hold begin time to the sub map
-					hold_trigger = false;
+		//middle
+		for (int i = 0; i < cs.m_notes.size(); i++) {
+
+			if ((cs.m_notes[i].notetype == NORMAL || cs.m_notes[i].notetype == CHAIN) &&
+				cs.m_notes[i].time >= st && cs.m_notes[i].time <= ed) {
+
+				nw = cs.m_notes[i].width;//read width
+				np = cs.m_notes[i].position;//read position
+				np += nw * 0.5;
+				nw *= w;
+				np -= nw * 0.5;//multiply
+				cs.m_notes[i].width = nw;
+				cs.m_notes[i].position = np;
+			}
+			else if (cs.m_notes[i].notetype == HOLD &&
+				cs.m_notes[i].time >= st && cs.m_notes[i].time <= ed) {//for hold notes
+
+				nw = cs.m_notes[i].width;//read width
+				np = cs.m_notes[i].position;//read position
+				np += nw * 0.5;
+				nw *= w;
+				np -= nw * 0.5;//multiply
+				//writeback
+				cs.m_notes[i].width = nw;
+				cs.m_notes[i].position = np;
+				int temp_sub = cs.m_notes[i].subid;//find its sub
+				if (cs.m_notes[temp_sub].id != temp_sub || cs.m_notes[temp_sub].notetype != SUB) {
+					cout << "Hold-sub mismatch!" << endl;
+					return 2;
 				}
 				else {
-					fout << buf << endl;
+					cs.m_notes[temp_sub].width = cs.m_notes[i].width;
+					cs.m_notes[temp_sub].position = cs.m_notes[i].position;
 				}
 			}
-			fin.close();
-			fout.close();
-			return 0;
 		}
-		else {
-			fin.close();
+		//left
+		for (int i = 0; i < cs.m_left.size(); i++) {
+
+			if ((cs.m_left[i].notetype == NORMAL || cs.m_left[i].notetype == CHAIN) &&
+				cs.m_left[i].time >= st && cs.m_left[i].time <= ed) {
+				nw = cs.m_left[i].width;//read width
+				np = cs.m_left[i].position;//read position
+				np += nw * 0.5;
+				nw *= w;
+				np -= nw * 0.5;//multiply
+				//writeback
+				cs.m_left[i].width = nw;
+				cs.m_left[i].position = np;
+			}
+			else if (cs.m_left[i].notetype == HOLD &&
+				cs.m_left[i].time >= st && cs.m_left[i].time <= ed) {//for hold notes
+				nw = cs.m_left[i].width;//read width
+				np = cs.m_left[i].position;//read position
+				np += nw * 0.5;
+				nw *= w;
+				np -= nw * 0.5;//multiply
+				//writeback
+				cs.m_left[i].width = nw;
+				cs.m_left[i].position = np;
+				int temp_sub = cs.m_left[i].subid;//find its sub
+				if (cs.m_left[temp_sub].id != temp_sub || cs.m_left[temp_sub].notetype != SUB) {
+					cout << "Hold-sub mismatch!" << endl;
+					return 2;
+				}
+				else {
+					cs.m_left[temp_sub].width = cs.m_left[i].width;
+					cs.m_left[temp_sub].position = cs.m_left[i].position;
+				}
+			}
+		}
+		//right
+		for (int i = 0; i < cs.m_right.size(); i++) {
+
+			if ((cs.m_right[i].notetype == NORMAL || cs.m_right[i].notetype == CHAIN) &&
+				cs.m_right[i].time >= st && cs.m_right[i].time <= ed) {
+				nw = cs.m_right[i].width;
+				np = cs.m_right[i].position;
+				np += nw * 0.5;
+				nw *= w;
+				np -= nw * 0.5;
+				cs.m_right[i].width = nw;
+				cs.m_right[i].position = np;
+			}
+			else if (cs.m_right[i].notetype == HOLD &&
+				cs.m_right[i].time >= st && cs.m_right[i].time <= ed) {//for hold notes
+				nw = cs.m_right[i].width;
+				np = cs.m_right[i].position;
+				np += nw * 0.5;
+				nw *= w;
+				np -= nw * 0.5;
+				cs.m_right[i].width = nw;
+				cs.m_right[i].position = np;
+				int temp_sub = cs.m_right[i].subid;//find its sub
+				if (cs.m_right[temp_sub].id != temp_sub || cs.m_right[temp_sub].notetype != SUB) {
+					cout << "Hold-sub mismatch!" << endl;
+					return 2;
+				}
+				else {
+					cs.m_right[temp_sub].width = cs.m_right[i].width;
+					cs.m_right[temp_sub].position = cs.m_right[i].position;
+				}
+			}
+		}
+		//save
+		if (!cs.to_file(_outf)) {
 			return 2;
 		}
+		return 0;
 	}
 }
