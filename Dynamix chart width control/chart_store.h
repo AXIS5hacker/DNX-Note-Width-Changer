@@ -1,4 +1,8 @@
-﻿#ifndef CHART_STORE_H
+﻿/*
+* Creator:AXIS5
+* This is the definition of class chart_store
+*/
+#ifndef CHART_STORE_H
 #define CHART_STORE_H
 #include<vector>
 #include<string>

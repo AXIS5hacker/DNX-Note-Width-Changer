@@ -1,4 +1,8 @@
-﻿#include "chart_store.h"
+﻿/*
+* Creator:AXIS5
+* This is the realization of class chart_store
+*/
+#include "chart_store.h"
 #include"width_change.h"
 using namespace std;
 
