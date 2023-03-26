@@ -2,17 +2,17 @@
 .SUFFIXES: .cpp .o
 
 # General variables
-PACKAGE	    = dynamix-chart-width-control
-PREFIX	    ?= /usr/local
-DISTDIR	    = .
-BINDIR	    = $(PREFIX)/bin
-LIBDIR	    = $(PREFIX)/lib/$(PACKAGE)
-SHAREDIR    = $(PREFIX)/share/$(PACKAGE)
-DOCDIR	    = $(PREFIX)/share/doc/$(PACKAGE)
-MANDIR	    = $(PREFIX)/share/man/man1
+PACKAGE		= dynamix-chart-width-control
+PREFIX		?= /usr/local
+DISTDIR		= .
+BINDIR		= $(PREFIX)/bin
+LIBDIR		= $(PREFIX)/lib/$(PACKAGE)
+SHAREDIR	= $(PREFIX)/share/$(PACKAGE)
+DOCDIR		= $(PREFIX)/share/doc/$(PACKAGE)
+MANDIR		= $(PREFIX)/share/man/man1
 
-INSTALL	    ?= $(shell which install)
-CXX	    ?= $(shell which g++)
+INSTALL		?= $(shell which install)
+CXX			?= $(shell which g++)
 
 # Default target
 all: build
