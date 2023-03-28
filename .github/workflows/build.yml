@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: make
+      run: cd "Dynamix chart width control" && make
+    - uses: actions/upload-artifact@v3
+      with:
+        name: DNX-Note-Width-Changer
+        path: "./Dynamix chart width control/dynamix-chart-width-control"
