@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
 * Creator:AXIS5
 * This is the definition of class chart_store
 */
@@ -6,7 +6,10 @@
 #define CHART_STORE_H
 #include<vector>
 #include<string>
-using namespace std;
+
+using std::vector;
+using std::string;
+
 enum types { NORMAL = 1, CHAIN, HOLD, SUB };
 enum sides { PAD, MIXER, MULTI };
 struct note {
@@ -20,14 +23,15 @@ struct note {
 class chart_store
 {
 public:
+	vector<note> m_notes, m_left, m_right;//note list
+	bool to_file(string f);
+	int readfile(string fn);//read XML
+private:
 	string name;//song name
 	string name_id;//mapID
 	double offset;
 	double barpm;//Bar per minute
 	sides ltype, rtype;//left type and right type
-	vector<note> m_notes, m_left, m_right;//note list
-	bool to_file(string f);
-	int readfile(string fn);//read XML
 };
 
 #endif
