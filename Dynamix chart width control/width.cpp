@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
 * Creator:AXIS5
 */
 #include "chart_store.h"
