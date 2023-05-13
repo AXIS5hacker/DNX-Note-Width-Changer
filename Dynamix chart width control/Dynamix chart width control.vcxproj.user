@@ -6,7 +6,7 @@
     <LocalDebuggerCommand>$(OutDir)$(TargetName)_x86$(TargetExt)</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>msc.xml -w 0.7 -s 80.6 -o msc</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"C:\Users\AXIS5\Documents\charts\Cyber attack\_map_Cyber attack_H H11.xml" -w 0.7 -s 40.1</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(OutDir)$(TargetName)_x86$(TargetExt)</LocalDebuggerCommand>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <LocalDebuggerCommand>$(OutDir)$(TargetName)_x64$(TargetExt)</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>msc.xml -w 0.7 -s 80.6 -o msc</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"C:\Users\AXIS5\Documents\charts\Cyber attack\_map_Cyber attack_H H11.xml" -w 0.7 -s 40.1</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(OutDir)$(TargetName)_x64$(TargetExt)</LocalDebuggerCommand>
   </PropertyGroup>
