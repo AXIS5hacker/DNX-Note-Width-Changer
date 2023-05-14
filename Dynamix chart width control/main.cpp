@@ -1,5 +1,6 @@
-﻿/*
+﻿/**
 * Creator:AXIS5
+* This project is compiled in C++14 standard
 */
 #include"width_change.h"
 
@@ -10,7 +11,7 @@ struct stat st;
 
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.7.1" << endl;
+	cout << "Dynamix Chart Width Changer v0.7.9" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];

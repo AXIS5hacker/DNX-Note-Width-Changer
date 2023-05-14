@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
 * Creator:AXIS5
 * This is the realization of class chart_store
 */
@@ -6,30 +6,108 @@
 #include"width_change.h"
 using namespace std;
 
+void chart_store::skip_space() {
+	/**
+	*  The function skips the white space and new line in xml file
+	*/
+	while (t_buf[buf_index] == ' ' || t_buf[buf_index] == '\t' || t_buf[buf_index] == '\n' || t_buf[buf_index] == '\r') {
+		buf_index++;
+	}
+}
+
+bool chart_store::parse_decl() {
+	//check if parsing declaration
+	if (t_buf.compare(buf_index, 5, "<?xml") != 0) {
+		return false;
+	}
+	buf_index += 5;
+	size_t pos = t_buf.find("?>", buf_index);
+	if (pos == t_buf.npos) {
+		return false;
+	}
+	buf_index = pos + 2;
+	return true;
+}
+
+bool chart_store::parse_comment() {
+	//check if parsing comment
+	if (t_buf.compare(buf_index, 4, "<!--") != 0) {
+		return false;
+	}
+	buf_index += 4;
+	size_t pos = t_buf.find("-->", buf_index);
+	if (pos == t_buf.npos) {
+		return false;
+	}
+	buf_index = pos + 3;
+	return true;
+}
+
 int chart_store::readfile(string fn) {
-	/* The function that reads a chart.
+	/** The function that reads a chart.
 	*  fn:filename
+	*  return:0:success;1:fail
 	*/
 	string buf;
 	ifstream fin;
-	istringstream extr;//for extracting numbers
-	int modes = 0;//1->middle 2->left 3->right
-	bool note_trigger = false;
-	bool note_reading = false;//if reading a note
-	note* tempnote = NULL;
+
+	modes = 0;//0->none 1->middle 2->left 3->right
+	tempnote = NULL;
+	note_trigger = false;
+	note_reading = false;//if reading a note
+
+
 	fin.open(fn);//open file
 	if (fin.fail()) {
 		cout << "Cannot open file, maybe it doesn't exist." << endl;
 		return 1;
 	}
 	else {
-		while (!fin.eof()) {
-			getline(fin, buf);
+		//a newer method of parsing the xml file
+		stringstream ss;
+		ss << fin.rdbuf();
+		t_buf = ss.str();//t_buf now stores the file content
+		buf_index = 0;//points to the beginning of the file
+
+
+		//parse xml
+		skip_space();
+		if (!parse_decl()) {
+			//not parsing declaration
+			return 1;
+		}
+		skip_space();
+		while (t_buf.compare(buf_index, 4, "<!--") == 0) {
+			if (!parse_comment()) {
+				//error parsing comment
+				return 1;
+			}
+			skip_space();
+		}
+		if (t_buf[buf_index] == '<' &&
+			(isalpha(t_buf[buf_index + 1]) || t_buf[buf_index + 1] == '_'))
+		{
+			//start to parse the root node of the xml chart
+			try {
+				parse_elem();
+			}
+			catch (exception& ex) {
+				cout << ex.what() << endl;
+				return 1;
+			}
+		}
+		fin.close();
+		return 0;
+
+		//deprecated method of parsing the xml file
+
+			/*
 			if (buf.find("<m_path>", 0) != buf.npos) {//read name
 				int endt = buf.find("</m_path>", 0);
 				buf = buf.substr(8, endt - 8);
 				name = buf;
-			}
+			}*/
+			/*
 			else if (buf.find("<m_barPerMin>", 0) != buf.npos) {//read barpm
 				int endt = buf.find("</m_barPerMin>", 0);
 				buf = buf.substr(13, endt - 13);
@@ -37,14 +115,16 @@ int chart_store::readfile(string fn) {
 				extr >> barpm;
 				extr.clear();
 			}
-			else if (buf.find("<m_timeOffset>", 0) != buf.npos) {//read barpm
+			else */
+			/*if (buf.find("<m_timeOffset>", 0) != buf.npos) {//read offset
 				int endt = buf.find("</m_timeOffset>", 0);
 				buf = buf.substr(14, endt - 14);
 				extr.str(buf);
 				extr >> offset;
 				extr.clear();
 			}
-			else if (buf.find("<m_leftRegion>", 0) != buf.npos) {//read left
+			else */
+			/*if (buf.find("<m_leftRegion>", 0) != buf.npos) {//read left
 				int endt = buf.find("</m_leftRegion>", 0);
 				buf = buf.substr(14, endt - 14);
 				if (buf == "PAD") {
@@ -85,7 +165,8 @@ int chart_store::readfile(string fn) {
 				buf = buf.substr(9, endt - 9);
 				name_id = buf;
 			}
-			else if (buf.find("<m_notes>", 0) != buf.npos) {//start reading notes
+			else */
+			/*if (buf.find("<m_notes>", 0) != buf.npos) {//start reading notes
 				if (modes == 0)modes = 1;
 				else if (modes == 1 || modes == 2 || modes == 3) {
 					note_trigger = true;
@@ -118,7 +199,8 @@ int chart_store::readfile(string fn) {
 					return 1;
 				}
 			}
-			else if (buf.find("</CMapNoteAsset>", 0) != buf.npos) {//end of a note
+			else */
+			/*if (buf.find("</CMapNoteAsset>", 0) != buf.npos) {//end of a note
 				if (note_reading) {
 					switch (modes) {
 					case 1:
@@ -144,8 +226,8 @@ int chart_store::readfile(string fn) {
 					fin.close();
 					return 1;
 				}
-			}
-			else if (buf.find("<m_id>", 0) != buf.npos) {//note id
+			}*/
+			/*else if (buf.find("<m_id>", 0) != buf.npos) {//note id
 				int endt = buf.find("</m_id>", 0);
 				buf = buf.substr(6, endt - 6);
 				extr.str(buf);
@@ -248,15 +330,16 @@ int chart_store::readfile(string fn) {
 					return 1;
 				}
 			}
-			else if (buf.find("</m_notesLeft>", 0) != buf.npos) {//left notes end
+			else */
+			/*if (buf.find("</m_notesLeft>", 0) != buf.npos) {//left notes end
 				if (modes == 2)modes = 0;
 				else {
 					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
-			}
-			else if (buf.find("<m_notesRight>", 0) != buf.npos) {//right notes
+			}*/
+			/*else if (buf.find("<m_notesRight>", 0) != buf.npos) {//right notes
 				if (modes == 0)modes = 3;
 				else {
 					cout << "Read notes error" << endl;
@@ -264,27 +347,349 @@ int chart_store::readfile(string fn) {
 					return 1;
 				}
 			}
-			else if (buf.find("</m_notesRight>", 0) != buf.npos) {//right notes end
+			else */
+			/*if (buf.find("</m_notesRight>", 0) != buf.npos) {//right notes end
 				if (modes == 3)modes = 0;
 				else {
 					cout << "Read notes error" << endl;
 					fin.close();
 					return 1;
 				}
-			}
-		}
-		fin.close();
-		return 0;
+			}*/
+
 	}
 }
 
-void side_out(const vector<note>& v, ofstream& of) {//output each side
+void chart_store::parse_elem() {
+
+	istringstream extr;//for extracting numbers
+
+
+	buf_index++;// '<'
+	skip_space();
+	const string& tag = parse_elem_name();
+	while (t_buf[buf_index] != '\0') {
+		skip_space();
+		if (t_buf[buf_index] == '/') {
+			//empty xml tag:<.../>
+			if (t_buf[buf_index + 1] == '>') {
+				//end of an empty xml tag
+				buf_index += 2;
+				break;
+			}
+			else {
+				throw std::logic_error("xml empty element is error");
+			}
+		}
+		else if (t_buf[buf_index] == '>') {
+			//normal xml tag:<...>
+			buf_index++;//'>'
+			if (tag == "m_notes") {//start reading notes
+				if (modes == 0)modes = 1;
+				else if (modes == 1 || modes == 2 || modes == 3) {
+					note_trigger = true;
+				}
+				else {
+					throw std::logic_error("Read notes error");
+				}
+			}
+			else if (tag == "CMapNoteAsset") {//head of a note
+				if (!note_reading) {
+					note_reading = true;
+					tempnote = new note;
+				}
+				else {
+					throw std::logic_error("Read notes error");
+				}
+			}
+			else if (tag == "m_notesLeft") {//left notes
+				if (modes == 0)modes = 2;
+				else {
+					throw std::logic_error("Read notes error");
+				}
+			}
+			else if (tag == "m_notesRight") {//right notes
+				if (modes == 0)modes = 3;
+				else {
+					throw std::logic_error("Read notes error");
+				}
+			}
+			//read text
+			string text = parse_elem_text();
+			if (text != "") {
+				if (tag == "m_path") { //read name
+					name = text;
+				}
+				else if (tag == "m_barPerMin") {//read barpm
+					extr.str(text);
+					extr >> barpm;
+					extr.clear();
+				}
+				else if (tag == "m_timeOffset") {//read offset
+					extr.str(text);
+					extr >> offset;
+					extr.clear();
+				}
+				else if (tag == "m_leftRegion") {//read left
+					if (text == "PAD") {
+						ltype = PAD;
+					}
+					else if (text == "MIXER") {
+						ltype = MIXER;
+					}
+					else if (text == "MULTI") {
+						ltype = MULTI;
+					}
+					else {
+						throw std::logic_error("Read side error");
+					}
+				}
+				else if (tag == "m_rightRegion") {//read right
+					if (text == "PAD") {
+						rtype = PAD;
+					}
+					else if (text == "MIXER") {
+						rtype = MIXER;
+					}
+					else if (text == "MULTI") {
+						rtype = MULTI;
+					}
+					else {
+						throw std::logic_error("Read side error");
+					}
+				}
+				else if (tag == "m_mapID") {//read MapID
+					name_id = text;
+				}
+				else if (tag == "m_id") {//note id
+					extr.str(text);
+					if (tempnote != NULL) {
+						extr >> tempnote->id;//read current note id
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+					extr.clear();
+				}
+				else if (tag == "m_type") {//note type
+					if (tempnote != NULL) {
+						if (text == "NORMAL")
+						{
+							tempnote->notetype = NORMAL;
+						}
+						else if (text == "CHAIN") {
+							tempnote->notetype = CHAIN;
+						}
+						else if (text == "HOLD") {
+							tempnote->notetype = HOLD;
+						}
+						else if (text == "SUB") {
+							tempnote->notetype = SUB;
+						}
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "m_time" && note_trigger == true) {//note time
+					extr.str(text);
+					if (tempnote != NULL) {
+						extr >> tempnote->time;//read current note time
+						extr.clear();
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "m_position") {//note position
+					extr.str(text);
+					if (tempnote != NULL) {
+						extr >> tempnote->position;//read current note position
+						extr.clear();
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "m_width") {//note width
+					extr.str(text);
+					if (tempnote != NULL) {
+						extr >> tempnote->width;//read current note width
+						extr.clear();
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "m_subId") {//sub id of a hold,-1 for non-hold notes
+					extr.str(text);
+					if (tempnote != NULL) {
+						extr >> tempnote->subid;//read subId
+						extr.clear();
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+			}
+		}
+		else if (t_buf[buf_index] == '<') {
+			if (t_buf[buf_index + 1] == '/') {
+				//xml tag end:</...>
+
+				//scan
+				string end_tag = "</" + tag + ">";
+				size_t pos = t_buf.find(end_tag, buf_index);
+				if (pos == t_buf.npos) {
+					throw std::logic_error("xml element " + tag + " end tag not found.");
+				}
+				buf_index = pos + end_tag.size();
+
+				//action
+				if (tag == "m_notes") {//stop reading notes
+					if (note_trigger)note_trigger = false;
+					else if (modes == 1) {
+						modes = 0;
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "CMapNoteAsset") {//end of a note
+					if (note_reading) {
+						int temp_id;//note id(temporary)
+						switch (modes) {
+						case 1:
+							temp_id = tempnote->id;
+							m_notes.insert(make_pair(temp_id, *tempnote));
+							break;
+						case 2:
+							temp_id = tempnote->id;
+							m_left.insert(make_pair(temp_id, *tempnote));
+							break;
+						case 3:
+							temp_id = tempnote->id;
+							m_right.insert(make_pair(temp_id, *tempnote));
+							break;
+						default:
+							delete tempnote;
+							throw std::logic_error("Read notes error");
+						}
+						delete tempnote;
+						note_reading = false;
+					}
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "m_notesLeft") {//left notes end
+					if (modes == 2)modes = 0;
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+				else if (tag == "m_notesRight") {//right notes end
+					if (modes == 3)modes = 0;
+					else {
+						throw std::logic_error("Read notes error");
+					}
+				}
+
+				//finish parsing element
+				break;
+			}
+			else if (t_buf.compare(buf_index, 4, "<!--") == 0) {
+				//xml comment
+				if (!parse_comment()) {
+					throw std::logic_error("error parsing comment");
+				}
+			}
+			else {
+				//parse child
+				parse_elem();
+			}
+		}
+		else {
+			//xml tag attributes
+			string key = parse_elem_attr_key();
+			skip_space();
+			if (t_buf[buf_index] != '=') {
+				throw std::logic_error("xml attribute error:" + key);
+			}
+			buf_index++;//'='
+			skip_space();
+			try {
+				string val = parse_elem_attr_val();
+			}
+			catch (exception& ex) {
+				throw std::logic_error(ex.what());
+			}
+		}
+	}
+
+}
+
+string chart_store::parse_elem_name() {
+	//parsing a tag of xml
+	int pos = buf_index;
+	if (isalpha(t_buf[buf_index]) || t_buf[buf_index] == '_') {
+		buf_index++;
+		while (isalnum(t_buf[buf_index]) || t_buf[buf_index] == '_' ||
+			t_buf[buf_index] == '-' || t_buf[buf_index] == ':' ||
+			t_buf[buf_index] == '.') {
+			//word analyze
+			buf_index++;
+		}
+	}
+	return t_buf.substr(pos, buf_index - pos);
+}
+
+string chart_store::parse_elem_text() {
+	//parsing the text of an xml tag
+	int pos = buf_index;
+	while (t_buf[buf_index] != '<') {
+		buf_index++;
+	}
+	return t_buf.substr(pos, buf_index - pos);
+}
+
+string chart_store::parse_elem_attr_key() {
+	//parsing an attribute of an xml tag
+	int pos = buf_index;
+	if (isalpha(t_buf[buf_index]) || t_buf[buf_index] == '_') {
+		buf_index++;
+		while (isalnum(t_buf[buf_index]) || t_buf[buf_index] == '_' ||
+			t_buf[buf_index] == '-' || t_buf[buf_index] == ':') {
+			//word analyze
+			buf_index++;
+		}
+	}
+	return t_buf.substr(pos, buf_index - pos);
+}
+
+string chart_store::parse_elem_attr_val() {
+	//parsing the value of an attribute
+	if (t_buf[buf_index] != '\"') {
+		throw std::logic_error("attribute value missing \"\"");
+	}
+	buf_index++;//'"'
+	int pos = buf_index;
+	while (t_buf[buf_index] != '\"') {
+		//read value
+		buf_index++;
+	}
+	buf_index++;//'"'
+	return t_buf.substr(pos, buf_index - pos - 1);
+}
+
+void chart_store::side_out(const map<int, note>& v, ofstream& of) {//output each side
 	of << fixed << setprecision(6);
-	for (int i = 0; i < v.size(); i++) {
+	map<int, note>::const_iterator it;//the iterator that accesses constant maps
+	for (it = v.begin(); it != v.end(); it++) {
 		of << "<CMapNoteAsset>" << endl;
-		of << "<m_id>" << v[i].id << "</m_id>" << endl;
+		of << "<m_id>" << it->second.id << "</m_id>" << endl;
 		of << "<m_type>";
-		switch (v[i].notetype) {
+		switch (it->second.notetype) {
 		case types::NORMAL:
 			of << "NORMAL";
 			break;
@@ -299,13 +704,14 @@ void side_out(const vector<note>& v, ofstream& of) {//output each side
 			break;
 		}
 		of << "</m_type>" << endl;
-		of << "<m_time>" << v[i].time << "</m_time>" << endl;
-		of << "<m_position>" << v[i].position << "</m_position>" << endl;
-		of << "<m_width>" << v[i].width << "</m_width>" << endl;
-		of << "<m_subId>" << v[i].subid << "</m_subId>" << endl;
+		of << "<m_time>" << it->second.time << "</m_time>" << endl;
+		of << "<m_position>" << it->second.position << "</m_position>" << endl;
+		of << "<m_width>" << it->second.width << "</m_width>" << endl;
+		of << "<m_subId>" << it->second.subid << "</m_subId>" << endl;
 		of << "</CMapNoteAsset>" << endl;
 	}
 }
+
 bool chart_store::to_file(string f) {
 	ofstream fout;
 	fout.open(f);

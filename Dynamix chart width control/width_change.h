@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
 * Creator:AXIS5
 */
 // width change.h
