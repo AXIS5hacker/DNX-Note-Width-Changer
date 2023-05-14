@@ -10,8 +10,6 @@ ofstream fout;
 istringstream mult;
 ostringstream proc;
 
-map<int, double> subs;//used for processing hold notes
-map<int, double>::iterator it;
 
 bool _isNum(string s) {//detect if the string is a number
 	stringstream _test(s);

@@ -6,15 +6,6 @@
 #include"width_change.h"
 using namespace std;
 
-//erase the space at the beginning and the end of the string
-string& trim(string& s) {
-	if (!s.empty()) {
-		s.erase(0, s.find_first_not_of(" "));
-		s.erase(s.find_last_not_of(" ") + 1);
-	}
-	return s;
-}
-
 void chart_store::skip_space() {
 	/**
 	*  The function skips the white space and new line in xml file
