@@ -47,107 +47,123 @@ int width_change(string fn, double w, string _outf, double st, double ed) {
 		return 1;
 	}
 	else {
+		map<int, note>::iterator it;
 		//middle
-		for (int i = 0; i < cs.m_notes.size(); i++) {
 
-			if ((cs.m_notes[i].notetype == NORMAL || cs.m_notes[i].notetype == CHAIN) &&
-				cs.m_notes[i].time >= st && cs.m_notes[i].time <= ed) {
+		for (it = cs.m_notes.begin(); it != cs.m_notes.end(); it++) {
 
-				nw = cs.m_notes[i].width;//read width
-				np = cs.m_notes[i].position;//read position
+			if ((it->second.notetype == NORMAL || it->second.notetype == CHAIN) &&
+				it->second.time >= st && it->second.time <= ed) {
+
+				nw = it->second.width;//read width
+				np = it->second.position;//read position
 				np += nw * 0.5;
 				nw *= w;
 				np -= nw * 0.5;//multiply
-				cs.m_notes[i].width = nw;
-				cs.m_notes[i].position = np;
+				it->second.width = nw;
+				it->second.position = np;
 			}
-			else if (cs.m_notes[i].notetype == HOLD &&
-				cs.m_notes[i].time >= st && cs.m_notes[i].time <= ed) {//for hold notes
+			else if (it->second.notetype == HOLD &&
+				it->second.time >= st && it->second.time <= ed) {//for hold notes
 
-				nw = cs.m_notes[i].width;//read width
-				np = cs.m_notes[i].position;//read position
+				nw = it->second.width;//read width
+				np = it->second.position;//read position
 				np += nw * 0.5;
 				nw *= w;
 				np -= nw * 0.5;//multiply
 				//writeback
-				cs.m_notes[i].width = nw;
-				cs.m_notes[i].position = np;
-				int temp_sub = cs.m_notes[i].subid;//find its sub
-				if (cs.m_notes[temp_sub].id != temp_sub || cs.m_notes[temp_sub].notetype != SUB) {
+				it->second.width = nw;
+				it->second.position = np;
+
+				int temp_sub = it->second.subid;//find its sub
+				map<int, note>::iterator sub_it = cs.m_notes.find(temp_sub);//its sub note
+
+				//sub not found
+				if (sub_it == cs.m_notes.end() || sub_it->second.notetype != SUB) {
 					cout << "Hold-sub mismatch!" << endl;
 					return 2;
 				}
-				else {
-					cs.m_notes[temp_sub].width = cs.m_notes[i].width;
-					cs.m_notes[temp_sub].position = cs.m_notes[i].position;
+				else {//sub found
+					sub_it->second.width = it->second.width;
+					sub_it->second.position = it->second.position;
 				}
 			}
 		}
+
 		//left
-		for (int i = 0; i < cs.m_left.size(); i++) {
+		for (it = cs.m_left.begin(); it != cs.m_left.end(); it++) {
 
-			if ((cs.m_left[i].notetype == NORMAL || cs.m_left[i].notetype == CHAIN) &&
-				cs.m_left[i].time >= st && cs.m_left[i].time <= ed) {
-				nw = cs.m_left[i].width;//read width
-				np = cs.m_left[i].position;//read position
+			if ((it->second.notetype == NORMAL || it->second.notetype == CHAIN) &&
+				it->second.time >= st && it->second.time <= ed) {
+				nw = it->second.width;//read width
+				np = it->second.position;//read position
 				np += nw * 0.5;
 				nw *= w;
 				np -= nw * 0.5;//multiply
 				//writeback
-				cs.m_left[i].width = nw;
-				cs.m_left[i].position = np;
+				it->second.width = nw;
+				it->second.position = np;
 			}
-			else if (cs.m_left[i].notetype == HOLD &&
-				cs.m_left[i].time >= st && cs.m_left[i].time <= ed) {//for hold notes
-				nw = cs.m_left[i].width;//read width
-				np = cs.m_left[i].position;//read position
+			else if (it->second.notetype == HOLD &&
+				it->second.time >= st && it->second.time <= ed) {//for hold notes
+				nw = it->second.width;//read width
+				np = it->second.position;//read position
 				np += nw * 0.5;
 				nw *= w;
 				np -= nw * 0.5;//multiply
 				//writeback
-				cs.m_left[i].width = nw;
-				cs.m_left[i].position = np;
-				int temp_sub = cs.m_left[i].subid;//find its sub
-				if (cs.m_left[temp_sub].id != temp_sub || cs.m_left[temp_sub].notetype != SUB) {
+				it->second.width = nw;
+				it->second.position = np;
+
+				int temp_sub = it->second.subid;//find its sub
+				map<int, note>::iterator sub_it = cs.m_left.find(temp_sub);//its sub note
+
+				//sub not found
+				if (sub_it == cs.m_left.end() || sub_it->second.notetype != SUB) {
 					cout << "Hold-sub mismatch!" << endl;
 					return 2;
 				}
-				else {
-					cs.m_left[temp_sub].width = cs.m_left[i].width;
-					cs.m_left[temp_sub].position = cs.m_left[i].position;
+				else {//sub found
+					sub_it->second.width = it->second.width;
+					sub_it->second.position = it->second.position;
 				}
 			}
 		}
-		//right
-		for (int i = 0; i < cs.m_right.size(); i++) {
 
-			if ((cs.m_right[i].notetype == NORMAL || cs.m_right[i].notetype == CHAIN) &&
-				cs.m_right[i].time >= st && cs.m_right[i].time <= ed) {
-				nw = cs.m_right[i].width;
-				np = cs.m_right[i].position;
+		//right
+		for (it = cs.m_right.begin(); it != cs.m_right.end(); it++) {
+
+			if ((it->second.notetype == NORMAL || it->second.notetype == CHAIN) &&
+				it->second.time >= st && it->second.time <= ed) {
+				nw = it->second.width;
+				np = it->second.position;
 				np += nw * 0.5;
 				nw *= w;
 				np -= nw * 0.5;
-				cs.m_right[i].width = nw;
-				cs.m_right[i].position = np;
+				it->second.width = nw;
+				it->second.position = np;
 			}
-			else if (cs.m_right[i].notetype == HOLD &&
-				cs.m_right[i].time >= st && cs.m_right[i].time <= ed) {//for hold notes
-				nw = cs.m_right[i].width;
-				np = cs.m_right[i].position;
+			else if (it->second.notetype == HOLD &&
+				it->second.time >= st && it->second.time <= ed) {//for hold notes
+				nw = it->second.width;
+				np = it->second.position;
 				np += nw * 0.5;
 				nw *= w;
 				np -= nw * 0.5;
-				cs.m_right[i].width = nw;
-				cs.m_right[i].position = np;
-				int temp_sub = cs.m_right[i].subid;//find its sub
-				if (cs.m_right[temp_sub].id != temp_sub || cs.m_right[temp_sub].notetype != SUB) {
+				it->second.width = nw;
+				it->second.position = np;
+
+				int temp_sub = it->second.subid;//find its sub
+				map<int, note>::iterator sub_it = cs.m_right.find(temp_sub);//its sub note
+
+				//sub not found
+				if (sub_it == cs.m_right.end() || sub_it->second.notetype != SUB) {
 					cout << "Hold-sub mismatch!" << endl;
 					return 2;
 				}
-				else {
-					cs.m_right[temp_sub].width = cs.m_right[i].width;
-					cs.m_right[temp_sub].position = cs.m_right[i].position;
+				else {//sub found
+					sub_it->second.width = it->second.width;
+					sub_it->second.position = it->second.position;
 				}
 			}
 		}

@@ -7,9 +7,13 @@
 #include<vector>
 #include<string>
 #include<sstream>
+#include<map>
+
 using std::vector;
 using std::string;
 using std::ofstream;
+using std::pair;
+using std::map;
 
 enum types { NORMAL = 1, CHAIN, HOLD, SUB };
 enum sides { PAD, MIXER, MULTI };
@@ -24,8 +28,13 @@ struct note {
 class chart_store
 {
 public:
-	vector<note> m_notes, m_left, m_right;//note list
-	bool to_file(string f);
+	//vector<note> m_notes, m_left, m_right;//note list(deprecated)
+
+	//now we use map to store the notes, in order to deal with discrete note id
+	//<note id,note>
+	map<int, note> m_notes, m_left, m_right;//note list(the key is the note's id)
+
+	bool to_file(string f);//print to XML
 	int readfile(string fn);//read XML
 private:
 	string name;//song name
@@ -33,7 +42,7 @@ private:
 	double offset;
 	double barpm;//Bar per minute
 	sides ltype, rtype;//left type and right type
-	void side_out(const vector<note>& v, ofstream& of);//output each side
+	void side_out(const map<int, note>& v, ofstream& of);//output each side
 
 	//xml parser members
 	string t_buf;//the string buffer

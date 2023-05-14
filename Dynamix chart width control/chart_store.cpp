@@ -566,15 +566,19 @@ void chart_store::parse_elem() {
 				}
 				else if (tag == "CMapNoteAsset") {//end of a note
 					if (note_reading) {
+						int temp_id;//note id(temporary)
 						switch (modes) {
 						case 1:
-							m_notes.push_back(*tempnote);
+							temp_id = tempnote->id;
+							m_notes.insert(make_pair(temp_id, *tempnote));
 							break;
 						case 2:
-							m_left.push_back(*tempnote);
+							temp_id = tempnote->id;
+							m_left.insert(make_pair(temp_id, *tempnote));
 							break;
 						case 3:
-							m_right.push_back(*tempnote);
+							temp_id = tempnote->id;
+							m_right.insert(make_pair(temp_id, *tempnote));
 							break;
 						default:
 							delete tempnote;
@@ -687,13 +691,14 @@ string chart_store::parse_elem_attr_val() {
 	return t_buf.substr(pos, buf_index - pos - 1);
 }
 
-void chart_store::side_out(const vector<note>& v, ofstream& of) {//output each side
+void chart_store::side_out(const map<int, note>& v, ofstream& of) {//output each side
 	of << fixed << setprecision(6);
-	for (int i = 0; i < v.size(); i++) {
+	map<int, note>::const_iterator it;//the iterator that accesses constant maps
+	for (it = v.begin(); it != v.end(); it++) {
 		of << "<CMapNoteAsset>" << endl;
-		of << "<m_id>" << v[i].id << "</m_id>" << endl;
+		of << "<m_id>" << it->second.id << "</m_id>" << endl;
 		of << "<m_type>";
-		switch (v[i].notetype) {
+		switch (it->second.notetype) {
 		case types::NORMAL:
 			of << "NORMAL";
 			break;
@@ -708,10 +713,10 @@ void chart_store::side_out(const vector<note>& v, ofstream& of) {//output each s
 			break;
 		}
 		of << "</m_type>" << endl;
-		of << "<m_time>" << v[i].time << "</m_time>" << endl;
-		of << "<m_position>" << v[i].position << "</m_position>" << endl;
-		of << "<m_width>" << v[i].width << "</m_width>" << endl;
-		of << "<m_subId>" << v[i].subid << "</m_subId>" << endl;
+		of << "<m_time>" << it->second.time << "</m_time>" << endl;
+		of << "<m_position>" << it->second.position << "</m_position>" << endl;
+		of << "<m_width>" << it->second.width << "</m_width>" << endl;
+		of << "<m_subId>" << it->second.subid << "</m_subId>" << endl;
 		of << "</CMapNoteAsset>" << endl;
 	}
 }
