@@ -24,5 +24,9 @@
 #endif
 
 #include<cstdio>
+#define MID_CHANGE 0x4
+#define LEFT_CHANGE 0x2
+#define RIGHT_CHANGE 0x1
+
 #endif
 

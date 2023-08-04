@@ -46,6 +46,13 @@ int main(int argc, char* argv[])
 
 	bool next_stimestamp = false;//if specifying start time
 	bool next_etimestamp = false;//if specifying end time
+
+	//side triggers
+	bool all_change = true;//if not specifying sides for changing
+	int side_mask = 0x7;
+	//default:111(all sides),0 for not change, 1 for change
+	//first digit is middle side, second digit is left, third digit is right
+
 	//trigger end
 	vector<string> arglist;
 	for (int i = 0; i < argc; i++) {
@@ -114,7 +121,28 @@ int main(int argc, char* argv[])
 		else if (arglist[i] == "-e") {//end time specify trigger
 			next_etimestamp = true;
 		}
-		else if (argc == 1 || argc > 10) {//not specified arguments or too many arguments
+		else if (arglist[i] == "-l") {//left side specify trigger
+			if (all_change) {
+				all_change = false;
+				side_mask = 0;
+			}
+			side_mask = side_mask | LEFT_CHANGE;
+		}
+		else if (arglist[i] == "-r") {//right side specify trigger
+			if (all_change) {
+				all_change = false;
+				side_mask = 0;
+			}
+			side_mask = side_mask | RIGHT_CHANGE;
+		}
+		else if (arglist[i] == "-m") {//middle side specify trigger
+			if (all_change) {
+				all_change = false;
+				side_mask = 0;
+			}
+			side_mask = side_mask | MID_CHANGE;
+		}
+		else if (argc == 1 || argc > 13) {//not specified arguments or too many arguments
 			false_usage = true;
 		}
 	}
@@ -125,6 +153,10 @@ int main(int argc, char* argv[])
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
 		cout << "-e end_time(bar)\tspecify the end time of the time range you want to change, in the unit of bar." << endl;
+		cout << "-m\tchange the middle side." << endl;
+		cout << "-l\tchange the left side." << endl;
+		cout << "-r\tchange the right side." << endl;
+		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed.";
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -139,6 +171,10 @@ int main(int argc, char* argv[])
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
 		cout << "-e end_time(bar)\tspecify the end time of the time range you want to change, in the unit of bar." << endl;
+		cout << "-m\tchange the middle side." << endl;
+		cout << "-l\tchange the left side." << endl;
+		cout << "-r\tchange the right side." << endl;
+		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed.";
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -171,7 +207,11 @@ int main(int argc, char* argv[])
 			}
 		}
 		//cout << width << endl;
+
+		//need to modify(2023.8.4)
 		int success = width_change(filename, width, _output, start_time, end_time);//width=1 as default width multiplier
+		//end
+
 		if (success == 1)cout << "Cannot open file." << endl;//file not found or do not have access
 		else if (success == 2)cout << "Cannot save changed chart file." << endl;//invalid output chart name
 		else {
@@ -200,12 +240,12 @@ int main(int argc, char* argv[])
 			else {
 				cout << "Changed chart saved as \"" << _output << "\"" << endl;
 			}
+			}
 		}
-	}
 
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	system("pause");
 #endif
 
 	return 0;
-}
+	}
