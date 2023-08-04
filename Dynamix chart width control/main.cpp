@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 		cout << "-m\tchange the middle side." << endl;
 		cout << "-l\tchange the left side." << endl;
 		cout << "-r\tchange the right side." << endl;
-		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed.";
+		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed." << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
 		cout << "-m\tchange the middle side." << endl;
 		cout << "-l\tchange the left side." << endl;
 		cout << "-r\tchange the right side." << endl;
-		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed.";
+		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed." << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -240,12 +240,12 @@ int main(int argc, char* argv[])
 			else {
 				cout << "Changed chart saved as \"" << _output << "\"" << endl;
 			}
-			}
 		}
+	}
 
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	system("pause");
 #endif
 
 	return 0;
-	}
+}
