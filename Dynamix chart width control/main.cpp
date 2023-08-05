@@ -5,13 +5,13 @@
 #include"width_change.h"
 
 using namespace std;
-int width_change(string fn, double w, string _outf, double st, double ed);
+
 extern bool _isNum(string s);
 struct stat st;
 
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.7.9" << endl;
+	cout << "Dynamix Chart Width Changer v0.8.3" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -145,10 +145,13 @@ int main(int argc, char* argv[])
 		else if (argc == 1 || argc > 13) {//not specified arguments or too many arguments
 			false_usage = true;
 		}
+		else if (i > 1) {//wrong argument detected
+			false_usage = true;
+		}
 	}
 	if (help_only) {
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h]" << endl << endl;
+		cout << "filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
@@ -166,7 +169,7 @@ int main(int argc, char* argv[])
 	else if (false_usage) {
 		cout << "invalid arguments" << endl;
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h]" << endl << endl;
+		cout << "filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
@@ -209,12 +212,23 @@ int main(int argc, char* argv[])
 		//cout << width << endl;
 
 		//need to modify(2023.8.4)
-		int success = width_change(filename, width, _output, start_time, end_time);//width=1 as default width multiplier
+		int success = width_change(filename, width, _output, start_time, end_time, side_mask);//width=1 as default width multiplier
 		//end
 
 		if (success == 1)cout << "Cannot open file." << endl;//file not found or do not have access
 		else if (success == 2)cout << "Cannot save changed chart file." << endl;//invalid output chart name
 		else {
+			cout << "Changed sides: ";
+			if (side_mask & MID_CHANGE) {
+				cout << "middle ";
+			}
+			if (side_mask & LEFT_CHANGE) {
+				cout << "left ";
+			}
+			if (side_mask & RIGHT_CHANGE) {
+				cout << "right ";
+			}
+			cout << endl;
 			cwd = cwd + _output;
 			//cout << cwd << endl;
 			if (def_stimestamp && def_etimestamp) {
