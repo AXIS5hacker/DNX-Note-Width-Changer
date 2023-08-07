@@ -48,6 +48,12 @@ int chart_store::readfile(string fn) {
 	*  fn:filename
 	*  return:0:success;1:fail
 	*/
+
+	//empty the maps that stores the previous chart
+	m_notes.clear();
+	m_left.clear();
+	m_right.clear();
+
 	string buf;
 	ifstream fin;
 
@@ -59,7 +65,7 @@ int chart_store::readfile(string fn) {
 
 	fin.open(fn);//open file
 	if (fin.fail()) {
-		cout << "Cannot open file, maybe it doesn't exist." << endl;
+		cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
 		return 1;
 	}
 	else {
@@ -99,264 +105,6 @@ int chart_store::readfile(string fn) {
 		fin.close();
 		return 0;
 
-		//deprecated method of parsing the xml file
-
-			/*
-			if (buf.find("<m_path>", 0) != buf.npos) {//read name
-				int endt = buf.find("</m_path>", 0);
-				buf = buf.substr(8, endt - 8);
-				name = buf;
-			}*/
-			/*
-			else if (buf.find("<m_barPerMin>", 0) != buf.npos) {//read barpm
-				int endt = buf.find("</m_barPerMin>", 0);
-				buf = buf.substr(13, endt - 13);
-				extr.str(buf);
-				extr >> barpm;
-				extr.clear();
-			}
-			else */
-			/*if (buf.find("<m_timeOffset>", 0) != buf.npos) {//read offset
-				int endt = buf.find("</m_timeOffset>", 0);
-				buf = buf.substr(14, endt - 14);
-				extr.str(buf);
-				extr >> offset;
-				extr.clear();
-			}
-			else */
-			/*if (buf.find("<m_leftRegion>", 0) != buf.npos) {//read left
-				int endt = buf.find("</m_leftRegion>", 0);
-				buf = buf.substr(14, endt - 14);
-				if (buf == "PAD") {
-					ltype = PAD;
-				}
-				else if (buf == "MIXER") {
-					ltype = MIXER;
-				}
-				else if (buf == "MULTI") {
-					ltype = MULTI;
-				}
-				else {
-					cout << "Read side error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<m_rightRegion>", 0) != buf.npos) {//read right
-				int endt = buf.find("</m_rightRegion>", 0);
-				buf = buf.substr(15, endt - 15);
-				if (buf == "PAD") {
-					rtype = PAD;
-				}
-				else if (buf == "MIXER") {
-					rtype = MIXER;
-				}
-				else if (buf == "MULTI") {
-					rtype = MULTI;
-				}
-				else {
-					cout << "Read side error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<m_mapID>", 0) != buf.npos) {//read MapID
-				int endt = buf.find("</m_mapID>", 0);
-				buf = buf.substr(9, endt - 9);
-				name_id = buf;
-			}
-			else */
-			/*if (buf.find("<m_notes>", 0) != buf.npos) {//start reading notes
-				if (modes == 0)modes = 1;
-				else if (modes == 1 || modes == 2 || modes == 3) {
-					note_trigger = true;
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("</m_notes>", 0) != buf.npos) {//stop reading notes
-				if (note_trigger)note_trigger = false;
-				else if (modes == 1) {
-					modes = 0;
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<CMapNoteAsset>", 0) != buf.npos) {//head of a note
-				if (!note_reading) {
-					note_reading = true;
-					tempnote = new note;
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else */
-			/*if (buf.find("</CMapNoteAsset>", 0) != buf.npos) {//end of a note
-				if (note_reading) {
-					switch (modes) {
-					case 1:
-						m_notes.push_back(*tempnote);
-						break;
-					case 2:
-						m_left.push_back(*tempnote);
-						break;
-					case 3:
-						m_right.push_back(*tempnote);
-						break;
-					default:
-						delete tempnote;
-						cout << "Read notes error" << endl;
-						fin.close();
-						return 1;
-					}
-					delete tempnote;
-					note_reading = false;
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}*/
-			/*else if (buf.find("<m_id>", 0) != buf.npos) {//note id
-				int endt = buf.find("</m_id>", 0);
-				buf = buf.substr(6, endt - 6);
-				extr.str(buf);
-				if (tempnote != NULL) {
-					extr >> tempnote->id;//read current note id
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-				extr.clear();
-			}
-			else if (buf.find("<m_type>", 0) != buf.npos) {
-				int endt = buf.find("</m_type>", 0);
-				buf = buf.substr(8, endt - 8);
-				if (tempnote != NULL) {
-					if (buf == "NORMAL")
-					{
-						tempnote->notetype = NORMAL;
-					}
-					else if (buf == "CHAIN") {
-						tempnote->notetype = CHAIN;
-					}
-					else if (buf == "HOLD") {
-						tempnote->notetype = HOLD;
-					}
-					else if (buf == "SUB") {
-						tempnote->notetype = SUB;
-					}
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<m_time>", 0) != buf.npos && note_trigger == true) {//time
-				int endt = buf.find("</m_time>", 0);
-				buf = buf.substr(8, endt - 8);
-				extr.str(buf);
-				if (tempnote != NULL) {
-					extr >> tempnote->time;//read current note time
-					extr.clear();
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<m_position>", 0) != buf.npos) {//position
-				int endt = buf.find("</m_position>", 0);
-				buf = buf.substr(12, endt - 12);
-				extr.str(buf);
-				if (tempnote != NULL) {
-					extr >> tempnote->position;//read current note position
-					extr.clear();
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<m_width>", 0) != buf.npos) {//width
-				int endt = buf.find("</m_width>", 0);
-				buf = buf.substr(9, endt - 9);
-				extr.str(buf);
-				if (tempnote != NULL) {
-					extr >> tempnote->width;//read current note width
-					extr.clear();
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else if (buf.find("<m_subId>", 0) != buf.npos) {//subId
-				int endt = buf.find("</m_subId>", 0);
-				buf = buf.substr(9, endt - 9);
-				extr.str(buf);
-				if (tempnote != NULL) {
-					extr >> tempnote->subid;//read subId
-					extr.clear();
-				}
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-
-			else if (buf.find("<m_notesLeft>", 0) != buf.npos) {//left notes
-				if (modes == 0)modes = 2;
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else */
-			/*if (buf.find("</m_notesLeft>", 0) != buf.npos) {//left notes end
-				if (modes == 2)modes = 0;
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}*/
-			/*else if (buf.find("<m_notesRight>", 0) != buf.npos) {//right notes
-				if (modes == 0)modes = 3;
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}
-			else */
-			/*if (buf.find("</m_notesRight>", 0) != buf.npos) {//right notes end
-				if (modes == 3)modes = 0;
-				else {
-					cout << "Read notes error" << endl;
-					fin.close();
-					return 1;
-				}
-			}*/
-
 	}
 }
 
@@ -390,7 +138,7 @@ void chart_store::parse_elem() {
 					note_trigger = true;
 				}
 				else {
-					throw std::logic_error("Read notes error");
+					throw std::logic_error("Read notes error: Syntax Error when reading middle notes");
 				}
 			}
 			else if (tag == "CMapNoteAsset") {//head of a note
@@ -399,19 +147,20 @@ void chart_store::parse_elem() {
 					tempnote = new note;
 				}
 				else {
-					throw std::logic_error("Read notes error");
+					throw std::logic_error("Read notes error: <CMapNoteAsset> note asset error, triggered at"
+						+ __LINE__ + (string)"in" + __FILE__);
 				}
 			}
 			else if (tag == "m_notesLeft") {//left notes
 				if (modes == 0)modes = 2;
 				else {
-					throw std::logic_error("Read notes error");
+					throw std::logic_error("Read notes error: Syntax Error when reading left notes");
 				}
 			}
 			else if (tag == "m_notesRight") {//right notes
 				if (modes == 0)modes = 3;
 				else {
-					throw std::logic_error("Read notes error");
+					throw std::logic_error("Read notes error: Syntax Error when reading right notes");
 				}
 			}
 			//read text
@@ -441,7 +190,7 @@ void chart_store::parse_elem() {
 						ltype = MULTI;
 					}
 					else {
-						throw std::logic_error("Read side error");
+						throw std::logic_error("Read side error: Invalid Left Side Type");
 					}
 				}
 				else if (tag == "m_rightRegion") {//read right
@@ -455,7 +204,7 @@ void chart_store::parse_elem() {
 						rtype = MULTI;
 					}
 					else {
-						throw std::logic_error("Read side error");
+						throw std::logic_error("Read side error: Invalid Right Side Type");
 					}
 				}
 				else if (tag == "m_mapID") {//read MapID
@@ -467,7 +216,7 @@ void chart_store::parse_elem() {
 						extr >> tempnote->id;//read current note id
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Unable to create object \"note\"");
 					}
 					extr.clear();
 				}
@@ -488,7 +237,12 @@ void chart_store::parse_elem() {
 						}
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						if (tempnote != NULL) {
+							throw std::logic_error("Read notes error: Invalid note type at note #" + tempnote->id);
+						}
+						else {
+							throw std::logic_error("Read notes error: Invalid note type at undefined note");
+						}
 					}
 				}
 				else if (tag == "m_time" && note_trigger == true) {//note time
@@ -498,7 +252,7 @@ void chart_store::parse_elem() {
 						extr.clear();
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Unable to create object \"note\"");
 					}
 				}
 				else if (tag == "m_position") {//note position
@@ -508,7 +262,7 @@ void chart_store::parse_elem() {
 						extr.clear();
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Unable to create object \"note\"");
 					}
 				}
 				else if (tag == "m_width") {//note width
@@ -518,7 +272,7 @@ void chart_store::parse_elem() {
 						extr.clear();
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Unable to create object \"note\"");
 					}
 				}
 				else if (tag == "m_subId") {//sub id of a hold,-1 for non-hold notes
@@ -528,7 +282,7 @@ void chart_store::parse_elem() {
 						extr.clear();
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Unable to create object \"note\"");
 					}
 				}
 			}
@@ -552,7 +306,7 @@ void chart_store::parse_elem() {
 						modes = 0;
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Duplicated stop tags of reading a side");
 					}
 				}
 				else if (tag == "CMapNoteAsset") {//end of a note
@@ -579,19 +333,19 @@ void chart_store::parse_elem() {
 						note_reading = false;
 					}
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Syntax error when stop reading a note");
 					}
 				}
 				else if (tag == "m_notesLeft") {//left notes end
 					if (modes == 2)modes = 0;
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Syntax error when stop reading left notes");
 					}
 				}
 				else if (tag == "m_notesRight") {//right notes end
 					if (modes == 3)modes = 0;
 					else {
-						throw std::logic_error("Read notes error");
+						throw std::logic_error("Read notes error: Syntax error when stop reading right notes");
 					}
 				}
 

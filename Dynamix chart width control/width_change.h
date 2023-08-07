@@ -24,5 +24,13 @@
 #endif
 
 #include<cstdio>
+#define MID_CHANGE 0x4
+#define LEFT_CHANGE 0x2
+#define RIGHT_CHANGE 0x1
+
+#include "chart_store.h"
+#include<string>
+using std::string;
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask);
 #endif
 

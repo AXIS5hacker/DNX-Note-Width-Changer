@@ -26,28 +26,21 @@ bool _isNum(string s) {//detect if the string is a number
 	return true;
 }
 
-int width_change(string fn, double w, string _outf, double st, double ed) {
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask) {
 	/* The function that changes the width of a chart.
-	*  fn:filename, w:width multiplier, _outf: output filename, st:start time, ed:end time
+	*  cs:chart store object, w:width multiplier, st:start time, ed:end time
+	*  side_mask: specify the sides to change
 	*/
 	string buf;
 
-
 	int temp_sub = 0;//temporarily saves the id of a sub note
 
-	fin.open(fn);//open file
 	double nw = 0, np = 0, t = 0;
 	//bool ch_trigger = false;//check if note is in the specified time range
-	chart_store cs;//store the chart
-	int fail = cs.readfile(fn);//open file
 
-	if (fin.fail()) {
-		return 1;
-	}
-	else {
-		map<int, note>::iterator it;
-		//middle
-
+	map<int, note>::iterator it;
+	//middle
+	if (side_mask & MID_CHANGE) {
 		for (it = cs.m_notes.begin(); it != cs.m_notes.end(); it++) {
 
 			if ((it->second.notetype == NORMAL || it->second.notetype == CHAIN) &&
@@ -87,8 +80,9 @@ int width_change(string fn, double w, string _outf, double st, double ed) {
 				}
 			}
 		}
-
-		//left
+	}
+	//left
+	if (side_mask & LEFT_CHANGE) {
 		for (it = cs.m_left.begin(); it != cs.m_left.end(); it++) {
 
 			if ((it->second.notetype == NORMAL || it->second.notetype == CHAIN) &&
@@ -127,8 +121,9 @@ int width_change(string fn, double w, string _outf, double st, double ed) {
 				}
 			}
 		}
-
-		//right
+	}
+	//right
+	if (side_mask & RIGHT_CHANGE) {
 		for (it = cs.m_right.begin(); it != cs.m_right.end(); it++) {
 
 			if ((it->second.notetype == NORMAL || it->second.notetype == CHAIN) &&
@@ -165,10 +160,7 @@ int width_change(string fn, double w, string _outf, double st, double ed) {
 				}
 			}
 		}
-		//save
-		if (!cs.to_file(_outf)) {
-			return 2;
-		}
-		return 0;
 	}
+
+	return 0;
 }
