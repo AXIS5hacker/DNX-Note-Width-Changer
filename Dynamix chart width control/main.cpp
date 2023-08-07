@@ -3,7 +3,7 @@
 * This project is compiled in C++14 standard
 */
 #include"width_change.h"
-
+#include"chart_store.h"
 using namespace std;
 
 extern bool _isNum(string s);
@@ -11,7 +11,7 @@ struct stat st;
 
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.8.3" << endl;
+	cout << "Dynamix Chart Width Changer v0.8.10" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -209,54 +209,65 @@ int main(int argc, char* argv[])
 				}
 			}
 		}
+
 		//cout << width << endl;
 
-		//need to modify(2023.8.4)
-		int success = width_change(filename, width, _output, start_time, end_time, side_mask);//width=1 as default width multiplier
-		//end
+		//create chart store class
+		chart_store cs;//store the chart
+		int fail_read = cs.readfile(filename);//open file
+		if (fail_read != 1) {
+			//need to modify(2023.8.4)
+			int success = width_change(cs, width, start_time, end_time, side_mask);//width=1 as default width multiplier
+			//end
 
-		if (success == 1)cout << "Cannot open file." << endl;//file not found or do not have access
-		else if (success == 2)cout << "Cannot save changed chart file." << endl;//invalid output chart name
-		else {
-			cout << "Changed sides: ";
-			if (side_mask & MID_CHANGE) {
-				cout << "middle ";
+			//hold-sub mismatch
+			if (success == 2) {
+				cout << "Cannot save changed chart file." << endl;//hold-sub mismatch
 			}
-			if (side_mask & LEFT_CHANGE) {
-				cout << "left ";
-			}
-			if (side_mask & RIGHT_CHANGE) {
-				cout << "right ";
-			}
-			cout << endl;
-			cwd = cwd + _output;
-			//cout << cwd << endl;
-			if (def_stimestamp && def_etimestamp) {
-				cout << "Changed entire chart." << endl;
-			}
-			else if (def_stimestamp) {
-				cout << "Changed width from start to " << end_time << " bar." << endl;
-			}
-			else if (def_etimestamp) {
-				cout << "Changed width from " << start_time << " bar to end." << endl;
+			//save
+			else if (!cs.to_file(_output)) {
+				cout << "Cannot save changed chart file." << endl;//invalid output chart name
 			}
 			else {
-				cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
-			}
+				cout << "Changed sides: ";
+				if (side_mask & MID_CHANGE) {
+					cout << "middle ";
+				}
+				if (side_mask & LEFT_CHANGE) {
+					cout << "left ";
+				}
+				if (side_mask & RIGHT_CHANGE) {
+					cout << "right ";
+				}
+				cout << endl;
+				cwd = cwd + _output;
+				//cout << cwd << endl;
+				if (def_stimestamp && def_etimestamp) {
+					cout << "Changed entire chart." << endl;
+				}
+				else if (def_stimestamp) {
+					cout << "Changed width from start to " << end_time << " bar." << endl;
+				}
+				else if (def_etimestamp) {
+					cout << "Changed width from " << start_time << " bar to end." << endl;
+				}
+				else {
+					cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
+				}
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-			if (_access(cwd.c_str(), 0) == 0)
+				if (_access(cwd.c_str(), 0) == 0)
 #else
-			if (access(cwd.c_str(), 0) == 0)
+				if (access(cwd.c_str(), 0) == 0)
 #endif
-			{
-				cout << "Changed chart saved as \"" << cwd << "\"" << endl;
-			}
-			else {
-				cout << "Changed chart saved as \"" << _output << "\"" << endl;
+				{
+					cout << "Changed chart saved as \"" << cwd << "\"" << endl;
+				}
+				else {
+					cout << "Changed chart saved as \"" << _output << "\"" << endl;
+				}
 			}
 		}
 	}
-
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	system("pause");
 #endif

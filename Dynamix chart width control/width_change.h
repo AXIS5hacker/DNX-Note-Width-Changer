@@ -28,8 +28,9 @@
 #define LEFT_CHANGE 0x2
 #define RIGHT_CHANGE 0x1
 
+#include "chart_store.h"
 #include<string>
 using std::string;
-int width_change(string fn, double w, string _outf, double st, double ed, int side_mask);
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask);
 #endif
 

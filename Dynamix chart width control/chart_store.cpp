@@ -48,6 +48,12 @@ int chart_store::readfile(string fn) {
 	*  fn:filename
 	*  return:0:success;1:fail
 	*/
+
+	//empty the maps that stores the previous chart
+	m_notes.clear();
+	m_left.clear();
+	m_right.clear();
+
 	string buf;
 	ifstream fin;
 
@@ -59,7 +65,7 @@ int chart_store::readfile(string fn) {
 
 	fin.open(fn);//open file
 	if (fin.fail()) {
-		cout << "Cannot open file, maybe it doesn't exist." << endl;
+		cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
 		return 1;
 	}
 	else {
