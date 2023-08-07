@@ -11,7 +11,7 @@ struct stat st;
 
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.8.10" << endl;
+	cout << "Dynamix Chart Width Changer v0.8.12" << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
@@ -216,9 +216,9 @@ int main(int argc, char* argv[])
 		chart_store cs;//store the chart
 		int fail_read = cs.readfile(filename);//open file
 		if (fail_read != 1) {
-			//need to modify(2023.8.4)
+
+			//this function now only processes chart store class
 			int success = width_change(cs, width, start_time, end_time, side_mask);//width=1 as default width multiplier
-			//end
 
 			//hold-sub mismatch
 			if (success == 2) {
