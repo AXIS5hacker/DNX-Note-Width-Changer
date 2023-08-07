@@ -11,7 +11,7 @@
     <LocalDebuggerCommand>$(OutDir)$(TargetName)_x86$(TargetExt)</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>"C:\Users\AXIS5\Documents\charts\Finixtahv\_map_Finixtahv_G G15 Final.xml" -w 2 -e 74 -s 10 -l </LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"C:\Users\AXIS5\Documents\charts\Finixtahv\_map_Finixtahv_G G15 Final_out.xml" -w 0.4 -e 90 -s 22 -m -r</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(OutDir)$(TargetName)_x64$(TargetExt)</LocalDebuggerCommand>
   </PropertyGroup>
