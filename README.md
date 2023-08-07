@@ -31,7 +31,7 @@ Or build manually:
 
 # Arguments
 
-filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h]
+filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
 
 
 -w width_multiplier     change the width of a chart, width_multiplier is a decimal number
@@ -41,6 +41,14 @@ filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end
 -s start_time(bar)	   specify the start time of the time range you want to change, in the unit of bar (v0.6.x and newer)
 
 -e end_time(bar)	   specify the end time of the time range you want to change, in the unit of bar (v0.6.x and newer)
+
+-m change the middle side.
+
+-l change the left side.
+
+-r change the right side.
+
+*If none of the triggers in "-m, -l, -r" is specified, all sides will be changed.
 
 -?                      help
 
