@@ -42,11 +42,11 @@ filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end
 
 -e end_time(bar)	   specify the end time of the time range you want to change, in the unit of bar (v0.6.x and newer)
 
--m change the middle side.
+-m                   change the middle side. (v0.8.x and newer)
 
--l change the left side.
+-l                   change the left side. (v0.8.x and newer)
 
--r change the right side.
+-r                   change the right side. (v0.8.x and newer)
 
 *If none of the triggers in "-m, -l, -r" is specified, all sides will be changed.
 
