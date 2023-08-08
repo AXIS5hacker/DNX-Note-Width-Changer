@@ -1,20 +1,23 @@
-#pragma once
+#ifndef MAINGUI_H
+#define MAINGUI_H
 
-#include <QtWidgets/QMainWindow>
-#include "ui_mainGUI.h"
+#include <QMainWindow>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class mainGUIClass; };
-QT_END_NAMESPACE
+namespace Ui {
+class MainGUI;
+}
 
-class mainGUI : public QMainWindow
+class MainGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    mainGUI(QWidget *parent = nullptr);
-    ~mainGUI();
-
+    explicit MainGUI(QWidget *parent = nullptr);
+    ~MainGUI();
+private slots:
+    void on_exitButton_clicked();
 private:
-    Ui::mainGUIClass *ui;
+    Ui::MainGUI *ui;
 };
+
+#endif // MAINGUI_H

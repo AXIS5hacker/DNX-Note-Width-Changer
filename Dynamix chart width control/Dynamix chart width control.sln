@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamix chart width control", "Dynamix chart width control.vcxproj", "{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamix chart width control GUI", "..\Dynamix chart width control GUI\Dynamix chart width control GUI.vcxproj", "{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DNX_widthGUI", "..\Dynamix chart width control GUI\DNX_widthGUI.vcxproj", "{80D5CF2C-9E83-34BF-AD5B-910079D9637C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,16 +29,16 @@ Global
 		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Release|x64.Build.0 = Release|x64
 		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Release|x86.ActiveCfg = Release|Win32
 		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Release|x86.Build.0 = Release|Win32
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug Linux|x64.ActiveCfg = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug Linux|x64.Build.0 = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug Linux|x86.ActiveCfg = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug|x64.ActiveCfg = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug|x64.Build.0 = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug|x86.ActiveCfg = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Debug|x86.Build.0 = Debug Linux|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Release|x64.ActiveCfg = Release|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Release|x64.Build.0 = Release|x64
-		{B90B6642-8EFC-41FA-A74E-FC6EE6387B4B}.Release|x86.ActiveCfg = Release|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug Linux|x64.ActiveCfg = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug Linux|x64.Build.0 = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug Linux|x86.ActiveCfg = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug Linux|x86.Build.0 = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug|x64.ActiveCfg = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug|x64.Build.0 = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Debug|x86.ActiveCfg = Debug|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Release|x64.ActiveCfg = Release|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Release|x64.Build.0 = Release|x64
+		{80D5CF2C-9E83-34BF-AD5B-910079D9637C}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

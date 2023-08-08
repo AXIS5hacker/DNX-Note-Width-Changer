@@ -1,28 +1,408 @@
-<UI version="4.0" >
- <class>mainGUIClass</class>
- <widget class="QMainWindow" name="mainGUIClass" >
-  <property name="objectName" >
-   <string notr="true">mainGUIClass</string>
-  </property>
-  <property name="geometry" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainGUI</class>
+ <widget class="QMainWindow" name="MainGUI">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>960</width>
+    <height>600</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>mainGUI</string>
-  </property>  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>960</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dynamix note width changer GUI</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>800</x>
+      <y>100</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>160</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Edits:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>470</y>
+      <width>371</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>SAVE</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>190</y>
+      <width>331</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>100</y>
+      <width>571</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>100</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Input File</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>180</y>
+      <width>481</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Width multiplier</string>
+    </property>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>30</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>31</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>290</y>
+      <width>311</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Time</string>
+    </property>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start time(bar):</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>110</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>End time(bar):</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>50</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>110</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>Set Start Time</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_5">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>Set EndTime</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="exitButton">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>470</y>
+      <width>371</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>134</red>
+          <green>29</green>
+          <blue>31</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>112</red>
+          <green>110</green>
+          <blue>113</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>EXIT</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>290</y>
+      <width>141</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Sides</string>
+    </property>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>79</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Middle</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>79</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Left</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>90</y>
+       <width>79</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Right</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QToolButton" name="toolButton">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>100</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menulanguages">
+    <property name="title">
+     <string>languages</string>
+    </property>
+    <addaction name="actionEnglish_2"/>
+    <addaction name="actionChinese"/>
+   </widget>
+   <addaction name="menulanguages"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionEnglish">
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>中文</string>
+   </property>
+  </action>
+  <action name="actionEnglish_2">
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="actionChinese">
+   <property name="text">
+    <string>中文</string>
+   </property>
+  </action>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
- <resources>
-   <include location="mainGUI.qrc"/>
- </resources>
+ <resources/>
  <connections/>
-</UI>
+</ui>

@@ -1,13 +1,17 @@
-#include "mainGUI.h"
+#include "maingui.h"
+#include "ui_maingui.h"
 
-mainGUI::mainGUI(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::mainGUIClass())
+MainGUI::MainGUI(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainGUI)
 {
     ui->setupUi(this);
 }
+void MainGUI::on_exitButton_clicked(){
+    this->close();
+}
 
-mainGUI::~mainGUI()
+MainGUI::~MainGUI()
 {
     delete ui;
 }
