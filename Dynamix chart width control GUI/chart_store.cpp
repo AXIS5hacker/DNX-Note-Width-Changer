@@ -44,6 +44,18 @@ bool chart_store::parse_comment() {
 	return true;
 }
 
+void chart_store::clear() {
+	m_notes.clear();
+	m_left.clear();
+	m_right.clear();
+	name = "";
+	name_id = "";
+	offset = 0;
+	barpm = 0;
+	ltype = sides::PAD;
+	rtype = sides::PAD;
+}
+
 int chart_store::readfile(string fn) {
 	/** The function that reads a chart.
 	*  fn:filename
@@ -51,9 +63,7 @@ int chart_store::readfile(string fn) {
 	*/
 
 	//empty the maps that stores the previous chart
-	m_notes.clear();
-	m_left.clear();
-	m_right.clear();
+	clear();
 
 	string buf;
 	ifstream fin;
@@ -66,10 +76,10 @@ int chart_store::readfile(string fn) {
 
 	fin.open(fn);//open file
 	if (fin.fail()) {
-        throw std::logic_error("Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist.");
-        //cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
+		throw std::logic_error("Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist.");
+		//cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
 
-        return 1;
+		return 1;
 	}
 	else {
 		//a newer method of parsing the xml file
@@ -82,14 +92,14 @@ int chart_store::readfile(string fn) {
 		//parse xml
 		skip_space();
 		if (!parse_decl()) {
-            throw std::logic_error("Parse declaration error.");
+			throw std::logic_error("Parse declaration error.");
 			//not parsing declaration
 			return 1;
 		}
 		skip_space();
 		while (t_buf.compare(buf_index, 4, "<!--") == 0) {
 			if (!parse_comment()) {
-                throw std::logic_error("Parse comment error.");
+				throw std::logic_error("Parse comment error.");
 				//error parsing comment
 				return 1;
 			}
@@ -103,8 +113,8 @@ int chart_store::readfile(string fn) {
 				parse_elem();
 			}
 			catch (exception& ex) {
-                throw ex;
-                //cout << ex.what() << endl;
+				throw ex;
+				//cout << ex.what() << endl;
 
 				return 1;
 			}

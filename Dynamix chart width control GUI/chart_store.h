@@ -43,6 +43,7 @@ private:
 	double barpm;//Bar per minute
 	sides ltype, rtype;//left type and right type
 	void side_out(const map<int, note>& v, ofstream& of);//output each side
+	void clear();
 
 	//xml parser members
 	string t_buf;//the string buffer
@@ -60,6 +61,7 @@ private:
 	string parse_elem_text();//parsing element text
 	string parse_elem_attr_key();//parsing element attribute name
 	string parse_elem_attr_val();//parsing element attribute value
+
 
 };
 
