@@ -6,7 +6,9 @@
 #include "maingui.h"
 
 #include <QApplication>
-
+#include <QFont>
+#include <QFontDatabase>
+QString customfont;
 string qstr2str_utf8(const QString qstr) {
 	/**
 	 * Author:AXIS5
@@ -31,7 +33,11 @@ QString str2qstr_utf8(const string str) {
 int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);
+	int fid = QFontDatabase::addApplicationFont(":/font/Dynamix.ttf");
+
+	if (fid != -1)customfont = QFontDatabase::applicationFontFamilies(fid).at(0);
 	MainGUI w;
+
 	w.show();
 	return a.exec();
 }

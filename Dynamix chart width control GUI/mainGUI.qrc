@@ -2,4 +2,7 @@
     <qresource prefix="/mainGUI">
         <file>DNX icon.ico</file>
     </qresource>
+    <qresource prefix="/font">
+        <file>Dynamix.ttf</file>
+    </qresource>
 </RCC>

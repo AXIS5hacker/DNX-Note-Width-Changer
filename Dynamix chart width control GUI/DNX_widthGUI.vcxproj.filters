@@ -112,5 +112,8 @@
     <QtTranslation Include="DNX_widthGUI_zh_CN.ts">
       <Filter>Translation Files</Filter>
     </QtTranslation>
+    <QtTranslation Include="DNX_widthGUI_en_en.ts">
+      <Filter>Translation Files</Filter>
+    </QtTranslation>
   </ItemGroup>
 </Project>

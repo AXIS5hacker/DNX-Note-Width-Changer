@@ -241,6 +241,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <QtTranslation Include="DNX_widthGUI_en_en.ts" />
     <QtTranslation Include="DNX_widthGUI_zh_CN.ts">
       <FileType>Document</FileType>
       <BuildAction Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">lupdate_lrelease</BuildAction>
