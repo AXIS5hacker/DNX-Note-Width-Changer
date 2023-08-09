@@ -26,6 +26,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+
 
 set(PROJECT_SOURCES
     chart_store.cpp
@@ -57,5 +59,7 @@ else()
         )
     endif()
 endif()
+
+qt_add_translations(dnx_width_change TS_FILES DNX_widthGUI_en_en.ts DNX_widthGUI_zh_CN.ts)
 
 target_link_libraries(dnx_width_change PRIVATE Qt${QT_VERSION_MAJOR}::Widgets PRIVATE Qt${QT_VERSION_MAJOR}::Core PRIVATE Qt${QT_VERSION_MAJOR}::Gui)
