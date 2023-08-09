@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/mainGUI">
         <file>DNX icon.ico</file>
+        <file>DNX icon.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>Dynamix.ttf</file>

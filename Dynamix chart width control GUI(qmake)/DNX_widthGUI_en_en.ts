@@ -127,32 +127,38 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="50"/>
+        <location filename="maingui.cpp" line="54"/>
         <source>Choose an XML chart file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="51"/>
+        <location filename="maingui.cpp" line="55"/>
         <source>XML Chart files (*.xml);;All files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="144"/>
+        <location filename="maingui.cpp" line="147"/>
+        <source>Start time must be less than end time!</source>
+        <oldsource>Start time must be lesser than end time!</oldsource>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="maingui.cpp" line="152"/>
         <source>Hold-Sub mismatch!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="147"/>
+        <location filename="maingui.cpp" line="156"/>
         <source>Width change applied!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="190"/>
+        <location filename="maingui.cpp" line="199"/>
         <source>Save chart to</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="191"/>
+        <location filename="maingui.cpp" line="200"/>
         <source>XML Chart files (*.xml)</source>
         <translation></translation>
     </message>

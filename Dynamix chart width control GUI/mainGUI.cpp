@@ -24,20 +24,24 @@ MainGUI::MainGUI(QWidget* parent) :
 void MainGUI::translate_cn() {
 	QTranslator cn_trans;
 	cn_trans.load("DNX_widthGUI_zh_CN.qm");
+	QString tmptext = ui->loaded_file->text();
 	if (!qApp->installTranslator(&cn_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
 	}
 	ui->retranslateUi(this);
+	ui->loaded_file->setText(tmptext);
 }
 
 //translate to English
 void MainGUI::translate_en() {
 	QTranslator en_trans;
 	en_trans.load("DNX_widthGUI_en_en.qm");
+	QString tmptext = ui->loaded_file->text();
 	if (!qApp->installTranslator(&en_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
 	}
 	ui->retranslateUi(this);
+	ui->loaded_file->setText(tmptext);
 }
 
 void MainGUI::on_exitButton_clicked() {
@@ -139,9 +143,14 @@ void MainGUI::on_widthApply_clicked()
 	if (ui->endCheck->isChecked()) {
 		end_time = ui->etime->value();
 	}
+	if (start_time >= end_time) {
+		QMessageBox::critical(this, "Error", tr("Start time must be less than end time!"));
+		return;
+	}
 	//apply change
 	if (width_change(cs, multiplier, start_time, end_time, sides) != 0) {
 		QMessageBox::critical(this, "Error", tr("Hold-Sub mismatch!"));
+		return;
 	}
 	else {
 		QMessageBox::information(this, "Done", tr("Width change applied!"));
