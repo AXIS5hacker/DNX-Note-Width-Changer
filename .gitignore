@@ -12,10 +12,14 @@
 /Dynamix chart width control GUI/.vs
 /Dynamix chart width control GUI/x64
 /Dynamix chart width control GUI/out
+/Dynamix chart width control GUI(qmake)/.vs
+/Dynamix chart width control GUI(qmake)/x64
 
 #qt generated files
 moc_*.cpp
 ui_*.h
 qrc_*.cpp
 /Dynamix chart width control GUI/.qmake.stash
+/Dynamix chart width control GUI(qmake)/.qmake.stash
+/Dynamix chart width control GUI(qmake)/msvc_make.bat
 *.aps
