@@ -9,7 +9,7 @@ Created by AXIS5 (a.k.a.AXIS5Hacker).
 
 Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile.
 
-The application is a console application.
+The project contains a graphic application and a command prompt application.
 
 # Installation
 
@@ -29,7 +29,7 @@ Or build manually:
 2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix\ chart\ width\ control/`
 3. `make && sudo make install` installs the binary to `/usr/local/bin` by default
 
-# Arguments
+# Arguments(command prompt)
 
 filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
 
