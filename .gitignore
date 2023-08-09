@@ -11,6 +11,7 @@
 *.user
 /Dynamix chart width control GUI/.vs
 /Dynamix chart width control GUI/x64
+/Dynamix chart width control GUI/out
 
 #qt generated files
 moc_*.cpp
