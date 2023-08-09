@@ -105,7 +105,8 @@
     </message>
     <message>
         <location filename="maingui.ui" line="671"/>
-        <source>Dynamix Note width changer</source>
+        <source>Dynamix Note Width Changer</source>
+        <oldsource>Dynamix Note width changer</oldsource>
         <translation></translation>
     </message>
     <message>

@@ -668,7 +668,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Dynamix Note width changer</string>
+     <string>Dynamix Note Width Changer</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
