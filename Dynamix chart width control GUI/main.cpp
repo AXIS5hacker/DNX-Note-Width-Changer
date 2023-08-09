@@ -2,6 +2,7 @@
   *This project is compiled with QT 6.2.4
   *C++ standard: c++17
   *You need to add argument /Zc:__cplusplus to compile this project using Visual Studio 2019
+  *In Qt Creator, the qmake command needed is "QMAKE_CXXFLAGS += -std:c++17 -Zc:__cplusplus"
   */
 #include "maingui.h"
 
