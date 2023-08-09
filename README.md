@@ -9,7 +9,7 @@ Created by AXIS5 (a.k.a.AXIS5Hacker).
 
 Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile.
 
-The project contains a graphic application and a command prompt application.
+The project contains a graphic application and a console application.
 
 # Installation
 
