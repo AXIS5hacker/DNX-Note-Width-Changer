@@ -204,10 +204,15 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="chart_store.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maingui.cpp" />
+    <ClCompile Include="width_change.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chart_store.h" />
+    <ClInclude Include="defs.h" />
+    <ClInclude Include="resource.h" />
     <QtMoc Include="maingui.h">
     </QtMoc>
   </ItemGroup>
@@ -230,15 +235,23 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DNX_widthGUI_zh_CN.ts" />
+    <QtTranslation Include="DNX_widthGUI_zh_CN.ts">
+      <FileType>Document</FileType>
+      <BuildAction Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">lupdate_lrelease</BuildAction>
+      <BuildAction Condition="'$(Configuration)|$(Platform)'=='Release|x64'">lupdate_lrelease</BuildAction>
+    </QtTranslation>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="maingui.ui">
     </QtUic>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DNX icon.ico" />
     <QtRcc Include="mainGUI.qrc">
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="E:\git\DNX-Note-Width-Changer\Dynamix chart width control GUI\DNX_widthGUI_resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

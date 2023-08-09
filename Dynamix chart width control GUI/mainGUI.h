@@ -2,7 +2,7 @@
 #define MAINGUI_H
 
 #include <QMainWindow>
-
+#include"chart_store.h"
 namespace Ui {
 class MainGUI;
 }
@@ -15,8 +15,24 @@ public:
     explicit MainGUI(QWidget *parent = nullptr);
     ~MainGUI();
 private slots:
-    void on_exitButton_clicked();
+
+    void on_exitButton_clicked();//!<The exit button
+
+    void on_browse_clicked();//!<The browse button
+
+    void on_loadFile_clicked();//!<The load file button
+
+    void change_multiplier(int);
+    void on_startCheck_clicked(bool checked);
+
+    void on_endCheck_clicked(bool checked);
+
+    void on_widthApply_clicked();
+
+    void on_saveChart_clicked();
+
 private:
+    chart_store cs;
     Ui::MainGUI *ui;
 };
 

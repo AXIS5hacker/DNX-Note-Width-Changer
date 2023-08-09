@@ -57,35 +57,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="chart_store.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="maingui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="width_change.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chart_store.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <QtMoc Include="maingui.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    
-    
-    
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DNX_widthGUI_zh_CN.ts">
-      <Filter>Translation Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="maingui.ui">
@@ -93,8 +98,19 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DNX icon.ico">
+      <Filter>Resource Files</Filter>
+    </None>
     <QtRcc Include="mainGUI.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="E:\git\DNX-Note-Width-Changer\Dynamix chart width control GUI\DNX_widthGUI_resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="DNX_widthGUI_zh_CN.ts">
+      <Filter>Translation Files</Filter>
+    </QtTranslation>
   </ItemGroup>
 </Project>

@@ -17,3 +17,4 @@ moc_*.cpp
 ui_*.h
 qrc_*.cpp
 /Dynamix chart width control GUI/.qmake.stash
+*.aps

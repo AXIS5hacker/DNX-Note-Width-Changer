@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="mainGUI">
+    <qresource prefix="/mainGUI">
+        <file>DNX icon.ico</file>
     </qresource>
 </RCC>

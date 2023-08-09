@@ -3,6 +3,7 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+RC_ICONS += "DNX icon.ico"
 #QMAKE_CXXFLAGS += -std:c++17 -Zc:__cplusplus
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -10,10 +11,14 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    chart_store.cpp \
     main.cpp \
-    maingui.cpp
+    maingui.cpp \
+    width_change.cpp
 
 HEADERS += \
+    chart_store.h \
+    defs.h \
     maingui.h
 
 FORMS += \

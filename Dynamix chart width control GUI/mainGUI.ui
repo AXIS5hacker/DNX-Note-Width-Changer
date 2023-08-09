@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>960</width>
-    <height>600</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,20 +19,24 @@
   <property name="minimumSize">
    <size>
     <width>960</width>
-    <height>600</height>
+    <height>650</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>960</width>
-    <height>600</height>
+    <height>650</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Dynamix note width changer GUI</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="mainGUI.qrc">
+    <normaloff>:/mainGUI/DNX icon.ico</normaloff>:/mainGUI/DNX icon.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="loadFile">
     <property name="geometry">
      <rect>
       <x>800</x>
@@ -42,28 +46,31 @@
      </rect>
     </property>
     <property name="text">
-     <string>Load</string>
+     <string>Load Chart</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>160</y>
+      <y>230</y>
       <width>121</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Edits:</string>
+     <string>Edit queue:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="saveChart">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>470</y>
-      <width>371</width>
+      <x>430</x>
+      <y>540</y>
+      <width>231</width>
       <height>41</height>
      </rect>
     </property>
@@ -80,7 +87,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>190</y>
+      <y>260</y>
       <width>331</width>
       <height>251</height>
      </rect>
@@ -89,17 +96,20 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="open_file_name">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>130</x>
       <y>100</y>
-      <width>571</width>
+      <width>581</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -115,11 +125,14 @@
      <string>Input File</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="widthMultiply">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>180</y>
+      <y>250</y>
       <width>481</width>
       <height>80</height>
      </rect>
@@ -128,34 +141,90 @@
      <string>Width multiplier</string>
     </property>
     <widget class="QSlider" name="horizontalSlider">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>60</x>
        <y>30</y>
-       <width>211</width>
+       <width>261</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>500</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksBothSides</enum>
+     </property>
+     <property name="tickInterval">
+      <number>25</number>
+     </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox">
+    <widget class="QDoubleSpinBox" name="widthSpinBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>31</y>
-       <width>151</width>
+       <x>380</x>
+       <y>30</y>
+       <width>91</width>
        <height>21</height>
       </rect>
      </property>
+     <property name="minimum">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>30.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0.01</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>30</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>5.00</string>
+     </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QGroupBox" name="TimeSpecify">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>290</y>
+      <x>590</x>
+      <y>360</y>
       <width>311</width>
       <height>151</height>
      </rect>
@@ -189,27 +258,57 @@
       <string>End time(bar):</string>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+    <widget class="QDoubleSpinBox" name="stime">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>120</x>
        <y>50</y>
-       <width>91</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
+     <property name="decimals">
+      <number>6</number>
+     </property>
+     <property name="minimum">
+      <double>-999.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>9999.989999999999782</double>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+    <widget class="QDoubleSpinBox" name="etime">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>120</x>
        <y>110</y>
-       <width>91</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
+     <property name="decimals">
+      <number>6</number>
+     </property>
+     <property name="minimum">
+      <double>-999.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>9999.989999999999782</double>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_4">
+    <widget class="QCheckBox" name="startCheck">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -225,7 +324,7 @@
       <string>Set Start Time</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_5">
+    <widget class="QCheckBox" name="endCheck">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -245,9 +344,9 @@
    <widget class="QPushButton" name="exitButton">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>470</y>
-      <width>371</width>
+      <x>690</x>
+      <y>540</y>
+      <width>211</width>
       <height>41</height>
      </rect>
     </property>
@@ -297,11 +396,14 @@
      <string>EXIT</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="sideChoose">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>290</y>
+      <y>360</y>
       <width>141</width>
       <height>151</height>
      </rect>
@@ -309,7 +411,7 @@
     <property name="title">
      <string>Sides</string>
     </property>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="checkMiddle">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -321,8 +423,11 @@
      <property name="text">
       <string>Middle</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_2">
+    <widget class="QCheckBox" name="checkLeft">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -334,8 +439,11 @@
      <property name="text">
       <string>Left</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_3">
+    <widget class="QCheckBox" name="checkRight">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -347,19 +455,165 @@
      <property name="text">
       <string>Right</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </widget>
-   <widget class="QToolButton" name="toolButton">
+   <widget class="QToolButton" name="browse">
     <property name="geometry">
      <rect>
-      <x>740</x>
+      <x>720</x>
       <y>100</y>
-      <width>41</width>
+      <width>71</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>...</string>
+     <string>Browse</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="widthApply">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>540</y>
+      <width>331</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>APPLY CHANGE</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="loaded_file">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>150</y>
+      <width>841</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="128">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="128">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>112</red>
+          <green>110</green>
+          <blue>113</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>112</red>
+          <green>110</green>
+          <blue>113</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="128">
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -403,6 +657,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="mainGUI.qrc"/>
+ </resources>
  <connections/>
 </ui>
