@@ -9,13 +9,15 @@ Created by AXIS5 (a.k.a.AXIS5Hacker).
 
 Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile.
 
-The project contains a graphic application and a console application.
+The project contains a graphic application (DNX_widthGUI.exe) and a console application(Dynamix chart width control_x64.exe).
 
 # Installation
 
 ### Windows
 
-Download `Dynamix chart width control_x86.exe` (for i386 users) or `Dynamix chart width control_x64.exe` (for x86_64 users) from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run in command prompt to use it, or build manually with Visual Studio.
+For console application, download `Dynamix chart width control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix chart width control_x86.exe` (for i386 users) or `Dynamix chart width control_x64.exe` (for x86_64 users) in the "console" directory in command prompt to use it, or build manually with Visual Studio.
+
+For GUI application, download `Dynamix chart width control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `DNX_widthGUI.exe` in the "GUI" directory to use it.
 
 ### macOS & Linux
 
@@ -29,7 +31,7 @@ Or build manually:
 2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix\ chart\ width\ control/`
 3. `make && sudo make install` installs the binary to `/usr/local/bin` by default
 
-# Arguments(command prompt)
+# Arguments(for console application)
 
 filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
 
