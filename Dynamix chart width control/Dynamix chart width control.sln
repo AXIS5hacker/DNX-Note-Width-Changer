@@ -7,12 +7,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamix chart width control
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Linux|x64 = Debug Linux|x64
+		Debug Linux|x86 = Debug Linux|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug Linux|x64.ActiveCfg = Debug|x64
+		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug Linux|x64.Build.0 = Debug|x64
+		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug Linux|x86.ActiveCfg = Debug|Win32
+		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug Linux|x86.Build.0 = Debug|Win32
 		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug|x64.ActiveCfg = Debug|x64
 		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug|x64.Build.0 = Debug|x64
 		{FE6ED36D-FC7A-44A9-938D-5A93FF36B0AC}.Debug|x86.ActiveCfg = Debug|Win32
