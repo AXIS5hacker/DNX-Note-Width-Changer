@@ -46,6 +46,8 @@ set(PROJECT_SOURCES
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(dnx_width_change
+    #WIN32 disables the console
+        WIN32
         ${PROJECT_SOURCES}
     )
 else()
@@ -55,6 +57,8 @@ else()
         )
     else()
         add_executable(dnx_width_change
+        #WIN32 disables the console
+            WIN32
             ${PROJECT_SOURCES}
         )
     endif()
