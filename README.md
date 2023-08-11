@@ -1,7 +1,7 @@
 # DNX-Note-Width-Changer
 ![Github stars](https://img.shields.io/github/stars/AXIS5hacker/DNX-Note-Width-Changer?logo=github)
 ![GitHub](https://img.shields.io/github/license/AXIS5hacker/DNX-Note-Width-Changer)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/AXIS5hacker/DNX-Note-Width-Changer?color=violet)](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases/tag/v0.7.9)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/AXIS5hacker/DNX-Note-Width-Changer?color=violet)](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases/tag/v1.0.1)
 
 A tool for changing the note width in a Dynamix Fanmade Chart.
 
