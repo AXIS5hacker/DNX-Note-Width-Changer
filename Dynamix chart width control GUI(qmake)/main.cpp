@@ -2,6 +2,7 @@
   *This project is compiled with QT 6.2.4
   *C++ standard: c++17
   *You need to add argument /Zc:__cplusplus to compile this project using Visual Studio 2019
+  *Use MFC static libraries,and use /MT in running libraries in Visual 2019
   *In Qt Creator, the qmake command needed is "QMAKE_CXXFLAGS += -std:c++17 -Zc:__cplusplus"
   */
 #include "maingui.h"
@@ -17,7 +18,7 @@ string qstr2str_utf8(const QString qstr) {
 	 * input:QString
 	 * output:string(utf8)
 	 */
-	QByteArray cdata = qstr.toUtf8();
+	QByteArray cdata = qstr.toLocal8Bit();
 	return string(cdata);
 }
 
@@ -28,7 +29,7 @@ QString str2qstr_utf8(const string str) {
 	 * input:string(utf8)
 	 * output:QString
 	 */
-	return QString::fromUtf8(str.data());
+	return QString::fromLocal8Bit(str.data());
 }
 
 int main(int argc, char* argv[])
