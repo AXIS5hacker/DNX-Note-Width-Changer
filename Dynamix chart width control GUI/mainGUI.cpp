@@ -11,6 +11,7 @@ MainGUI::MainGUI(QWidget* parent) :
 	ui(new Ui::MainGUI)
 {
 	ui->setupUi(this);
+	translate_en();
 	//connect the slider to the spinbox
 	connect(ui->horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(change_multiplier(int)));
 	connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(change_multiplier(int)));

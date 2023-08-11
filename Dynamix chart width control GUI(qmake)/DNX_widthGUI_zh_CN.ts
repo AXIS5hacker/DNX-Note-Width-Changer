@@ -127,38 +127,38 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="54"/>
+        <location filename="maingui.cpp" line="55"/>
         <source>Choose an XML chart file</source>
         <translation>选择XML谱面</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="55"/>
+        <location filename="maingui.cpp" line="56"/>
         <source>XML Chart files (*.xml);;All files (*.*)</source>
         <translation>XML 谱面文件 (*.xml);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="147"/>
+        <location filename="maingui.cpp" line="148"/>
         <source>Start time must be less than end time!</source>
         <oldsource>Start time must be lesser than end time!</oldsource>
         <translation>开始时间必须小于结束时间!</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="152"/>
+        <location filename="maingui.cpp" line="153"/>
         <source>Hold-Sub mismatch!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="156"/>
+        <location filename="maingui.cpp" line="157"/>
         <source>Width change applied!</source>
         <translation>键宽缩放已应用!</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="199"/>
+        <location filename="maingui.cpp" line="200"/>
         <source>Save chart to</source>
         <translation>保存谱面到</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="200"/>
+        <location filename="maingui.cpp" line="201"/>
         <source>XML Chart files (*.xml)</source>
         <translation>XML谱面文件 (*.xml)</translation>
     </message>
