@@ -36,7 +36,9 @@ public:
 
 	bool to_file(string f);//print to XML
 	int readfile(string fn);//read XML
+	string chart_filename;//filename of the chart
 private:
+
 	string name;//song name
 	string name_id;//mapID
 	double offset;

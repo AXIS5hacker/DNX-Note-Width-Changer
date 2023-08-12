@@ -3,23 +3,23 @@
 ################################################################################
 
 /.vs
-/Dynamix chart width control/.vs/Dynamix chart width control/v16
+/Dynamix_chart_width_control/.vs/Dynamix chart width control/v16
 /*/x86/
 /*/x64/
 /*/Debug/
 /*/Release/
 *.user
-/Dynamix chart width control GUI/.vs
-/Dynamix chart width control GUI/x64
-/Dynamix chart width control GUI/out
-/Dynamix chart width control GUI(qmake)/.vs
-/Dynamix chart width control GUI(qmake)/x64
+/Dynamix_chart_width_control_GUI/.vs
+/Dynamix_chart_width_control_GUI/x64
+/Dynamix_chart_width_control_GUI/out
+/Dynamix_chart_width_control_GUI(qmake)/.vs
+/Dynamix_chart_width_control_GUI(qmake)/x64
 
 #qt generated files
 moc_*.cpp
 ui_*.h
 qrc_*.cpp
-/Dynamix chart width control GUI/.qmake.stash
-/Dynamix chart width control GUI(qmake)/.qmake.stash
-/Dynamix chart width control GUI(qmake)/msvc_make.bat
+/Dynamix_chart_width_control_GUI/.qmake.stash
+/Dynamix_chart_width_control_GUI(qmake)/.qmake.stash
+/Dynamix_chart_width_control_GUI(qmake)/msvc_make.bat
 *.aps

@@ -32,6 +32,8 @@ private slots:
 
 	void on_saveChart_clicked();
 
+	void on_limitCheck_clicked(bool checked);
+
 	void translate_cn();//!<apply Chinese translation
 
 	void translate_en();//!<apply English translation

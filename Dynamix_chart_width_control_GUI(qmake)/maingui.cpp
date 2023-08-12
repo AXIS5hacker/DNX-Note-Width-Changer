@@ -4,6 +4,7 @@
 #include"chart_store.h"
 #include"defs.h"
 #include<QMessageBox>
+#include"../version.h"
 using std::exception;
 extern QString customfont;
 MainGUI::MainGUI(QWidget* parent) :
@@ -31,6 +32,7 @@ void MainGUI::translate_cn() {
 	}
 	ui->retranslateUi(this);
 	ui->loaded_file->setText(tmptext);
+	ui->version->setText(QString(VERSION_H));
 }
 
 //translate to English
@@ -43,6 +45,7 @@ void MainGUI::translate_en() {
 	}
 	ui->retranslateUi(this);
 	ui->loaded_file->setText(tmptext);
+	ui->version->setText(QString(VERSION_H));
 }
 
 void MainGUI::on_exitButton_clicked() {
@@ -119,6 +122,19 @@ void MainGUI::on_endCheck_clicked(bool checked)
 		ui->etime->setEnabled(false);
 	}
 }
+
+void MainGUI::on_limitCheck_clicked(bool checked) {
+	if (checked) {
+		ui->widthSpinBox->setValue(1);
+		ui->widthSpinBox->setMinimum(0.01);
+		ui->widthSpinBox->setMaximum(30);
+	}
+	else {
+		ui->widthSpinBox->setValue(1);
+		ui->widthSpinBox->setMinimum(-999);
+		ui->widthSpinBox->setMaximum(9999);
+	}
+};
 
 void MainGUI::on_widthApply_clicked()
 {
@@ -197,7 +213,9 @@ void MainGUI::on_widthApply_clicked()
 
 void MainGUI::on_saveChart_clicked()
 {
+	//set default output path
+	QString out_filename = str2qstr_utf8(cs.chart_filename.substr(0, cs.chart_filename.length() - 4) + "_out.xml");
 	QString savename = QFileDialog::getSaveFileName(this, tr("Save chart to"),
-		QDir::currentPath(), tr("XML Chart files (*.xml)"));
+		out_filename, tr("XML Chart files (*.xml)"));
 	cs.to_file(qstr2str_utf8(savename));
 }

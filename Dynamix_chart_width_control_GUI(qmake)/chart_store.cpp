@@ -48,6 +48,7 @@ void chart_store::clear() {
 	m_notes.clear();
 	m_left.clear();
 	m_right.clear();
+	chart_filename = "";
 	name = "";
 	name_id = "";
 	offset = 0;
@@ -120,6 +121,7 @@ int chart_store::readfile(string fn) {
 			}
 		}
 		fin.close();
+		chart_filename = fn;//store the filename of a chart
 		return 0;
 
 	}

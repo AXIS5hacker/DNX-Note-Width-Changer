@@ -28,6 +28,13 @@
     <height>650</height>
    </size>
   </property>
+  <property name="palette">
+   <palette>
+    <active/>
+    <inactive/>
+    <disabled/>
+   </palette>
+  </property>
   <property name="windowTitle">
    <string>Dynamix note width changer GUI</string>
   </property>
@@ -134,7 +141,7 @@
       <x>410</x>
       <y>250</y>
       <width>481</width>
-      <height>80</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -146,9 +153,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>30</y>
-       <width>261</width>
+       <x>50</x>
+       <y>60</y>
+       <width>371</width>
        <height>21</height>
       </rect>
      </property>
@@ -157,6 +164,9 @@
      </property>
      <property name="maximum">
       <number>500</number>
+     </property>
+     <property name="value">
+      <number>100</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -174,9 +184,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>60</x>
        <y>30</y>
-       <width>91</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -189,12 +199,15 @@
      <property name="singleStep">
       <double>0.010000000000000</double>
      </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
     </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>30</y>
+       <x>20</x>
+       <y>60</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -206,14 +219,30 @@
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>30</y>
+       <x>430</x>
+       <y>60</y>
        <width>31</width>
        <height>21</height>
       </rect>
      </property>
      <property name="text">
       <string>5.00</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="limitCheck">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>30</y>
+       <width>171</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Limited multiplier</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -631,8 +660,17 @@
        <colorrole role="WindowText">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>25</red>
-          <green>33</green>
+          <red>18</red>
+          <green>21</green>
+          <blue>190</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>18</red>
+          <green>21</green>
           <blue>190</blue>
          </color>
         </brush>
@@ -648,9 +686,27 @@
          </color>
         </brush>
        </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
       </inactive>
       <disabled>
        <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>112</red>
+          <green>110</green>
+          <blue>113</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
           <red>112</red>
@@ -672,6 +728,19 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="version">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>50</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

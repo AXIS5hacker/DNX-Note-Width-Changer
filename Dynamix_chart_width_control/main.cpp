@@ -4,6 +4,7 @@
 */
 #include"width_change.h"
 #include"chart_store.h"
+#include"../version.h"
 using namespace std;
 
 extern bool _isNum(string s);
@@ -11,7 +12,7 @@ struct stat st;
 
 int main(int argc, char* argv[])
 {
-	cout << "Dynamix Chart Width Changer v0.8.12" << endl;
+	cout << "Dynamix Chart Width Changer " << VERSION_H << endl;
 	cout << "Created by AXIS5" << endl;
 	cout << "Special thanks: i0ntempest" << endl << endl << endl;
 	char pbuf[260];
