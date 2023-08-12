@@ -18,8 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: make
-      run: cd "Dynamix chart width control" && make
+      run: cd "Dynamix_chart_width_control" && make
     - uses: actions/upload-artifact@v3
       with:
         name: DNX-Note-Width-Changer-${{ matrix.os }}
-        path: "./Dynamix chart width control/dynamix-chart-width-control*"
+        path: "./Dynamix_chart_width_controll/dynamix-chart-width-control*"
