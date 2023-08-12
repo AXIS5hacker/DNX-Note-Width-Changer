@@ -33,7 +33,7 @@ Or build manually:
 2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix\ chart\ width\ control/`
 3. `make && sudo make install` installs the binary to `/usr/local/bin` by default
 
-On Linux systems, you need to download Qt 6.2.4 first, then install support for Qt applications on Linux machines.
+To build the GUI program on Linux systems, you need to download Qt 6.2.4 first, then install support for Qt applications on Linux machines.
 
 Debian/Ubuntu (apt-get):
 
