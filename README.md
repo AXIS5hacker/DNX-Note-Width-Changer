@@ -9,15 +9,15 @@ Created by AXIS5 (a.k.a.AXIS5Hacker).
 
 Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile.
 
-The project contains a graphic application (DNX_widthGUI.exe) and a console application(Dynamix chart width control_x64.exe).
+The project contains a graphic application (DNX_widthGUI.exe) and a console application(Dynamix_chart_width_control_x64.exe).
 
 # Installation
 
 ### Windows
 
-For console application, download `Dynamix chart width control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_chart_width_control_x86.exe` (for i386 users) or `Dynamix_chart_width_control_x64.exe` (for x86_64 users) in the "console" directory in command prompt to use it, or build manually with Visual Studio.
+For console application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_chart_width_control_x86.exe` (for i386 users) or `Dynamix_chart_width_control_x64.exe` (for x86_64 users) in the "console" directory in command prompt to use it, or build manually with Visual Studio.
 
-For GUI application, download `Dynamix chart width control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `DNX_widthGUI_x64.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6.
+For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `DNX_widthGUI_x64.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6.
 
 If you can't run the programs on your computer, try running `vc_redist.x64.exe` in the "GUI" directory to install a MICROSOFT VISUAL C++ 2019 RUNTIME on your computer to run the program.
 
