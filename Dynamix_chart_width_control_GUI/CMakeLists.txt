@@ -51,10 +51,10 @@ set(PROJECT_SOURCES
     DNX_widthGUI_en_en.ts
     DNX_widthGUI_zh_CN.ts
     main.cpp
-    mainGUI.cpp
-    mainGUI.h
-    mainGUI.ui
-    mainGUI.qrc
+    maingui.cpp
+    maingui.h
+    maingui.ui
+    maingui.qrc
     width_change.cpp
     resources.rc
 )

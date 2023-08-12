@@ -119,7 +119,7 @@ int chart_store::readfile(string fn) {
 				parse_elem();
 			}
 			catch (exception& ex) {
-				throw ex;
+				throw std::logic_error(ex.what());
 				//cout << ex.what() << endl;
 
 				return 1;
