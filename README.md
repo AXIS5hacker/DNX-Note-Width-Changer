@@ -33,6 +33,23 @@ Or build manually:
 2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix\ chart\ width\ control/`
 3. `make && sudo make install` installs the binary to `/usr/local/bin` by default
 
+On Linux systems, you need to download Qt 6.2.4 first, then install support for Qt applications on Linux machines.
+
+Debian/Ubuntu (apt-get):
+
+`sudo apt-get install build-essential libgl1-mesa-dev`
+
+Fedora/RHEL/CentOS (yum):
+
+`sudo yum groupinstall "C Development Tools and Libraries"
+sudo yum install mesa-libGL-devel`
+
+openSUSE (zypper):
+
+`sudo zypper install -t pattern devel_basis`
+
+Then you can proceed with CMake.
+
 # Arguments(for console application)
 
 filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
