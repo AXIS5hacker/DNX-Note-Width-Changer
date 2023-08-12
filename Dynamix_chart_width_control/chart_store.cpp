@@ -73,10 +73,15 @@ int chart_store::readfile(string fn) {
 		stringstream ss;
 		ss << fin.rdbuf();
 		t_buf = ss.str();//t_buf now stores the file content
+		fin.close();
+		if (t_buf == "") {
+			cout << "Empty file." << endl;
+			return 1;
+		}
 		buf_index = 0;//points to the beginning of the file
 
 
-		//parse xml
+//parse xml
 		skip_space();
 		if (!parse_decl()) {
 			//not parsing declaration
@@ -102,7 +107,7 @@ int chart_store::readfile(string fn) {
 				return 1;
 			}
 		}
-		fin.close();
+
 		return 0;
 
 	}
@@ -116,7 +121,7 @@ void chart_store::parse_elem() {
 	buf_index++;// '<'
 	skip_space();
 	const string& tag = parse_elem_name();
-	while (t_buf[buf_index] != '\0') {
+	while (buf_index >= t_buf.length() || t_buf[buf_index] != '\0') {
 		skip_space();
 		if (t_buf[buf_index] == '/') {
 			//empty xml tag:<.../>
@@ -127,6 +132,7 @@ void chart_store::parse_elem() {
 			}
 			else {
 				throw std::logic_error("xml empty element is error");
+				return;
 			}
 		}
 		else if (t_buf[buf_index] == '>') {
@@ -139,6 +145,7 @@ void chart_store::parse_elem() {
 				}
 				else {
 					throw std::logic_error("Read notes error: Syntax Error when reading middle notes");
+					return;
 				}
 			}
 			else if (tag == "CMapNoteAsset") {//head of a note
@@ -149,18 +156,21 @@ void chart_store::parse_elem() {
 				else {
 					throw std::logic_error("Read notes error: <CMapNoteAsset> note asset error, triggered at"
 						+ __LINE__ + (string)"in" + __FILE__);
+					return;
 				}
 			}
 			else if (tag == "m_notesLeft") {//left notes
 				if (modes == 0)modes = 2;
 				else {
 					throw std::logic_error("Read notes error: Syntax Error when reading left notes");
+					return;
 				}
 			}
 			else if (tag == "m_notesRight") {//right notes
 				if (modes == 0)modes = 3;
 				else {
 					throw std::logic_error("Read notes error: Syntax Error when reading right notes");
+					return;
 				}
 			}
 			//read text
@@ -191,6 +201,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read side error: Invalid Left Side Type");
+						return;
 					}
 				}
 				else if (tag == "m_rightRegion") {//read right
@@ -205,6 +216,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read side error: Invalid Right Side Type");
+						return;
 					}
 				}
 				else if (tag == "m_mapID") {//read MapID
@@ -217,6 +229,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+						return;
 					}
 					extr.clear();
 				}
@@ -239,9 +252,11 @@ void chart_store::parse_elem() {
 					else {
 						if (tempnote != NULL) {
 							throw std::logic_error("Read notes error: Invalid note type at note #" + tempnote->id);
+							return;
 						}
 						else {
 							throw std::logic_error("Read notes error: Invalid note type at undefined note");
+							return;
 						}
 					}
 				}
@@ -253,6 +268,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+						return;
 					}
 				}
 				else if (tag == "m_position") {//note position
@@ -263,6 +279,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+						return;
 					}
 				}
 				else if (tag == "m_width") {//note width
@@ -273,6 +290,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+						return;
 					}
 				}
 				else if (tag == "m_subId") {//sub id of a hold,-1 for non-hold notes
@@ -283,6 +301,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+						return;
 					}
 				}
 			}
@@ -296,6 +315,7 @@ void chart_store::parse_elem() {
 				size_t pos = t_buf.find(end_tag, buf_index);
 				if (pos == t_buf.npos) {
 					throw std::logic_error("xml element " + tag + " end tag not found.");
+					return;
 				}
 				buf_index = pos + end_tag.size();
 
@@ -307,6 +327,7 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Duplicated stop tags of reading a side");
+						return;
 					}
 				}
 				else if (tag == "CMapNoteAsset") {//end of a note
@@ -334,18 +355,21 @@ void chart_store::parse_elem() {
 					}
 					else {
 						throw std::logic_error("Read notes error: Syntax error when stop reading a note");
+						return;
 					}
 				}
 				else if (tag == "m_notesLeft") {//left notes end
 					if (modes == 2)modes = 0;
 					else {
 						throw std::logic_error("Read notes error: Syntax error when stop reading left notes");
+						return;
 					}
 				}
 				else if (tag == "m_notesRight") {//right notes end
 					if (modes == 3)modes = 0;
 					else {
 						throw std::logic_error("Read notes error: Syntax error when stop reading right notes");
+						return;
 					}
 				}
 
@@ -356,6 +380,7 @@ void chart_store::parse_elem() {
 				//xml comment
 				if (!parse_comment()) {
 					throw std::logic_error("error parsing comment");
+					return;
 				}
 			}
 			else {
@@ -369,6 +394,7 @@ void chart_store::parse_elem() {
 			skip_space();
 			if (t_buf[buf_index] != '=') {
 				throw std::logic_error("xml attribute error:" + key);
+				return;
 			}
 			buf_index++;//'='
 			skip_space();
@@ -377,6 +403,7 @@ void chart_store::parse_elem() {
 			}
 			catch (exception& ex) {
 				throw std::logic_error(ex.what());
+				return;
 			}
 		}
 	}
@@ -403,6 +430,11 @@ string chart_store::parse_elem_text() {
 	int pos = buf_index;
 	while (t_buf[buf_index] != '<') {
 		buf_index++;
+		//missing <
+		if (buf_index >= t_buf.length()) {
+			throw std::logic_error("Tag end not found.");
+			return "";
+		}
 	}
 	return t_buf.substr(pos, buf_index - pos);
 }
@@ -425,12 +457,18 @@ string chart_store::parse_elem_attr_val() {
 	//parsing the value of an attribute
 	if (t_buf[buf_index] != '\"') {
 		throw std::logic_error("attribute value missing \"\"");
+		return "";
 	}
 	buf_index++;//'"'
 	int pos = buf_index;
 	while (t_buf[buf_index] != '\"') {
 		//read value
 		buf_index++;
+		//missing the right quotation mark
+		if (buf_index >= t_buf.length()) {
+			throw std::logic_error("attribute value syntax error");
+			return "";
+		}
 	}
 	buf_index++;//'"'
 	return t_buf.substr(pos, buf_index - pos - 1);

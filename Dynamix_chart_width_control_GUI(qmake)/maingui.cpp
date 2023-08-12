@@ -25,7 +25,7 @@ MainGUI::MainGUI(QWidget* parent) :
 //translate to Chinese
 void MainGUI::translate_cn() {
 	QTranslator cn_trans;
-	cn_trans.load("DNX_widthGUI_zh_CN.qm");
+	cn_trans.load(":/translations/DNX_widthGUI_zh_CN.qm");
 	QString tmptext = ui->loaded_file->text();
 	if (!qApp->installTranslator(&cn_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
@@ -38,7 +38,7 @@ void MainGUI::translate_cn() {
 //translate to English
 void MainGUI::translate_en() {
 	QTranslator en_trans;
-	en_trans.load("DNX_widthGUI_en_en.qm");
+	en_trans.load(":/translations/DNX_widthGUI_en_en.qm");
 	QString tmptext = ui->loaded_file->text();
 	if (!qApp->installTranslator(&en_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
@@ -63,6 +63,19 @@ void MainGUI::on_browse_clicked() {
 //The load file button
 void MainGUI::on_loadFile_clicked() {
 	ui->listWidget->clear();
+	if (ui->open_file_name->text() == "") {
+		ui->loaded_file->setText("");
+		//no file loaded or load error, lock all objects
+		ui->TimeSpecify->setEnabled(false);
+		ui->saveChart->setEnabled(false);
+		ui->widthApply->setEnabled(false);
+		ui->sideChoose->setEnabled(false);
+		ui->horizontalSlider->setEnabled(false);
+		ui->widthSpinBox->setEnabled(false);
+		ui->widthMultiply->setEnabled(false);
+		QMessageBox::critical(this, "Error", "Empty filename.");
+		return;
+	}
 	try {
 		cs.readfile(qstr2str_utf8(ui->open_file_name->text()));
 		ui->loaded_file->setText(QString("Current Chart File: ") + ui->open_file_name->text());
@@ -77,7 +90,7 @@ void MainGUI::on_loadFile_clicked() {
 		ui->horizontalSlider->setEnabled(false);
 		ui->widthSpinBox->setEnabled(false);
 		ui->widthMultiply->setEnabled(false);
-		QMessageBox::critical(this, "Error", tr(ex.what()));
+		QMessageBox::critical(this, "Error", ex.what());
 		return;
 	}
 

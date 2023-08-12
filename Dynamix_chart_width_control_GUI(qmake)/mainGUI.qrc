@@ -6,4 +6,8 @@
     <qresource prefix="/font">
         <file>Dynamix.ttf</file>
     </qresource>
+    <qresource prefix="/translations">
+        <file>DNX_widthGUI_en_en.qm</file>
+        <file>DNX_widthGUI_zh_CN.qm</file>
+    </qresource>
 </RCC>
