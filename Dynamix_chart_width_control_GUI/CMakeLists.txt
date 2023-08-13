@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.5)
 
-project(dnx_width_change LANGUAGES CXX)
+project(Dynamix_note_width_changer_GUI LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -30,6 +30,9 @@ find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 
 #set static compile flags in MSVC
 if (MSVC)
+    #static MFC
+    set(CMAKE_MFC_FLAG 1)
+    #compile settings: /MT
     set(CompilerFlags
         CMAKE_CXX_FLAGS
         CMAKE_CXX_FLAGS_DEBUG
@@ -60,18 +63,18 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(dnx_width_change
+    qt_add_executable(Dynamix_note_width_changer_GUI
     #WIN32 disables the console
         WIN32
         ${PROJECT_SOURCES}
     )
 else()
     if(ANDROID)
-        add_library(dnx_width_change SHARED
+        add_library(Dynamix_note_width_changer_GUI SHARED
             ${PROJECT_SOURCES}
         )
     else()
-        add_executable(dnx_width_change
+        add_executable(Dynamix_note_width_changer_GUI
         #WIN32 disables the console
             WIN32
             ${PROJECT_SOURCES}
@@ -79,6 +82,6 @@ else()
     endif()
 endif()
 
-qt_add_translations(dnx_width_change TS_FILES DNX_widthGUI_en_en.ts DNX_widthGUI_zh_CN.ts)
+qt_add_translations(Dynamix_note_width_changer_GUI TS_FILES DNX_widthGUI_en_en.ts DNX_widthGUI_zh_CN.ts)
 
-target_link_libraries(dnx_width_change PRIVATE Qt${QT_VERSION_MAJOR}::Widgets PRIVATE Qt${QT_VERSION_MAJOR}::Core PRIVATE Qt${QT_VERSION_MAJOR}::Gui)
+target_link_libraries(Dynamix_note_width_changer_GUI PRIVATE Qt${QT_VERSION_MAJOR}::Widgets PRIVATE Qt${QT_VERSION_MAJOR}::Core PRIVATE Qt${QT_VERSION_MAJOR}::Gui)

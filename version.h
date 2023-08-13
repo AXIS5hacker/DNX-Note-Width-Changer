@@ -1,4 +1,8 @@
 ﻿#ifndef VERSION_H
-#define VERSION_H "v1.0.20"
+/**
+* The header that specifies the program version.
+*
+* */
+#define VERSION_H "v1.0.21"
 
 #endif
