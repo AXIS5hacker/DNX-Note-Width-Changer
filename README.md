@@ -43,8 +43,10 @@ Debian/Ubuntu (apt-get):
 
 Fedora/RHEL/CentOS (yum):
 
-`sudo yum groupinstall "C Development Tools and Libraries"
-sudo yum install mesa-libGL-devel`
+```
+sudo yum groupinstall "C Development Tools and Libraries"
+sudo yum install mesa-libGL-devel
+```
 
 openSUSE (zypper):
 
