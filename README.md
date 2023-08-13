@@ -9,7 +9,7 @@ Created by AXIS5 (a.k.a.AXIS5Hacker).
 
 Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile.
 
-The project contains a graphic application (DNX_widthGUI.exe) and a console application(Dynamix_chart_width_control_x64.exe).
+The project contains a graphic application (Dynamix_note_width_changer_GUI.exe on Windows) and a console application(Dynamix_chart_width_control_x64.exe on Windows).
 
 # Installation
 
@@ -17,11 +17,11 @@ The project contains a graphic application (DNX_widthGUI.exe) and a console appl
 
 For console application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_chart_width_control_x86.exe` (for i386 users) or `Dynamix_chart_width_control_x64.exe` (for x86_64 users) in the "console" directory in command prompt to use it, or build manually with Visual Studio.
 
-For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `DNX_widthGUI_x64.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6.
+For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_note_width_changer_GUI.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6.
 
 If you can't run the programs on your computer, try running `vc_redist.x64.exe` in the "GUI" directory to install a MICROSOFT VISUAL C++ 2019 RUNTIME on your computer to run the program.
 
-### macOS & Linux
+### macOS & Linux (for the console application)
 
 Install using [MacPorts](https://www.macports.org): `sudo port install dynamix-chart-width-control`
 
@@ -32,6 +32,8 @@ Or build manually:
 1. Download the tarball from release, or clone the project
 2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix\ chart\ width\ control/`
 3. `make && sudo make install` installs the binary to `/usr/local/bin` by default
+
+### Building the GUI application on Linux
 
 To build the GUI program on Linux systems, you need to download Qt 6.2.4 first, then install support for Qt applications on Linux machines.
 
