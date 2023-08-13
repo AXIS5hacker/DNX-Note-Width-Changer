@@ -56,7 +56,7 @@ Then you can proceed with CMake:
 
 1. Clone the project
 2. Using terminal,change to the directory where you clone the project, then `cd Dynamix_chart_width_control_GUI`
-3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program in, and you can customize it.
+3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it.
 4. `cmake --build ./exampleBuildDirectory`, and you will get the program.
 
 # Arguments(for console application)
