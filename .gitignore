@@ -14,6 +14,7 @@
 /Dynamix_chart_width_control_GUI/out
 /Dynamix_chart_width_control_GUI(qmake)/.vs
 /Dynamix_chart_width_control_GUI(qmake)/x64
+/out
 
 #qt generated files
 moc_*.cpp
