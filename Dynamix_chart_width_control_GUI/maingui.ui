@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
+    <width>1030</width>
     <height>650</height>
    </rect>
   </property>
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>960</width>
+    <width>1030</width>
     <height>650</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>960</width>
+    <width>1130</width>
     <height>650</height>
    </size>
   </property>
@@ -46,7 +46,7 @@
    <widget class="QPushButton" name="loadFile">
     <property name="geometry">
      <rect>
-      <x>800</x>
+      <x>840</x>
       <y>100</y>
       <width>91</width>
       <height>31</height>
@@ -75,9 +75,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>400</x>
       <y>540</y>
-      <width>231</width>
+      <width>301</width>
       <height>41</height>
      </rect>
     </property>
@@ -106,7 +106,7 @@
    <widget class="QLineEdit" name="open_file_name">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>170</x>
       <y>100</y>
       <width>581</width>
       <height>31</height>
@@ -122,7 +122,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>90</x>
       <y>100</y>
       <width>91</width>
       <height>31</height>
@@ -138,9 +138,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>400</x>
       <y>250</y>
-      <width>481</width>
+      <width>581</width>
       <height>101</height>
      </rect>
     </property>
@@ -155,7 +155,7 @@
       <rect>
        <x>50</x>
        <y>60</y>
-       <width>371</width>
+       <width>471</width>
        <height>21</height>
       </rect>
      </property>
@@ -219,7 +219,7 @@
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>530</x>
        <y>60</y>
        <width>31</width>
        <height>21</height>
@@ -232,7 +232,7 @@
     <widget class="QCheckBox" name="limitCheck">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>300</x>
        <y>30</y>
        <width>171</width>
        <height>20</height>
@@ -252,9 +252,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>720</x>
       <y>360</y>
-      <width>311</width>
+      <width>261</width>
       <height>151</height>
      </rect>
     </property>
@@ -373,9 +373,9 @@
    <widget class="QPushButton" name="exitButton">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>720</x>
       <y>540</y>
-      <width>211</width>
+      <width>261</width>
       <height>41</height>
      </rect>
     </property>
@@ -431,9 +431,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>580</x>
       <y>360</y>
-      <width>141</width>
+      <width>121</width>
       <height>151</height>
      </rect>
     </property>
@@ -492,7 +492,7 @@
    <widget class="QToolButton" name="browse">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>760</x>
       <y>100</y>
       <width>71</width>
       <height>31</height>
@@ -526,7 +526,7 @@
    <widget class="QLabel" name="loaded_file">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>90</x>
       <y>150</y>
       <width>841</width>
       <height>61</height>
@@ -648,7 +648,7 @@
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>260</x>
       <y>30</y>
       <width>531</width>
       <height>41</height>
@@ -733,7 +733,7 @@
    <widget class="QLabel" name="version">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>840</x>
       <y>50</y>
       <width>71</width>
       <height>21</height>
@@ -743,13 +743,71 @@
      <string/>
     </property>
    </widget>
+   <widget class="QGroupBox" name="modeSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>360</y>
+      <width>161</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Mode Select</string>
+    </property>
+    <widget class="QRadioButton" name="active_multiplier">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Width multiplier</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="active_randomizer1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Width randomizer 1</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="active_randomizer2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Width randomizer 2</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>960</width>
+     <width>1030</width>
      <height>22</height>
     </rect>
    </property>

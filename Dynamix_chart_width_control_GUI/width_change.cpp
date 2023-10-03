@@ -17,13 +17,14 @@ bool _isNum(string s) {//detect if the string is a number
     return true;
 }
 
-int width_change(chart_store& cs, double w, double st, double ed, int side_mask) {
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask,int random) {
     /* The function that changes the width of a chart.
     *  cs:chart store object, w:width multiplier, st:start time, ed:end time
     *  side_mask: specify the sides to change
+    *  random: random mode settings: 0 = no random, 1 = random mode 1(multiply), 2 = random mode 2(overwrite)
     */
     string buf;
-
+    srand(time(NULL));
     int temp_sub = 0;//temporarily saves the id of a sub note
 
     double nw = 0, np = 0, t = 0;
@@ -40,7 +41,17 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask)
                 nw = it->second.width;//read width
                 np = it->second.position;//read position
                 np += nw * 0.5;
-                nw *= w;
+                //randomized width mode 1
+                if (random == 1) {
+                    w = (rand() % 501 + 1) / 100.0;
+                }
+                //randomized width mode 2
+                if (random == 2) {
+                    nw = (rand() % 601 + 1) / 100.0;
+                }
+                else {
+                    nw *= w;
+                }
                 np -= nw * 0.5;//multiply
                 it->second.width = nw;
                 it->second.position = np;
@@ -51,7 +62,17 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask)
                 nw = it->second.width;//read width
                 np = it->second.position;//read position
                 np += nw * 0.5;
-                nw *= w;
+                //randomized width mode 1
+                if (random == 1) {
+                    w = (rand() % 501 + 1) / 100.0;
+                }
+                //randomized width mode 2
+                if (random == 2) {
+                    nw = (rand() % 601 + 1) / 100.0;
+                }
+                else {
+                    nw *= w;
+                }
                 np -= nw * 0.5;//multiply
                 //writeback
                 it->second.width = nw;
@@ -81,7 +102,17 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask)
                 nw = it->second.width;//read width
                 np = it->second.position;//read position
                 np += nw * 0.5;
-                nw *= w;
+                //randomized width mode 1
+                if (random == 1) {
+                    w = (rand() % 501 + 1) / 100.0;
+                }
+                //randomized width mode 2
+                if (random == 2) {
+                    nw = (rand() % 601 + 1) / 100.0;
+                }
+                else {
+                    nw *= w;
+                }
                 np -= nw * 0.5;//multiply
                 //writeback
                 it->second.width = nw;
@@ -92,7 +123,17 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask)
                 nw = it->second.width;//read width
                 np = it->second.position;//read position
                 np += nw * 0.5;
-                nw *= w;
+                //randomized width mode 1
+                if (random == 1) {
+                    w = (rand() % 501 + 1) / 100.0;
+                }
+                //randomized width mode 2
+                if (random == 2) {
+                    nw = (rand() % 601 + 1) / 100.0;
+                }
+                else {
+                    nw *= w;
+                }
                 np -= nw * 0.5;//multiply
                 //writeback
                 it->second.width = nw;
@@ -122,7 +163,17 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask)
                 nw = it->second.width;
                 np = it->second.position;
                 np += nw * 0.5;
-                nw *= w;
+                //randomized width mode 1
+                if (random == 1) {
+                    w = (rand() % 501 + 1) / 100.0;
+                }
+                //randomized width mode 2
+                if (random == 2) {
+                    nw = (rand() % 601 + 1) / 100.0;
+                }
+                else {
+                    nw *= w;
+                }
                 np -= nw * 0.5;
                 it->second.width = nw;
                 it->second.position = np;
@@ -132,7 +183,17 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask)
                 nw = it->second.width;
                 np = it->second.position;
                 np += nw * 0.5;
-                nw *= w;
+                //randomized width mode 1
+                if (random == 1) {
+                    w = (rand() % 501 + 1) / 100.0;
+                }
+                //randomized width mode 2
+                if (random == 2) {
+                    nw = (rand() % 601 + 1) / 100.0;
+                }
+                else {
+                    nw *= w;
+                }
                 np -= nw * 0.5;
                 it->second.width = nw;
                 it->second.position = np;

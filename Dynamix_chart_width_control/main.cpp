@@ -48,6 +48,9 @@ int main(int argc, char* argv[])
 	bool next_stimestamp = false;//if specifying start time
 	bool next_etimestamp = false;//if specifying end time
 
+	int random_trigger = 0;
+	//if activated random width mode,0:not activated,1:random mode 1,2:random mode 2
+	
 	//side triggers
 	bool all_change = true;//if not specifying sides for changing
 	int side_mask = 0x7;
@@ -143,7 +146,13 @@ int main(int argc, char* argv[])
 			}
 			side_mask = side_mask | MID_CHANGE;
 		}
-		else if (argc == 1 || argc > 13) {//not specified arguments or too many arguments
+		else if (arglist[i] == "-rnd1") {
+			random_trigger = 1;
+		}
+		else if (arglist[i] == "-rnd2") {
+			random_trigger = 2;
+		}
+		else if (argc == 1 || argc > 14) {//not specified arguments or too many arguments
 			false_usage = true;
 		}
 		else if (i > 1) {//wrong argument detected
@@ -152,7 +161,7 @@ int main(int argc, char* argv[])
 	}
 	if (help_only) {
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
+		cout << "filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
@@ -161,6 +170,8 @@ int main(int argc, char* argv[])
 		cout << "-l\tchange the left side." << endl;
 		cout << "-r\tchange the right side." << endl;
 		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed." << endl;
+		cout << "-rnd1\tchange the note width randomly, using randome mode 1(will ignore the \"-w\" argument)" << endl;
+		cout << "-rnd2\tchange the note width randomly, using randome mode 2(will ignore the \"-w\" argument)" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -170,7 +181,7 @@ int main(int argc, char* argv[])
 	else if (false_usage) {
 		cout << "invalid arguments" << endl;
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
+		cout << "filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
@@ -179,6 +190,8 @@ int main(int argc, char* argv[])
 		cout << "-l\tchange the left side." << endl;
 		cout << "-r\tchange the right side." << endl;
 		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed." << endl;
+		cout << "-rnd1\tchange the note width randomly, using randome mode 1(will ignore the \"-w\" argument)" << endl;
+		cout << "-rnd2\tchange the note width randomly, using randome mode 2(will ignore the \"-w\" argument)" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -219,7 +232,7 @@ int main(int argc, char* argv[])
 		if (fail_read != 1) {
 
 			//this function now only processes chart store class
-			int success = width_change(cs, width, start_time, end_time, side_mask);//width=1 as default width multiplier
+			int success = width_change(cs, width, start_time, end_time, side_mask,random_trigger);//width=1 as default width multiplier
 
 			//hold-sub mismatch
 			if (success == 2) {
@@ -243,6 +256,12 @@ int main(int argc, char* argv[])
 				cout << endl;
 				cwd = cwd + _output;
 				//cout << cwd << endl;
+				if (random_trigger==1) {
+					cout << "Note width has been randomized, using randomize mode 1" << endl;
+				}
+				else if (random_trigger == 2) {
+					cout << "Note width has been randomized, using randomize mode 2" << endl;
+				}
 				if (def_stimestamp && def_etimestamp) {
 					cout << "Changed entire chart." << endl;
 				}
