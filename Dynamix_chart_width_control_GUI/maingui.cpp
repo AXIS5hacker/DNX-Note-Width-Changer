@@ -19,6 +19,10 @@ MainGUI::MainGUI(QWidget* parent) :
 	//Translations in menu
 	connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(translate_cn()));
 	connect(ui->actionEnglish_2, SIGNAL(triggered()), this, SLOT(translate_en()));
+	//connect the radio buttons to the width multiplier sections
+	connect(ui->active_multiplier, SIGNAL(clicked()), this, SLOT(activate_multiplier()));
+	connect(ui->active_randomizer1, SIGNAL(clicked()), this, SLOT(activate_multiplier()));
+	connect(ui->active_randomizer2, SIGNAL(clicked()), this, SLOT(activate_multiplier()));
 	ui->label_7->setFont(QFont(customfont, 18, 300));
 }
 
@@ -73,6 +77,7 @@ void MainGUI::on_loadFile_clicked() {
 		ui->horizontalSlider->setEnabled(false);
 		ui->widthSpinBox->setEnabled(false);
 		ui->widthMultiply->setEnabled(false);
+		ui->modeSelect->setEnabled(false);
 		QMessageBox::critical(this, "Error", "Empty filename.");
 		return;
 	}
@@ -90,6 +95,7 @@ void MainGUI::on_loadFile_clicked() {
 		ui->horizontalSlider->setEnabled(false);
 		ui->widthSpinBox->setEnabled(false);
 		ui->widthMultiply->setEnabled(false);
+		ui->modeSelect->setEnabled(false);
 		QMessageBox::critical(this, "Error", ex.what());
 		return;
 	}
@@ -98,10 +104,35 @@ void MainGUI::on_loadFile_clicked() {
 	ui->saveChart->setEnabled(true);
 	ui->widthApply->setEnabled(true);
 	ui->sideChoose->setEnabled(true);
-	ui->widthMultiply->setEnabled(true);
-	ui->horizontalSlider->setEnabled(true);
-	ui->widthSpinBox->setEnabled(true);
+
+	ui->modeSelect->setEnabled(true);
+
+	//check if random mode or not
+	if (ui->active_multiplier->isChecked()) {
+		ui->widthMultiply->setEnabled(true);
+		ui->horizontalSlider->setEnabled(true);
+		ui->widthSpinBox->setEnabled(true);
+	}
+	else {
+		ui->widthMultiply->setEnabled(false);
+		ui->horizontalSlider->setEnabled(false);
+		ui->widthSpinBox->setEnabled(false);
+	}
 	//ui->loaded_file->adjustSize();
+}
+
+//check if width multiplier mode
+void MainGUI::activate_multiplier(){
+	if (ui->active_multiplier->isChecked()) {
+		ui->widthMultiply->setEnabled(true);
+		ui->horizontalSlider->setEnabled(true);
+		ui->widthSpinBox->setEnabled(true);
+	}
+	else {
+		ui->widthMultiply->setEnabled(false);
+		ui->horizontalSlider->setEnabled(false);
+		ui->widthSpinBox->setEnabled(false);
+	}
 }
 
 //slide bar: width change
@@ -156,6 +187,19 @@ void MainGUI::on_widthApply_clicked()
 	double multiplier = ui->widthSpinBox->value();
 	//get sides
 	int sides = 0;
+	//get random mode
+	int random_mode = 0;
+	//judge change mode
+	if (ui->active_multiplier->isChecked()) {
+		random_mode = 0;//width multiplier mode
+	}
+	else if (ui->active_randomizer1->isChecked()) {
+		random_mode = 1;
+	}
+	else if (ui->active_randomizer2->isChecked()) {
+		random_mode = 2;
+	}
+	//judge checked sides
 	if (ui->checkMiddle->isChecked()) {
 		sides = sides | MID_CHANGE;
 	}
@@ -178,7 +222,7 @@ void MainGUI::on_widthApply_clicked()
 		return;
 	}
 	//apply change
-	if (width_change(cs, multiplier, start_time, end_time, sides) != 0) {
+	if (width_change(cs, multiplier, start_time, end_time, sides,random_mode) != 0) {
 		QMessageBox::critical(this, "Error", tr("Hold-Sub mismatch!"));
 		return;
 	}
@@ -187,8 +231,18 @@ void MainGUI::on_widthApply_clicked()
 	}
 	//append the edit queue
 	QString logtext = "";
-	logtext += "width ";
-	logtext = logtext + QString::number(multiplier * 100) + "%,";
+	//width change mode
+	if (random_mode == 0) {
+		logtext += "width ";
+		logtext = logtext + QString::number(multiplier * 100) + "%,";
+	}
+	else if (random_mode == 1) {
+		logtext += "randomized width mode 1,";
+	}
+	else if (random_mode == 2) {
+		logtext += "randomized width mode 2,";
+	}
+	//sides
 	logtext = logtext + " sides: ";
 	if (sides & MID_CHANGE) {
 		logtext += "middle ";
@@ -200,6 +254,7 @@ void MainGUI::on_widthApply_clicked()
 		logtext += "right ";
 	}
 	logtext += ", ";
+	//time
 	if (ui->startCheck->isChecked() || ui->endCheck->isChecked()) {
 		logtext += "From ";
 		if (ui->startCheck->isChecked()) {
@@ -221,6 +276,7 @@ void MainGUI::on_widthApply_clicked()
 	else {
 		logtext += "Changed Entire Chart";
 	}
+	//append the list
 	ui->listWidget->addItem(logtext);
 }
 

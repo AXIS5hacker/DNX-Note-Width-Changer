@@ -31,6 +31,6 @@
 #include "chart_store.h"
 #include<string>
 using std::string;
-int width_change(chart_store& cs, double w, double st, double ed, int side_mask);
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask, int random);
 #endif
 
