@@ -170,8 +170,8 @@ int main(int argc, char* argv[])
 		cout << "-l\tchange the left side." << endl;
 		cout << "-r\tchange the right side." << endl;
 		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed." << endl;
-		cout << "-rnd1\tchange the note width randomly, using randome mode 1(will ignore the \"-w\" argument)" << endl;
-		cout << "-rnd2\tchange the note width randomly, using randome mode 2(will ignore the \"-w\" argument)" << endl;
+		cout << "-rnd1\tchange the note width randomly, using random mode 1(will ignore the \"-w\" argument)" << endl;
+		cout << "-rnd2\tchange the note width randomly, using random mode 2(will ignore the \"-w\" argument)" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
@@ -190,8 +190,8 @@ int main(int argc, char* argv[])
 		cout << "-l\tchange the left side." << endl;
 		cout << "-r\tchange the right side." << endl;
 		cout << "*If none of the triggers in \"-m, -l, -r\" is specified, all sides will be changed." << endl;
-		cout << "-rnd1\tchange the note width randomly, using randome mode 1(will ignore the \"-w\" argument)" << endl;
-		cout << "-rnd2\tchange the note width randomly, using randome mode 2(will ignore the \"-w\" argument)" << endl;
+		cout << "-rnd1\tchange the note width randomly, using random mode 1(will ignore the \"-w\" argument)" << endl;
+		cout << "-rnd2\tchange the note width randomly, using random mode 2(will ignore the \"-w\" argument)" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
 	}
