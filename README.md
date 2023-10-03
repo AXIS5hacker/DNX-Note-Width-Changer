@@ -63,10 +63,10 @@ Then you can proceed with CMake:
 
 # Arguments(for console application)
 
-filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
+filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
 
 
--w width_multiplier     change the width of a chart, width_multiplier is a decimal number
+-w width_multiplier	   change the width of a chart, width_multiplier is a decimal number
 
 -o output_filename     specify the filename of the changed chart
 
@@ -82,6 +82,18 @@ filename [-w width_multiplier] [-o output_filename] [-s start_time(bar)] [-e end
 
 *If none of the triggers in "-m, -l, -r" is specified, all sides will be changed.
 
+-rnd1                change the width randomly, using mode 1(will ignore the "-w" argument)
+
+-rnd2                change the width randomly, using mode 2(will ignore the "-w" argument)
+
 -?                      help
 
 -h                      help, same as -?
+
+# About the random width modes
+
+The program is now integrated with my width randomizer, and the randomizer has 2 modes.
+
+Mode 1 is random width multiplier, that is, multiplying the note width by a random value.
+
+Mode 2 is random width changer, that is, changing the note width to a random value.
