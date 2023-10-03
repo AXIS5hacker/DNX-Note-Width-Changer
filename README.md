@@ -82,9 +82,9 @@ filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(b
 
 *If none of the triggers in "-m, -l, -r" is specified, all sides will be changed.
 
--rnd1                change the width randomly, using mode 1(will ignore the "-w" argument)
+-rnd1                change the width randomly, using mode 1(will ignore the "-w" argument) (v1.1.x and newer)
 
--rnd2                change the width randomly, using mode 2(will ignore the "-w" argument)
+-rnd2                change the width randomly, using mode 2(will ignore the "-w" argument) (v1.1.x and newer)
 
 -?                      help
 
