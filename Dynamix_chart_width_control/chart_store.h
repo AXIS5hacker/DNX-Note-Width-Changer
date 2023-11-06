@@ -16,7 +16,8 @@ using std::pair;
 using std::map;
 
 enum types { NORMAL = 1, CHAIN, HOLD, SUB };
-enum sides { PAD, MIXER, MULTI };
+//added default sides type: UNKNOWN
+enum sides { PAD, MIXER, MULTI, UNKNOWN };
 struct note {
 	int id;
 	types notetype;
@@ -36,13 +37,16 @@ public:
 
 	bool to_file(string f);//print to XML
 	int readfile(string fn);//read XML
+	string chart_filename;//filename of the chart
 private:
+
 	string name;//song name
 	string name_id;//mapID
 	double offset;
 	double barpm;//Bar per minute
 	sides ltype, rtype;//left type and right type
 	void side_out(const map<int, note>& v, ofstream& of);//output each side
+	void clear();
 
 	//xml parser members
 	string t_buf;//the string buffer
@@ -60,6 +64,7 @@ private:
 	string parse_elem_text();//parsing element text
 	string parse_elem_attr_key();//parsing element attribute name
 	string parse_elem_attr_val();//parsing element attribute value
+
 
 };
 

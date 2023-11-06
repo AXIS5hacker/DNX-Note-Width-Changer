@@ -2,9 +2,10 @@
 * Creator:AXIS5
 * This project is compiled in C++14 standard
 */
-#include"width_change.h"
+#include"defs.h"
 #include"chart_store.h"
 #include"../version.h"
+#include<iostream>
 using namespace std;
 
 extern bool _isNum(string s);
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
 
 	int random_trigger = 0;
 	//if activated random width mode,0:not activated,1:random mode 1,2:random mode 2
-	
+
 	//side triggers
 	bool all_change = true;//if not specifying sides for changing
 	int side_mask = 0x7;
@@ -228,64 +229,70 @@ int main(int argc, char* argv[])
 
 		//create chart store class
 		chart_store cs;//store the chart
-		int fail_read = cs.readfile(filename);//open file
-		if (fail_read != 1) {
+		try {
+			int fail_read = cs.readfile(filename);//open file
 
-			//this function now only processes chart store class
-			int success = width_change(cs, width, start_time, end_time, side_mask,random_trigger);//width=1 as default width multiplier
+			if (fail_read != 1) {
 
-			//hold-sub mismatch
-			if (success == 2) {
-				cout << "Cannot save changed chart file." << endl;//hold-sub mismatch
-			}
-			//save
-			else if (!cs.to_file(_output)) {
-				cout << "Cannot save changed chart file." << endl;//invalid output chart name
-			}
-			else {
-				cout << "Changed sides: ";
-				if (side_mask & MID_CHANGE) {
-					cout << "middle ";
+				//this function now only processes chart store class
+				int success = width_change(cs, width, start_time, end_time, side_mask, random_trigger);//width=1 as default width multiplier
+
+				//hold-sub mismatch
+				if (success == 2) {
+					cout << "Cannot save changed chart file." << endl;//hold-sub mismatch
 				}
-				if (side_mask & LEFT_CHANGE) {
-					cout << "left ";
-				}
-				if (side_mask & RIGHT_CHANGE) {
-					cout << "right ";
-				}
-				cout << endl;
-				cwd = cwd + _output;
-				//cout << cwd << endl;
-				if (random_trigger==1) {
-					cout << "Note width has been randomized, using randomize mode 1" << endl;
-				}
-				else if (random_trigger == 2) {
-					cout << "Note width has been randomized, using randomize mode 2" << endl;
-				}
-				if (def_stimestamp && def_etimestamp) {
-					cout << "Changed entire chart." << endl;
-				}
-				else if (def_stimestamp) {
-					cout << "Changed width from start to " << end_time << " bar." << endl;
-				}
-				else if (def_etimestamp) {
-					cout << "Changed width from " << start_time << " bar to end." << endl;
+				//save
+				else if (!cs.to_file(_output)) {
+					cout << "Cannot save changed chart file." << endl;//invalid output chart name
 				}
 				else {
-					cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
-				}
+					cout << "Changed sides: ";
+					if (side_mask & MID_CHANGE) {
+						cout << "middle ";
+					}
+					if (side_mask & LEFT_CHANGE) {
+						cout << "left ";
+					}
+					if (side_mask & RIGHT_CHANGE) {
+						cout << "right ";
+					}
+					cout << endl;
+					cwd = cwd + _output;
+					//cout << cwd << endl;
+					if (random_trigger == 1) {
+						cout << "Note width has been randomized, using randomize mode 1" << endl;
+					}
+					else if (random_trigger == 2) {
+						cout << "Note width has been randomized, using randomize mode 2" << endl;
+					}
+					if (def_stimestamp && def_etimestamp) {
+						cout << "Changed entire chart." << endl;
+					}
+					else if (def_stimestamp) {
+						cout << "Changed width from start to " << end_time << " bar." << endl;
+					}
+					else if (def_etimestamp) {
+						cout << "Changed width from " << start_time << " bar to end." << endl;
+					}
+					else {
+						cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
+					}
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-				if (_access(cwd.c_str(), 0) == 0)
+					if (_access(cwd.c_str(), 0) == 0)
 #else
-				if (access(cwd.c_str(), 0) == 0)
+					if (access(cwd.c_str(), 0) == 0)
 #endif
-				{
-					cout << "Changed chart saved as \"" << cwd << "\"" << endl;
-				}
-				else {
-					cout << "Changed chart saved as \"" << _output << "\"" << endl;
+					{
+						cout << "Changed chart saved as \"" << cwd << "\"" << endl;
+					}
+					else {
+						cout << "Changed chart saved as \"" << _output << "\"" << endl;
+					}
 				}
 			}
+		}
+		catch (exception& ex) {
+			cout << ex.what() << endl;
 		}
 	}
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)

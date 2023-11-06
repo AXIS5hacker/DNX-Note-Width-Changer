@@ -53,8 +53,8 @@ void chart_store::clear() {
 	name_id = "";
 	offset = 0;
 	barpm = 0;
-	ltype = sides::PAD;
-	rtype = sides::PAD;
+	ltype = sides::UNKNOWN;
+	rtype = sides::UNKNOWN;
 }
 
 int chart_store::readfile(string fn) {
@@ -125,7 +125,7 @@ int chart_store::readfile(string fn) {
 				return 1;
 			}
 		}
-		
+
 		chart_filename = fn;//store the filename of a chart
 		return 0;
 
@@ -141,7 +141,7 @@ void chart_store::parse_elem() {
 	buf_index++;// '<'
 	skip_space();
 	const string& tag = parse_elem_name();
-	while (buf_index>=t_buf.length() ||t_buf[buf_index] != '\0') {
+	while (buf_index >= t_buf.length() || t_buf[buf_index] != '\0') {
 		skip_space();
 		if (t_buf[buf_index] == '/') {
 			//empty xml tag:<.../>

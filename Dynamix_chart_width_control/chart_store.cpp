@@ -3,7 +3,8 @@
 * This is the realization of class chart_store
 */
 #include "chart_store.h"
-#include"width_change.h"
+#include"defs.h"
+
 using namespace std;
 
 void chart_store::skip_space() {
@@ -43,6 +44,19 @@ bool chart_store::parse_comment() {
 	return true;
 }
 
+void chart_store::clear() {
+	m_notes.clear();
+	m_left.clear();
+	m_right.clear();
+	chart_filename = "";
+	name = "";
+	name_id = "";
+	offset = 0;
+	barpm = 0;
+	ltype = sides::UNKNOWN;
+	rtype = sides::UNKNOWN;
+}
+
 int chart_store::readfile(string fn) {
 	/** The function that reads a chart.
 	*  fn:filename
@@ -50,9 +64,7 @@ int chart_store::readfile(string fn) {
 	*/
 
 	//empty the maps that stores the previous chart
-	m_notes.clear();
-	m_left.clear();
-	m_right.clear();
+	clear();
 
 	string buf;
 	ifstream fin;
@@ -65,7 +77,9 @@ int chart_store::readfile(string fn) {
 
 	fin.open(fn);//open file
 	if (fin.fail()) {
-		cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
+		throw std::logic_error("Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist.");
+		//cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
+
 		return 1;
 	}
 	else {
@@ -75,21 +89,23 @@ int chart_store::readfile(string fn) {
 		t_buf = ss.str();//t_buf now stores the file content
 		fin.close();
 		if (t_buf == "") {
-			cout << "Empty file." << endl;
+			throw std::logic_error("Empty file.");
 			return 1;
 		}
 		buf_index = 0;//points to the beginning of the file
 
 
-//parse xml
+		//parse xml
 		skip_space();
 		if (!parse_decl()) {
+			throw std::logic_error("Parse declaration error.");
 			//not parsing declaration
 			return 1;
 		}
 		skip_space();
 		while (t_buf.compare(buf_index, 4, "<!--") == 0) {
 			if (!parse_comment()) {
+				throw std::logic_error("Parse comment error.");
 				//error parsing comment
 				return 1;
 			}
@@ -103,15 +119,19 @@ int chart_store::readfile(string fn) {
 				parse_elem();
 			}
 			catch (exception& ex) {
-				cout << ex.what() << endl;
+				throw std::logic_error(ex.what());
+				//cout << ex.what() << endl;
+
 				return 1;
 			}
 		}
 
+		chart_filename = fn;//store the filename of a chart
 		return 0;
 
 	}
 }
+
 
 void chart_store::parse_elem() {
 
@@ -425,6 +445,7 @@ string chart_store::parse_elem_name() {
 	return t_buf.substr(pos, buf_index - pos);
 }
 
+
 string chart_store::parse_elem_text() {
 	//parsing the text of an xml tag
 	int pos = buf_index;
@@ -452,6 +473,7 @@ string chart_store::parse_elem_attr_key() {
 	}
 	return t_buf.substr(pos, buf_index - pos);
 }
+
 
 string chart_store::parse_elem_attr_val() {
 	//parsing the value of an attribute

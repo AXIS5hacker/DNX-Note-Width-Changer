@@ -1,20 +1,13 @@
-﻿/**
-* Creator:AXIS5
+﻿#ifndef DEFS_H
+#define DEFS_H
+/**
+  * Some global definitions of the program
+  * Author: AXIS5
+  *
 */
-// width change.h
 
-#ifndef wid_R_H
-#define wid_R_H
-
-#include <iostream>
-#include<fstream>
-#include<cstdlib>
-#include<sstream>
-#include<vector>
-#include<map>
-#include<ctime>
 #include<iomanip>
-
+#include<fstream>
 #include<sys/stat.h>
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 #include<direct.h>
@@ -32,5 +25,4 @@
 #include<string>
 using std::string;
 int width_change(chart_store& cs, double w, double st, double ed, int side_mask, int random);
-#endif
-
+#endif // DEFS_H

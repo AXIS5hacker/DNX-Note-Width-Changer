@@ -2,7 +2,7 @@
 #include "ui_maingui.h"
 #include<QFileDialog>
 #include"chart_store.h"
-#include"defs.h"
+#include"qdefs.h"
 #include<QMessageBox>
 #include"../version.h"
 using std::exception;

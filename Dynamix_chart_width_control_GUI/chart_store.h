@@ -16,7 +16,8 @@ using std::pair;
 using std::map;
 
 enum types { NORMAL = 1, CHAIN, HOLD, SUB };
-enum sides { PAD, MIXER, MULTI };
+//added default sides type: UNKNOWN
+enum sides { PAD, MIXER, MULTI, UNKNOWN };
 struct note {
 	int id;
 	types notetype;

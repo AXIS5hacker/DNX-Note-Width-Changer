@@ -29,7 +29,7 @@
     <ClInclude Include="chart_store.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="width_change.h">
+    <ClInclude Include="defs.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
