@@ -55,6 +55,7 @@ private:
 	note* tempnote;
 	bool note_trigger;
 	bool note_reading;//if reading a note
+	int lines;//at which line in xml
 
 	void skip_space();//skip the space when parsing
 	bool parse_decl();//if declaration
