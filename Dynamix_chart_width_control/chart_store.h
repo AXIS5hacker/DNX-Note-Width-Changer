@@ -7,6 +7,7 @@
 #include<vector>
 #include<string>
 #include<sstream>
+#include<climits>
 #include<map>
 
 using std::vector;
@@ -14,8 +15,8 @@ using std::string;
 using std::ofstream;
 using std::pair;
 using std::map;
-
-enum types { NORMAL = 1, CHAIN, HOLD, SUB };
+//added default note type: NULLTP
+enum types { NORMAL = 1, CHAIN, HOLD, SUB , NULLTP};
 //added default sides type: UNKNOWN
 enum sides { PAD, MIXER, MULTI, UNKNOWN };
 struct note {
@@ -25,6 +26,13 @@ struct note {
 	double position;
 	double width;
 	int subid;
+	//constructor
+	note() :id(-1), 
+		notetype(types::NULLTP), 
+		time(-1e8), 
+		position(-1e8), 
+		width(-1e8), 
+		subid(INT_MIN) {}
 };
 class chart_store
 {

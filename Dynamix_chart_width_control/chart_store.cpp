@@ -327,9 +327,10 @@ void chart_store::parse_elem() {
 							tempnote->notetype = SUB;
 						}
 						else {
-							char errnote[64];
+							char errnote[64],lln[64];
 							sprintf_s(errnote, "%d", tempnote->id);
-							throw std::logic_error("Read notes error: Invalid note type at note #" + string(errnote));
+							sprintf_s(lln, "%d.", lines);
+							throw std::logic_error("Read notes error: Invalid note type at note #" + string(errnote)+".\n Please check line "+string(lln));
 
 						}
 					}
@@ -386,14 +387,15 @@ void chart_store::parse_elem() {
 		}
 		else if (t_buf[buf_index] == '<') {
 			if (t_buf[buf_index + 1] == '/') {
-				//xml tag end:</...>
+				//xml tag close:</...>
 
 				//scan
 
 				int buf_scan = buf_index + 2;//scan after "</"
 				int pos_scan = buf_scan;
+				int end_tag_line = lines;//the position of tag close
 
-				//scan for end tag
+				//scan for tag close
 				if (isalpha(t_buf[buf_scan]) || t_buf[buf_scan] == '_') {
 					buf_scan++;
 					while (isalnum(t_buf[buf_scan]) || t_buf[buf_scan] == '_' ||
@@ -421,7 +423,7 @@ void chart_store::parse_elem() {
 				if (t_buf[buf_index] != '>') {
 					//get error position
 					char lln[64];
-					sprintf_s(lln, "%d.", lines);
+					sprintf_s(lln, "%d.", end_tag_line);
 
 					throw std::logic_error("expected \'>\' at line " + string(lln));
 					return;
@@ -462,19 +464,92 @@ void chart_store::parse_elem() {
 				}
 				else if (tag == "CMapNoteAsset") {//end of a note
 					if (note_reading) {
-						int temp_id;//note id(temporary)
+						char lln[64],id_string[64];
+						int temp_id = tempnote->id;//note id(temporary)
+						//checking note info integrity
+						//id
+						if (temp_id == -1) {
+							
+							sprintf_s(lln, "%d", tag_line);
+
+							throw std::logic_error("Error: Note without id.\nThe note begins at line " + string(lln) + " in the XML.");
+						}
+						else {
+							//note type
+							if (tempnote->notetype == types::NULLTP) {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+								throw std::logic_error("Error: Note #"+string(id_string)+" type not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//note position
+							if (tempnote->position < -1e7) {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " position not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//note width
+							if (tempnote->width < -1e7) {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " width not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//note time
+							if (tempnote->time < -1e7) {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " time not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//sub id
+							if (tempnote->subid == INT_MIN) {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " subId not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+						}
+						//note info is complete
 						switch (modes) {
 						case 1:
-							temp_id = tempnote->id;
-							m_notes.insert(make_pair(temp_id, *tempnote));
+							//scan for duplicated note id
+							if (m_notes.find(temp_id) == m_notes.end()) {
+								m_notes.insert(make_pair(temp_id, *tempnote));
+							}
+							//duplicated
+							else {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Duplicated note id: "+string(id_string)+".\nThe note begins at line " + string(lln) + " in the XML.");
+							}
 							break;
 						case 2:
-							temp_id = tempnote->id;
-							m_left.insert(make_pair(temp_id, *tempnote));
+							//scan for duplicated note id
+							if (m_left.find(temp_id) == m_left.end()) {
+								m_left.insert(make_pair(temp_id, *tempnote));
+							}
+							//duplicated
+							else {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
+							}
 							break;
 						case 3:
-							temp_id = tempnote->id;
-							m_right.insert(make_pair(temp_id, *tempnote));
+							//scan for duplicated note id
+							if (m_right.find(temp_id) == m_right.end()) {
+								m_right.insert(make_pair(temp_id, *tempnote));
+							}
+							//duplicated
+							else {
+								sprintf_s(lln, "%d", tag_line);
+								sprintf_s(id_string, "%d", temp_id);
+
+								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
+							}
 							break;
 						default:
 							delete tempnote;
