@@ -250,7 +250,7 @@ int main(int argc, char* argv[])
 					istr >> new_barpm;
 				}
 				char new_barpm_string[64];
-				sprintf_s(new_barpm_string, "%f", new_barpm);
+				snprintf(new_barpm_string, sizeof(new_barpm_string), "%f", new_barpm);
 				cs.set_barpm(new_barpm);
 				cout << "Barpm is set to " + string(new_barpm_string) + "." << endl;
 				cout << "===============================" << endl;
