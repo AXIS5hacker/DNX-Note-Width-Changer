@@ -261,7 +261,7 @@ int main(int argc, char* argv[])
 			if (fail_read & LEFT_SIDE_MISSING) {
 				sides s = sides::UNKNOWN;
 				string side_string;
-				cout << "Left side type is not specified! Please enter a valid side type:" << endl;
+				cout << "Left side type is not specified! Please enter a valid side type (pad, mixer, multi):" << endl;
 				while (s == sides::UNKNOWN) {
 					cin >> side_string;
 					//lowercase
@@ -279,7 +279,7 @@ int main(int argc, char* argv[])
 						s = sides::MULTI;
 					}
 					else {
-						cout << "Invalid side type! Please enter again!" << endl;
+						cout << "Invalid side type! Please enter again! (pad, mixer, multi)" << endl;
 					}
 				}
 				cs.set_lside(s);
@@ -291,7 +291,7 @@ int main(int argc, char* argv[])
 			if (fail_read & RIGHT_SIDE_MISSING) {
 				sides s = sides::UNKNOWN;
 				string side_string;
-				cout << "Right side type is not specified! Please enter a valid side type:" << endl;
+				cout << "Right side type is not specified! Please enter a valid side type (pad, mixer, multi):" << endl;
 				while (s == sides::UNKNOWN) {
 					cin >> side_string;
 					//lowercase
@@ -308,7 +308,7 @@ int main(int argc, char* argv[])
 						s = sides::MULTI;
 					}
 					else {
-						cout << "Invalid side type! Please enter again!" << endl;
+						cout << "Invalid side type! Please enter again! (pad, mixer, multi)" << endl;
 					}
 				}
 				cs.set_rside(s);
