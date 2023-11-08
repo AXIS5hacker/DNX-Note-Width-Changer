@@ -265,7 +265,10 @@ int main(int argc, char* argv[])
 				while (s == sides::UNKNOWN) {
 					cin >> side_string;
 					//lowercase
-					transform(side_string.begin(), side_string.end(), side_string.begin(), tolower);
+					for (auto& ch : side_string) {
+						ch = tolower(ch);
+					}
+
 					if (side_string == "pad") {
 						s = sides::PAD;
 					}
@@ -292,7 +295,9 @@ int main(int argc, char* argv[])
 				while (s == sides::UNKNOWN) {
 					cin >> side_string;
 					//lowercase
-					transform(side_string.begin(), side_string.end(), side_string.begin(), tolower);
+					for (auto& ch : side_string) {
+						ch = tolower(ch);
+					}
 					if (side_string == "pad") {
 						s = sides::PAD;
 					}
@@ -377,7 +382,7 @@ int main(int argc, char* argv[])
 					}
 					else {
 						cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
-					}
+				}
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 					if (_access(cwd.c_str(), 0) == 0)
 #else
@@ -389,16 +394,16 @@ int main(int argc, char* argv[])
 					else {
 						cout << "Changed chart saved as \"" << _output << "\"" << endl;
 					}
-				}
 			}
+		}
 			else {
 				cout << "Unknown error" << endl;
 			}
-		}
+	}
 		catch (exception& ex) {
 			cout << ex.what() << endl;
 		}
-	}
+}
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	system("pause");
 #endif
