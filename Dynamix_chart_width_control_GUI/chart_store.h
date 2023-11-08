@@ -9,12 +9,15 @@
 #include<sstream>
 #include<climits>
 #include<map>
+#include<set>
 
 using std::vector;
 using std::string;
 using std::ofstream;
 using std::pair;
 using std::map;
+using std::set;
+
 //added default note type: NULLTP
 enum types { NORMAL = 1, CHAIN, HOLD, SUB , NULLTP};
 //added default sides type: UNKNOWN
@@ -42,10 +45,19 @@ public:
 	//now we use map to store the notes, in order to deal with discrete note id
 	//<note id,note>
 	map<int, note> m_notes, m_left, m_right;//note list(the key is the note's id)
+	//hold list and sub list(used for hold-sub checking)
+	map<int, int> hold_mid, hold_left, hold_right;
+	set<int> sub_mid, sub_left, sub_right;
+	//mismatch note list(used for hold-sub autofix)
+	vector<pair<int, string> > mismatched_notes;
 
 	bool to_file(string f);//print to XML
 	int readfile(string fn);//read XML
 	string chart_filename;//filename of the chart
+	void set_barpm(double f) { barpm = f; }
+	void set_lside(sides x) { ltype = x; }
+	void set_rside(sides x) { rtype = x; }
+
 private:
 
 	string name;//song name

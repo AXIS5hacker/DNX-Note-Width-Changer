@@ -231,8 +231,109 @@ int main(int argc, char* argv[])
 		chart_store cs;//store the chart
 		try {
 			int fail_read = cs.readfile(filename);//open file
+			//fixing stage
+			//missing barpm
+			if (fail_read & BARPM_MISSING) {
+				double new_barpm = 0;
+				string ll;
+				istringstream istr;
+				cout << "Illegal Barpm! Please enter a valid Barpm:" << endl;;
+				getline(cin, ll);
+				istr.str(ll);
+				istr >> new_barpm;
 
-			if (fail_read != 1) {
+				while (new_barpm <= 0) {
+					cout << "Illegal Barpm! Please re-enter a valid Barpm:" << endl;
+					getline(cin, ll);
+					istr.clear();
+					istr.str(ll);
+					istr >> new_barpm;
+				}
+				char new_barpm_string[64];
+				sprintf_s(new_barpm_string, "%f", new_barpm);
+				cs.set_barpm(new_barpm);
+				cout << "Barpm is set to " + string(new_barpm_string) + "." << endl;
+				cout << "===============================" << endl;
+
+				fail_read &= (~(int)BARPM_MISSING);
+			}
+			//missing left side
+			if (fail_read & LEFT_SIDE_MISSING) {
+				sides s = sides::UNKNOWN;
+				string side_string;
+				cout << "Left side type is not specified! Please enter a valid side type:" << endl;
+				while (s == sides::UNKNOWN) {
+					cin >> side_string;
+					//lowercase
+					transform(side_string.begin(), side_string.end(), side_string.begin(), tolower);
+					if (side_string == "pad") {
+						s = sides::PAD;
+					}
+					else if (side_string == "mixer") {
+						s = sides::MIXER;
+					}
+					else if (side_string == "multi") {
+						s = sides::MULTI;
+					}
+					else {
+						cout << "Invalid side type! Please enter again!" << endl;
+					}
+				}
+				cs.set_lside(s);
+				cout << "Left side fixed." << endl;
+				cout << "===============================" << endl;
+				fail_read &= (~(int)LEFT_SIDE_MISSING);
+			}
+			//missing right side
+			if (fail_read & RIGHT_SIDE_MISSING) {
+				sides s = sides::UNKNOWN;
+				string side_string;
+				cout << "Right side type is not specified! Please enter a valid side type:" << endl;
+				while (s == sides::UNKNOWN) {
+					cin >> side_string;
+					//lowercase
+					transform(side_string.begin(), side_string.end(), side_string.begin(), tolower);
+					if (side_string == "pad") {
+						s = sides::PAD;
+					}
+					else if (side_string == "mixer") {
+						s = sides::MIXER;
+					}
+					else if (side_string == "multi") {
+						s = sides::MULTI;
+					}
+					else {
+						cout << "Invalid side type! Please enter again!" << endl;
+					}
+				}
+				cs.set_rside(s);
+				cout << "Right side fixed." << endl;
+				cout << "===============================" << endl;
+				fail_read &= (~(int)RIGHT_SIDE_MISSING);
+			}
+			//Hold-sub mismatch autofix
+			if (fail_read & HOLD_SUB_MISMATCH) {
+				cout << "mismatched notes found:" << endl;
+				for (auto& ii : cs.mismatched_notes) {
+					cout << ii.first << '\t' << ii.second << endl;
+					//fix
+					if (ii.second == "middle") {
+						cs.m_notes.erase(ii.first);
+					}
+					else if (ii.second == "left") {
+						cs.m_left.erase(ii.first);
+					}
+					else if (ii.second == "right") {
+						cs.m_right.erase(ii.first);
+					}
+				}
+				cout << "\nThe mismatching Holds and Subs have been fixed automatically." << endl;
+				cout << "===============================" << endl;
+				//set status to success
+				fail_read &= (~(int)HOLD_SUB_MISMATCH);
+			}
+
+			if (fail_read == 0) {
 
 				//this function now only processes chart store class
 				int success = width_change(cs, width, start_time, end_time, side_mask, random_trigger);//width=1 as default width multiplier
@@ -289,6 +390,9 @@ int main(int argc, char* argv[])
 						cout << "Changed chart saved as \"" << _output << "\"" << endl;
 					}
 				}
+			}
+			else {
+				cout << "Unknown error" << endl;
 			}
 		}
 		catch (exception& ex) {
