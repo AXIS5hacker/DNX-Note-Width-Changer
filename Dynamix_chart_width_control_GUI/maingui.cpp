@@ -2,8 +2,9 @@
 #include "ui_maingui.h"
 #include<QFileDialog>
 #include"chart_store.h"
-#include"defs.h"
+#include"qdefs.h"
 #include<QMessageBox>
+#include<QInputDialog>
 #include"../version.h"
 using std::exception;
 extern QString customfont;
@@ -82,7 +83,112 @@ void MainGUI::on_loadFile_clicked() {
 		return;
 	}
 	try {
-		cs.readfile(qstr2str_utf8(ui->open_file_name->text()));
+		int success = cs.readfile(qstr2str_utf8(ui->open_file_name->text()));
+		//fixing stage
+		//missing barpm
+		if (success & BARPM_MISSING) {
+			double new_barpm = 0;
+			string ll;
+
+			new_barpm = QInputDialog::getDouble(this,
+				tr("Barpm fix"),
+				tr("Illegal Barpm! Please enter a valid Barpm:"),
+				1, 1, 2147483647.0, 6);
+
+
+
+			cs.set_barpm(new_barpm);
+			QMessageBox::warning(this, "Hint", "Barpm is set to " + QString::number(new_barpm));
+			success &= (~(int)BARPM_MISSING);
+		}
+		//missing left side
+		if (success & LEFT_SIDE_MISSING) {
+			sides s = sides::UNKNOWN;
+			QString side_string;
+			side_string = QInputDialog::getText(this,
+				tr("Left side fix"),
+				tr("Left side type is not specified! Please enter a valid side type")
+			);
+			//cout << "Left side type is not specified! Please enter a valid side type:" << endl;
+			while (s == sides::UNKNOWN) {
+
+				//lowercase
+				side_string = side_string.toLower();
+				if (side_string == "pad") {
+					s = sides::PAD;
+				}
+				else if (side_string == "mixer") {
+					s = sides::MIXER;
+				}
+				else if (side_string == "multi") {
+					s = sides::MULTI;
+				}
+				else {
+					side_string = QInputDialog::getText(this,
+						tr("Left side fix"),
+						tr("Invalid side type! Please enter again!")
+					);
+
+				}
+			}
+			cs.set_lside(s);
+			success &= (~(int)LEFT_SIDE_MISSING);
+		}
+		//missing right side
+		if (success & RIGHT_SIDE_MISSING) {
+			sides s = sides::UNKNOWN;
+			QString side_string;
+			side_string = QInputDialog::getText(this,
+				tr("Right side fix"),
+				tr("Right side type is not specified! Please enter a valid side type")
+			);
+			//cout << "Left side type is not specified! Please enter a valid side type:" << endl;
+			while (s == sides::UNKNOWN) {
+
+				//lowercase
+				side_string = side_string.toLower();
+				if (side_string == "pad") {
+					s = sides::PAD;
+				}
+				else if (side_string == "mixer") {
+					s = sides::MIXER;
+				}
+				else if (side_string == "multi") {
+					s = sides::MULTI;
+				}
+				else {
+					side_string = QInputDialog::getText(this,
+						tr("Right side fix"),
+						tr("Invalid side type! Please enter again!")
+					);
+
+				}
+			}
+			cs.set_rside(s);
+			success &= (~(int)RIGHT_SIDE_MISSING);
+		}
+		//Hold-sub mismatch autofix
+		if (success & HOLD_SUB_MISMATCH) {
+			for (auto& ii : cs.mismatched_notes) {
+
+				//fix
+				if (ii.second == "middle") {
+					cs.m_notes.erase(ii.first);
+				}
+				else if (ii.second == "left") {
+					cs.m_left.erase(ii.first);
+				}
+				else if (ii.second == "right") {
+					cs.m_right.erase(ii.first);
+				}
+			}
+			QMessageBox::warning(this, "Hint", "This chart has Hold-Sub mismatch problems, and they have been automatically fixed.");
+			//set status to success
+			success &= (~(int)HOLD_SUB_MISMATCH);
+		}
+		if (success != 0) {
+			throw std::logic_error("Unknown error");
+		}
 		ui->loaded_file->setText(QString("Current Chart File: ") + ui->open_file_name->text());
 	}
 	catch (exception& ex) {
@@ -122,7 +228,7 @@ void MainGUI::on_loadFile_clicked() {
 }
 
 //check if width multiplier mode
-void MainGUI::activate_multiplier(){
+void MainGUI::activate_multiplier() {
 	if (ui->active_multiplier->isChecked()) {
 		ui->widthMultiply->setEnabled(true);
 		ui->horizontalSlider->setEnabled(true);
@@ -222,7 +328,7 @@ void MainGUI::on_widthApply_clicked()
 		return;
 	}
 	//apply change
-	if (width_change(cs, multiplier, start_time, end_time, sides,random_mode) != 0) {
+	if (width_change(cs, multiplier, start_time, end_time, sides, random_mode) != 0) {
 		QMessageBox::critical(this, "Error", tr("Hold-Sub mismatch!"));
 		return;
 	}

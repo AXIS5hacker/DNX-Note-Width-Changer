@@ -2,7 +2,8 @@
 * Creator:AXIS5
 */
 #include "chart_store.h"
-#include"width_change.h"
+#include"defs.h"
+#include<iostream>
 
 using namespace std;
 ifstream fin;
@@ -26,7 +27,7 @@ bool _isNum(string s) {//detect if the string is a number
 	return true;
 }
 
-int width_change(chart_store& cs, double w, double st, double ed, int side_mask,int random) {
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask, int random) {
 	/* The function that changes the width of a chart.
 	*  cs:chart store object, w:width multiplier, st:start time, ed:end time
 	*  side_mask: specify the sides to change
@@ -51,12 +52,12 @@ int width_change(chart_store& cs, double w, double st, double ed, int side_mask,
 				np = it->second.position;//read position
 				np += nw * 0.5;
 				//randomized width mode 1
-				if (random==1) {
+				if (random == 1) {
 					w = (rand() % 501 + 1) / 100.0;
 				}
 				//randomized width mode 2
 				if (random == 2) {
-					nw= (rand() % 601 + 1) / 100.0;
+					nw = (rand() % 601 + 1) / 100.0;
 				}
 				else {
 					nw *= w;

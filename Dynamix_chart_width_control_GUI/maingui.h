@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include"chart_store.h"
 #include<qtranslator.h>
+#include"qdefs.h"
 namespace Ui {
 	class MainGUI;
 }

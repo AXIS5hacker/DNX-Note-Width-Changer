@@ -3,7 +3,7 @@
 ################################################################################
 
 /.vs
-/Dynamix_chart_width_control/.vs/Dynamix chart width control/v16
+/Dynamix_chart_width_control/.vs
 /*/x86/
 /*/x64/
 /*/Debug/
@@ -12,8 +12,6 @@
 /Dynamix_chart_width_control_GUI/.vs
 /Dynamix_chart_width_control_GUI/x64
 /Dynamix_chart_width_control_GUI/out
-/Dynamix_chart_width_control_GUI(qmake)/.vs
-/Dynamix_chart_width_control_GUI(qmake)/x64
 /out
 
 #qt generated files

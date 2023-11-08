@@ -35,7 +35,7 @@ set(PROJECT_SOURCES
     chart_store.h
     main.cpp
     width.cpp
-    width_change.h
+    defs.h
 )
 
 if(UNIX)

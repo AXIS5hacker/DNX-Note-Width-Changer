@@ -3,7 +3,8 @@
 * This is the realization of class chart_store
 */
 #include "chart_store.h"
-#include"width_change.h"
+#include"defs.h"
+
 using namespace std;
 
 void chart_store::skip_space() {
@@ -11,6 +12,9 @@ void chart_store::skip_space() {
 	*  The function skips the white space and new line in xml file
 	*/
 	while (t_buf[buf_index] == ' ' || t_buf[buf_index] == '\t' || t_buf[buf_index] == '\n' || t_buf[buf_index] == '\r') {
+		if (t_buf[buf_index] == '\n') {
+			lines++;
+		}
 		buf_index++;
 	}
 }
@@ -39,34 +43,67 @@ bool chart_store::parse_comment() {
 	if (pos == t_buf.npos) {
 		return false;
 	}
+	else {
+		//get the number of lines the comment has
+		string comm = t_buf.substr(buf_index, pos - buf_index);
+		int nlines = count(comm.begin(), comm.end(), '\n');
+		lines += nlines;
+	}
 	buf_index = pos + 3;
 	return true;
+}
+
+void chart_store::clear() {
+	//init note list
+	m_notes.clear();
+	m_left.clear();
+	m_right.clear();
+	//init hold-sub list 
+	hold_mid.clear();
+	hold_left.clear();
+	hold_right.clear();
+	sub_mid.clear();
+	sub_left.clear();
+	sub_right.clear();
+	//init mismatched note list
+	mismatched_notes.clear();
+
+	chart_filename = "";
+	name = "";
+	name_id = "";
+	offset = 0;
+	barpm = 0;
+	ltype = sides::UNKNOWN;
+	rtype = sides::UNKNOWN;
+	lines = 1;//beginning
 }
 
 int chart_store::readfile(string fn) {
 	/** The function that reads a chart.
 	*  fn:filename
-	*  return:0:success;1:fail
+	*  return:0:success;others:see defs.h;
 	*/
 
 	//empty the maps that stores the previous chart
-	m_notes.clear();
-	m_left.clear();
-	m_right.clear();
+	clear();
 
 	string buf;
 	ifstream fin;
+	bool mismatch = false;//check if hold-sub mismatch
 
 	modes = 0;//0->none 1->middle 2->left 3->right
 	tempnote = NULL;
 	note_trigger = false;
 	note_reading = false;//if reading a note
 
+	int chart_flags = 0;
 
 	fin.open(fn);//open file
 	if (fin.fail()) {
-		cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
-		return 1;
+		throw std::logic_error("Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist.");
+		//cout << "Cannot open file \"" + fn + "\", maybe you do not have access to it or it doesn't exist." << endl;
+
+		//return FAIL_TO_OPEN;
 	}
 	else {
 		//a newer method of parsing the xml file
@@ -75,21 +112,31 @@ int chart_store::readfile(string fn) {
 		t_buf = ss.str();//t_buf now stores the file content
 		fin.close();
 		if (t_buf == "") {
-			cout << "Empty file." << endl;
+			throw std::logic_error("Empty file.");
 			return 1;
 		}
 		buf_index = 0;//points to the beginning of the file
 
 
-//parse xml
+		//parse xml stage
 		skip_space();
 		if (!parse_decl()) {
+			//get error position
+			char lln[64];
+			snprintf(lln, sizeof(lln), "%d.", lines);
+
+			throw std::logic_error("Parse declaration error at line " + string(lln));
 			//not parsing declaration
 			return 1;
 		}
 		skip_space();
 		while (t_buf.compare(buf_index, 4, "<!--") == 0) {
 			if (!parse_comment()) {
+				//get error position
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.", lines);
+
+				throw std::logic_error("Parse comment error at line" + string(lln));
 				//error parsing comment
 				return 1;
 			}
@@ -103,24 +150,103 @@ int chart_store::readfile(string fn) {
 				parse_elem();
 			}
 			catch (exception& ex) {
-				cout << ex.what() << endl;
+				throw std::logic_error(ex.what());
+				//cout << ex.what() << endl;
+
 				return 1;
 			}
 		}
 
-		return 0;
+		//chart checking stage
+		//1.Check whether the side types are set
+		if (ltype == sides::UNKNOWN) {
+			//throw std::logic_error("Left side type is not specified! Please check your chart!");
+			chart_flags |= LEFT_SIDE_MISSING;
+		}
+		if (rtype == sides::UNKNOWN) {
+			//throw std::logic_error("Right side type is not specified! Please check your chart!");
+			chart_flags |= RIGHT_SIDE_MISSING;
+		}
+
+
+		//2.check if barpm is missing
+		if (barpm <= 0) {
+			//throw std::logic_error("Illegal Barpm! Please check your chart!");
+			chart_flags |= BARPM_MISSING;
+		}
+
+		//3.Hold-Sub match checking stage
+		//middle
+		for (auto& it : hold_mid) {
+			if (sub_mid.find(it.second) == sub_mid.end()) {
+				//store mismatch hold
+				mismatched_notes.push_back(make_pair(it.first, "middle"));
+				mismatch = true;
+			}
+			else {
+				sub_mid.erase(it.second);
+			}
+		}
+		if (!sub_mid.empty()) {
+			//store mismatch sub
+			for (auto& it : sub_mid) {
+				mismatched_notes.push_back(make_pair(it, "middle"));
+			}
+			mismatch = true;
+		}
+		//left
+		for (auto& it : hold_left) {
+			if (sub_left.find(it.second) == sub_left.end()) {
+				//store mismatch hold
+				mismatched_notes.push_back(make_pair(it.first, "left"));
+				mismatch = true;
+			}
+			else {
+				sub_left.erase(it.second);
+			}
+		}
+		if (!sub_left.empty()) {
+			//store mismatch sub
+			for (auto& it : sub_left) {
+				mismatched_notes.push_back(make_pair(it, "left"));
+			}
+			mismatch = true;
+		}
+		//right
+		for (auto& it : hold_right) {
+			if (sub_right.find(it.second) == sub_right.end()) {
+				//store mismatch hold
+				mismatched_notes.push_back(make_pair(it.first, "right"));
+				mismatch = true;
+			}
+			else {
+				sub_right.erase(it.second);
+			}
+		}
+		if (!sub_right.empty()) {
+			//store mismatch sub
+			for (auto& it : sub_right) {
+				mismatched_notes.push_back(make_pair(it, "right"));
+			}
+			mismatch = true;
+		}
+
+		chart_filename = fn;//store the filename of a chart
+		if (mismatch)chart_flags |= HOLD_SUB_MISMATCH;
+		return chart_flags;
 
 	}
 }
+
 
 void chart_store::parse_elem() {
 
 	istringstream extr;//for extracting numbers
 
-
 	buf_index++;// '<'
 	skip_space();
 	const string& tag = parse_elem_name();
+	int tag_line = lines;//temporarily stores the position of the tag
 	while (buf_index >= t_buf.length() || t_buf[buf_index] != '\0') {
 		skip_space();
 		if (t_buf[buf_index] == '/') {
@@ -131,7 +257,11 @@ void chart_store::parse_elem() {
 				break;
 			}
 			else {
-				throw std::logic_error("xml empty element is error");
+				//get error position
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.", lines);
+
+				throw std::logic_error("xml empty element is error. Occured at line " + string(lln));
 				return;
 			}
 		}
@@ -144,7 +274,11 @@ void chart_store::parse_elem() {
 					note_trigger = true;
 				}
 				else {
-					throw std::logic_error("Read notes error: Syntax Error when reading middle notes");
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read notes error: Syntax Error when reading middle notes. Occured at line " + string(lln));
 					return;
 				}
 			}
@@ -154,22 +288,34 @@ void chart_store::parse_elem() {
 					tempnote = new note;
 				}
 				else {
-					throw std::logic_error("Read notes error: <CMapNoteAsset> note asset error, triggered at"
-						+ __LINE__ + (string)"in" + __FILE__);
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read notes error: <CMapNoteAsset> note asset error, triggered at line "
+						+ string(lln));
 					return;
 				}
 			}
 			else if (tag == "m_notesLeft") {//left notes
 				if (modes == 0)modes = 2;
 				else {
-					throw std::logic_error("Read notes error: Syntax Error when reading left notes");
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read notes error: Syntax Error when reading left notes. Occured at line " + string(lln));
 					return;
 				}
 			}
 			else if (tag == "m_notesRight") {//right notes
 				if (modes == 0)modes = 3;
 				else {
-					throw std::logic_error("Read notes error: Syntax Error when reading right notes");
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read notes error: Syntax Error when reading right notes. Occured at line " + string(lln));
 					return;
 				}
 			}
@@ -200,7 +346,11 @@ void chart_store::parse_elem() {
 						ltype = MULTI;
 					}
 					else {
-						throw std::logic_error("Read side error: Invalid Left Side Type");
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read side error: Invalid Left Side Type. Occured at line " + string(lln));
 						return;
 					}
 				}
@@ -215,7 +365,11 @@ void chart_store::parse_elem() {
 						rtype = MULTI;
 					}
 					else {
-						throw std::logic_error("Read side error: Invalid Right Side Type");
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read side error: Invalid Right Side Type. Occured at line " + string(lln));
 						return;
 					}
 				}
@@ -248,16 +402,17 @@ void chart_store::parse_elem() {
 						else if (text == "SUB") {
 							tempnote->notetype = SUB;
 						}
+						else {
+							char errnote[64], lln[64];
+							snprintf(errnote, sizeof(errnote), "%d", tempnote->id);
+							snprintf(lln, sizeof(lln), "%d.", lines);
+							throw std::logic_error("Read notes error: Invalid note type at note #" + string(errnote) + ".\n Please check line " + string(lln));
+
+						}
 					}
 					else {
-						if (tempnote != NULL) {
-							throw std::logic_error("Read notes error: Invalid note type at note #" + tempnote->id);
-							return;
-						}
-						else {
-							throw std::logic_error("Read notes error: Invalid note type at undefined note");
-							return;
-						}
+
+						throw std::logic_error("Read notes error: Invalid note type at undefined note");
 					}
 				}
 				else if (tag == "m_time" && note_trigger == true) {//note time
@@ -308,16 +463,65 @@ void chart_store::parse_elem() {
 		}
 		else if (t_buf[buf_index] == '<') {
 			if (t_buf[buf_index + 1] == '/') {
-				//xml tag end:</...>
+				//xml tag close:</...>
 
 				//scan
-				string end_tag = "</" + tag + ">";
+
+				int buf_scan = buf_index + 2;//scan after "</"
+				int pos_scan = buf_scan;
+				int end_tag_line = lines;//the position of tag close
+
+				//scan for tag close
+				if (isalpha(t_buf[buf_scan]) || t_buf[buf_scan] == '_') {
+					buf_scan++;
+					while (isalnum(t_buf[buf_scan]) || t_buf[buf_scan] == '_' ||
+						t_buf[buf_scan] == '-' || t_buf[buf_scan] == ':' ||
+						t_buf[buf_scan] == '.') {
+						//word analyze
+						buf_scan++;
+					}
+				}
+				string end_tag = t_buf.substr(pos_scan, buf_scan - pos_scan);
+				//tag close does not match the tag
+				if (end_tag != tag) {
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", tag_line);
+
+					throw std::logic_error("xml element " + tag + " is not closed.\nThe tag is at line " + string(lln));
+					return;
+				}
+				//tag close matches the tag
+				else {
+					buf_index = buf_scan;
+				}
+				skip_space();
+				if (t_buf[buf_index] != '>') {
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", end_tag_line);
+
+					throw std::logic_error("expected \'>\' at line " + string(lln));
+					return;
+				}
+				else {
+					buf_index++;//'>'
+				}
+
+				/*
+				string end_tag_x = "</" + tag + ">";
+
 				size_t pos = t_buf.find(end_tag, buf_index);
 				if (pos == t_buf.npos) {
-					throw std::logic_error("xml element " + tag + " end tag not found.");
+					//get error position
+					char lln[64];
+					sprintf_s(lln, "%d.", lines);
+
+					throw std::logic_error("xml element " + tag + " is not closed.\nOccured at line " + string(lln));
 					return;
 				}
 				buf_index = pos + end_tag.size();
+				*/
 
 				//action
 				if (tag == "m_notes") {//stop reading notes
@@ -326,49 +530,166 @@ void chart_store::parse_elem() {
 						modes = 0;
 					}
 					else {
-						throw std::logic_error("Read notes error: Duplicated stop tags of reading a side");
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read notes error: Duplicated stop tags of reading a side.\nOccured at line " + string(lln));
 						return;
 					}
 				}
 				else if (tag == "CMapNoteAsset") {//end of a note
 					if (note_reading) {
-						int temp_id;//note id(temporary)
+						char lln[64], id_string[64];
+						int temp_id = tempnote->id;//note id(temporary)
+						//checking note info integrity
+						//id
+						if (temp_id == -1) {
+
+							snprintf(lln, sizeof(lln), "%d", tag_line);
+
+							throw std::logic_error("Error: Note without id.\nThe note begins at line " + string(lln) + " in the XML.");
+						}
+						else {
+							//note type
+							if (tempnote->notetype == types::NULLTP) {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+								throw std::logic_error("Error: Note #" + string(id_string) + " type not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//note position
+							if (tempnote->position < -1e7) {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " position not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//note width
+							if (tempnote->width < -1e7) {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " width not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//note time
+							if (tempnote->time < -1e7) {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " time not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+							//sub id
+							if (tempnote->subid == INT_MIN) {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Note #" + string(id_string) + " subId not specified.\nThe note begins at line " + string(lln) + " in the XML.");
+							}
+						}
+						//note info is complete
 						switch (modes) {
 						case 1:
-							temp_id = tempnote->id;
-							m_notes.insert(make_pair(temp_id, *tempnote));
+							//scan for duplicated note id
+							if (m_notes.find(temp_id) == m_notes.end()) {
+								m_notes.insert(make_pair(temp_id, *tempnote));
+								//store hold for hold-sub checking
+								if (tempnote->notetype == types::HOLD) {
+									hold_mid.insert(make_pair(temp_id, tempnote->subid));
+								}
+								//store sub for hold-sub checking
+								else if (tempnote->notetype == types::SUB) {
+									sub_mid.insert(temp_id);
+								}
+							}
+							//duplicated
+							else {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
+							}
 							break;
 						case 2:
-							temp_id = tempnote->id;
-							m_left.insert(make_pair(temp_id, *tempnote));
+							//scan for duplicated note id
+							if (m_left.find(temp_id) == m_left.end()) {
+								m_left.insert(make_pair(temp_id, *tempnote));
+								//store hold for hold-sub checking
+								if (tempnote->notetype == types::HOLD) {
+									hold_left.insert(make_pair(temp_id, tempnote->subid));
+								}
+								//store sub for hold-sub checking
+								else if (tempnote->notetype == types::SUB) {
+									sub_left.insert(temp_id);
+								}
+							}
+							//duplicated
+							else {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
+							}
 							break;
 						case 3:
-							temp_id = tempnote->id;
-							m_right.insert(make_pair(temp_id, *tempnote));
+							//scan for duplicated note id
+							if (m_right.find(temp_id) == m_right.end()) {
+								m_right.insert(make_pair(temp_id, *tempnote));
+								//store hold for hold-sub checking
+								if (tempnote->notetype == types::HOLD) {
+									hold_right.insert(make_pair(temp_id, tempnote->subid));
+								}
+								//store sub for hold-sub checking
+								else if (tempnote->notetype == types::SUB) {
+									sub_right.insert(temp_id);
+								}
+							}
+							//duplicated
+							else {
+								snprintf(lln, sizeof(lln), "%d", tag_line);
+								snprintf(id_string, sizeof(id_string), "%d", temp_id);
+
+								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
+							}
 							break;
 						default:
 							delete tempnote;
-							throw std::logic_error("Read notes error");
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read notes error at line " + string(lln));
 						}
 						delete tempnote;
 						note_reading = false;
 					}
 					else {
-						throw std::logic_error("Read notes error: Syntax error when stop reading a note");
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read notes error: Syntax error when stop reading a note.\nOccured at line " + string(lln));
 						return;
 					}
 				}
 				else if (tag == "m_notesLeft") {//left notes end
 					if (modes == 2)modes = 0;
 					else {
-						throw std::logic_error("Read notes error: Syntax error when stop reading left notes");
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read notes error: Syntax error when stop reading left notes.\nOccured at line " + string(lln));
 						return;
 					}
 				}
 				else if (tag == "m_notesRight") {//right notes end
 					if (modes == 3)modes = 0;
 					else {
-						throw std::logic_error("Read notes error: Syntax error when stop reading right notes");
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read notes error: Syntax error when stop reading right notes.\nOccured at line " + string(lln));
 						return;
 					}
 				}
@@ -379,7 +700,11 @@ void chart_store::parse_elem() {
 			else if (t_buf.compare(buf_index, 4, "<!--") == 0) {
 				//xml comment
 				if (!parse_comment()) {
-					throw std::logic_error("error parsing comment");
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("error parsing comment. The comment begins at line " + string(lln));
 					return;
 				}
 			}
@@ -393,7 +718,11 @@ void chart_store::parse_elem() {
 			string key = parse_elem_attr_key();
 			skip_space();
 			if (t_buf[buf_index] != '=') {
-				throw std::logic_error("xml attribute error:" + key);
+				//get error position
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.", lines);
+
+				throw std::logic_error("xml attribute error:" + key + "\nOccured at line " + string(lln));
 				return;
 			}
 			buf_index++;//'='
@@ -425,18 +754,102 @@ string chart_store::parse_elem_name() {
 	return t_buf.substr(pos, buf_index - pos);
 }
 
+//parsing the text of an xml tag
 string chart_store::parse_elem_text() {
-	//parsing the text of an xml tag
+
 	int pos = buf_index;
+	//escape character trigger
+	bool escape_char = false;
+	//text without comment
+	string ret_s = "";
+	//need to ignore all comments here
+
+text_parse:
+	pos = buf_index;
 	while (t_buf[buf_index] != '<') {
-		buf_index++;
+		//rough detection of escape character
+		if (escape_char) {
+			if (isalnum((int)t_buf[buf_index]) == 0) {
+				//get error position
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.", lines);
+
+				throw std::logic_error("Illegal usage of escape character in XML file at line " + string(lln));
+			}
+			else {
+				buf_index++;
+			}
+		}
+
+		//end of escape character
+		if (t_buf[buf_index] == ';') {
+			escape_char = false;
+			buf_index++;
+		}
+
+		//illegal characters
+		if (t_buf[buf_index] == '\'' || t_buf[buf_index] == '\"' || t_buf[buf_index] == '>') {
+			//get error position
+			char lln[64];
+			snprintf(lln, sizeof(lln), "%d.", lines);
+
+			throw std::logic_error("Illegal character in XML file at line " + string(lln));
+		}
+		else if (t_buf[buf_index] == '&') {//start of escape character
+			if (escape_char) {
+				//get error position
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.", lines);
+
+				throw std::logic_error("Illegal usage of escape character in XML file at line " + string(lln));
+			}
+			else {
+				escape_char = true;
+				buf_index++;
+			}
+		}
+		else {	//normal characters
+			if (t_buf[buf_index] == '\n') {
+				lines++;
+			}
+			buf_index++;
+		}
+
 		//missing <
 		if (buf_index >= t_buf.length()) {
 			throw std::logic_error("Tag end not found.");
-			return "";
+			//return "";
 		}
 	}
-	return t_buf.substr(pos, buf_index - pos);
+
+	//end of escape character not found
+	if (escape_char) {
+		//get error position
+		char lln[64];
+		snprintf(lln, sizeof(lln), "%d.", lines);
+
+		throw std::logic_error("Illegal usage of escape character in XML file at line " + string(lln));
+	}
+	ret_s += t_buf.substr(pos, buf_index - pos);
+	if (t_buf.compare(buf_index, 4, "<!--") == 0) {
+		//collect text
+
+		//parse xml comment
+		if (!parse_comment()) {
+			//get error position
+			char lln[64];
+			snprintf(lln, sizeof(lln), "%d.", lines);
+
+			throw std::logic_error("error parsing comment. The comment begins at line " + string(lln));
+
+		}
+		else {
+			//continue parsing text
+			goto text_parse;
+		}
+	}
+
+	return ret_s;
 }
 
 string chart_store::parse_elem_attr_key() {
@@ -453,10 +866,15 @@ string chart_store::parse_elem_attr_key() {
 	return t_buf.substr(pos, buf_index - pos);
 }
 
+
 string chart_store::parse_elem_attr_val() {
 	//parsing the value of an attribute
 	if (t_buf[buf_index] != '\"') {
-		throw std::logic_error("attribute value missing \"\"");
+		//get error position
+		char lln[64];
+		snprintf(lln, sizeof(lln), "%d.", lines);
+
+		throw std::logic_error("attribute value missing \"\" at line " + string(lln));
 		return "";
 	}
 	buf_index++;//'"'

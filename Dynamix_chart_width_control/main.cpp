@@ -2,9 +2,10 @@
 * Creator:AXIS5
 * This project is compiled in C++14 standard
 */
-#include"width_change.h"
+#include"defs.h"
 #include"chart_store.h"
 #include"../version.h"
+#include<iostream>
 using namespace std;
 
 extern bool _isNum(string s);
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
 
 	int random_trigger = 0;
 	//if activated random width mode,0:not activated,1:random mode 1,2:random mode 2
-	
+
 	//side triggers
 	bool all_change = true;//if not specifying sides for changing
 	int side_mask = 0x7;
@@ -228,64 +229,174 @@ int main(int argc, char* argv[])
 
 		//create chart store class
 		chart_store cs;//store the chart
-		int fail_read = cs.readfile(filename);//open file
-		if (fail_read != 1) {
+		try {
+			int fail_read = cs.readfile(filename);//open file
+			//fixing stage
+			//missing barpm
+			if (fail_read & BARPM_MISSING) {
+				double new_barpm = 0;
+				string ll;
+				istringstream istr;
+				cout << "Illegal Barpm! Please enter a valid Barpm:" << endl;;
+				getline(cin, ll);
+				istr.str(ll);
+				istr >> new_barpm;
 
-			//this function now only processes chart store class
-			int success = width_change(cs, width, start_time, end_time, side_mask,random_trigger);//width=1 as default width multiplier
+				while (new_barpm <= 0) {
+					cout << "Illegal Barpm! Please re-enter a valid Barpm:" << endl;
+					getline(cin, ll);
+					istr.clear();
+					istr.str(ll);
+					istr >> new_barpm;
+				}
+				char new_barpm_string[64];
+				sprintf_s(new_barpm_string, "%f", new_barpm);
+				cs.set_barpm(new_barpm);
+				cout << "Barpm is set to " + string(new_barpm_string) + "." << endl;
+				cout << "===============================" << endl;
 
-			//hold-sub mismatch
-			if (success == 2) {
-				cout << "Cannot save changed chart file." << endl;//hold-sub mismatch
+				fail_read &= (~(int)BARPM_MISSING);
 			}
-			//save
-			else if (!cs.to_file(_output)) {
-				cout << "Cannot save changed chart file." << endl;//invalid output chart name
+			//missing left side
+			if (fail_read & LEFT_SIDE_MISSING) {
+				sides s = sides::UNKNOWN;
+				string side_string;
+				cout << "Left side type is not specified! Please enter a valid side type:" << endl;
+				while (s == sides::UNKNOWN) {
+					cin >> side_string;
+					//lowercase
+					transform(side_string.begin(), side_string.end(), side_string.begin(), tolower);
+					if (side_string == "pad") {
+						s = sides::PAD;
+					}
+					else if (side_string == "mixer") {
+						s = sides::MIXER;
+					}
+					else if (side_string == "multi") {
+						s = sides::MULTI;
+					}
+					else {
+						cout << "Invalid side type! Please enter again!" << endl;
+					}
+				}
+				cs.set_lside(s);
+				cout << "Left side fixed." << endl;
+				cout << "===============================" << endl;
+				fail_read &= (~(int)LEFT_SIDE_MISSING);
+			}
+			//missing right side
+			if (fail_read & RIGHT_SIDE_MISSING) {
+				sides s = sides::UNKNOWN;
+				string side_string;
+				cout << "Right side type is not specified! Please enter a valid side type:" << endl;
+				while (s == sides::UNKNOWN) {
+					cin >> side_string;
+					//lowercase
+					transform(side_string.begin(), side_string.end(), side_string.begin(), tolower);
+					if (side_string == "pad") {
+						s = sides::PAD;
+					}
+					else if (side_string == "mixer") {
+						s = sides::MIXER;
+					}
+					else if (side_string == "multi") {
+						s = sides::MULTI;
+					}
+					else {
+						cout << "Invalid side type! Please enter again!" << endl;
+					}
+				}
+				cs.set_rside(s);
+				cout << "Right side fixed." << endl;
+				cout << "===============================" << endl;
+				fail_read &= (~(int)RIGHT_SIDE_MISSING);
+			}
+			//Hold-sub mismatch autofix
+			if (fail_read & HOLD_SUB_MISMATCH) {
+				cout << "mismatched notes found:" << endl;
+				for (auto& ii : cs.mismatched_notes) {
+					cout << ii.first << '\t' << ii.second << endl;
+					//fix
+					if (ii.second == "middle") {
+						cs.m_notes.erase(ii.first);
+					}
+					else if (ii.second == "left") {
+						cs.m_left.erase(ii.first);
+					}
+					else if (ii.second == "right") {
+						cs.m_right.erase(ii.first);
+					}
+				}
+				cout << "\nThe mismatching Holds and Subs have been fixed automatically." << endl;
+				cout << "===============================" << endl;
+				//set status to success
+				fail_read &= (~(int)HOLD_SUB_MISMATCH);
+			}
+
+			if (fail_read == 0) {
+
+				//this function now only processes chart store class
+				int success = width_change(cs, width, start_time, end_time, side_mask, random_trigger);//width=1 as default width multiplier
+
+				//hold-sub mismatch
+				if (success == 2) {
+					cout << "Cannot save changed chart file." << endl;//hold-sub mismatch
+				}
+				//save
+				else if (!cs.to_file(_output)) {
+					cout << "Cannot save changed chart file." << endl;//invalid output chart name
+				}
+				else {
+					cout << "Changed sides: ";
+					if (side_mask & MID_CHANGE) {
+						cout << "middle ";
+					}
+					if (side_mask & LEFT_CHANGE) {
+						cout << "left ";
+					}
+					if (side_mask & RIGHT_CHANGE) {
+						cout << "right ";
+					}
+					cout << endl;
+					cwd = cwd + _output;
+					//cout << cwd << endl;
+					if (random_trigger == 1) {
+						cout << "Note width has been randomized, using randomize mode 1" << endl;
+					}
+					else if (random_trigger == 2) {
+						cout << "Note width has been randomized, using randomize mode 2" << endl;
+					}
+					if (def_stimestamp && def_etimestamp) {
+						cout << "Changed entire chart." << endl;
+					}
+					else if (def_stimestamp) {
+						cout << "Changed width from start to " << end_time << " bar." << endl;
+					}
+					else if (def_etimestamp) {
+						cout << "Changed width from " << start_time << " bar to end." << endl;
+					}
+					else {
+						cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
+					}
+#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
+					if (_access(cwd.c_str(), 0) == 0)
+#else
+					if (access(cwd.c_str(), 0) == 0)
+#endif
+					{
+						cout << "Changed chart saved as \"" << cwd << "\"" << endl;
+					}
+					else {
+						cout << "Changed chart saved as \"" << _output << "\"" << endl;
+					}
+				}
 			}
 			else {
-				cout << "Changed sides: ";
-				if (side_mask & MID_CHANGE) {
-					cout << "middle ";
-				}
-				if (side_mask & LEFT_CHANGE) {
-					cout << "left ";
-				}
-				if (side_mask & RIGHT_CHANGE) {
-					cout << "right ";
-				}
-				cout << endl;
-				cwd = cwd + _output;
-				//cout << cwd << endl;
-				if (random_trigger==1) {
-					cout << "Note width has been randomized, using randomize mode 1" << endl;
-				}
-				else if (random_trigger == 2) {
-					cout << "Note width has been randomized, using randomize mode 2" << endl;
-				}
-				if (def_stimestamp && def_etimestamp) {
-					cout << "Changed entire chart." << endl;
-				}
-				else if (def_stimestamp) {
-					cout << "Changed width from start to " << end_time << " bar." << endl;
-				}
-				else if (def_etimestamp) {
-					cout << "Changed width from " << start_time << " bar to end." << endl;
-				}
-				else {
-					cout << "Changed width from " << start_time << " bar to " << end_time << " bar." << endl;
-				}
-#if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
-				if (_access(cwd.c_str(), 0) == 0)
-#else
-				if (access(cwd.c_str(), 0) == 0)
-#endif
-				{
-					cout << "Changed chart saved as \"" << cwd << "\"" << endl;
-				}
-				else {
-					cout << "Changed chart saved as \"" << _output << "\"" << endl;
-				}
+				cout << "Unknown error" << endl;
 			}
+		}
+		catch (exception& ex) {
+			cout << ex.what() << endl;
 		}
 	}
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)

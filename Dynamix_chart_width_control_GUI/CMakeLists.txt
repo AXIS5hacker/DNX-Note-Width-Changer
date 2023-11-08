@@ -50,7 +50,6 @@ endif(MSVC)
 set(PROJECT_SOURCES
     chart_store.cpp
     chart_store.h
-    defs.h
     DNX_widthGUI_en_en.ts
     DNX_widthGUI_zh_CN.ts
     main.cpp
@@ -60,6 +59,8 @@ set(PROJECT_SOURCES
     maingui.qrc
     width_change.cpp
     resources.rc
+    defs.h
+    qdefs.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
