@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include"chart_store.h"
 #include<qtranslator.h>
+#include"hintdlg.h"
 #include"qdefs.h"
 namespace Ui {
 	class MainGUI;
@@ -43,6 +44,14 @@ private slots:
 private:
 	chart_store cs;
 	Ui::MainGUI* ui;
+	HintDlg* dlg;
+	void retranslate_text();
+	//translation strings;
+	QString trans_1;//"Hint"
+	QString trans_2;//"This chart has Hold-Sub mismatch problems, and they have been automatically fixed."
+	QString trans_3;//"Chart auto repair complete, press save button to save it or use the width changing options to make further changes."
+	QString trans_ftype;//"XML Chart files (*.xml);;All files (*.*)"
+	QString trans_choose;//"Choose an XML chart file"
 };
 
 #endif // MAINGUI_H

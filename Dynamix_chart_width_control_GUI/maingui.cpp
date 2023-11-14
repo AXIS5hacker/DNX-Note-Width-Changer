@@ -6,6 +6,7 @@
 #include<QMessageBox>
 #include<QInputDialog>
 #include"../version.h"
+#include"hintdlg.h"
 using std::exception;
 extern QString customfont;
 MainGUI::MainGUI(QWidget* parent) :
@@ -27,6 +28,14 @@ MainGUI::MainGUI(QWidget* parent) :
 	ui->label_7->setFont(QFont(customfont, 18, 300));
 }
 
+void MainGUI::retranslate_text() {
+	trans_1 = qApp->translate("MainGUI", "Hint", nullptr);
+	trans_2 = qApp->translate("MainGUI", "This chart has Hold-Sub mismatch problems, and they have been automatically fixed.", nullptr);
+	trans_3 = qApp->translate("MainGUI", "Chart auto repair complete, press save button to save it or use the width changing options to make further changes.", nullptr);
+	trans_ftype = qApp->translate("MainGUI", "XML Chart files (*.xml);;All files (*.*)", nullptr);
+	trans_choose = tr("Choose an XML chart file");
+}
+
 //translate to Chinese
 void MainGUI::translate_cn() {
 	QTranslator cn_trans;
@@ -36,6 +45,9 @@ void MainGUI::translate_cn() {
 		QMessageBox::critical(this, "Error", "Translation not found");
 	}
 	ui->retranslateUi(this);
+	//save translation text
+	retranslate_text();
+	//qDebug() << qApp->translate("MainGUI", "Chart auto repair complete, press save button to save it or use the width changing options to make further changes.", nullptr) << "cccc";
 	ui->loaded_file->setText(tmptext);
 	ui->version->setText(QString(VERSION_H));
 }
@@ -49,6 +61,8 @@ void MainGUI::translate_en() {
 		QMessageBox::critical(this, "Error", "Translation not found");
 	}
 	ui->retranslateUi(this);
+	//save translation text
+	retranslate_text();
 	ui->loaded_file->setText(tmptext);
 	ui->version->setText(QString(VERSION_H));
 }
@@ -60,14 +74,15 @@ void MainGUI::on_exitButton_clicked() {
 //The browse button
 void MainGUI::on_browse_clicked() {
 	QString filename = QFileDialog::getOpenFileName(this,
-		tr("Choose an XML chart file"),
-		QDir::currentPath(), tr("XML Chart files (*.xml);;All files (*.*)"));
+		trans_choose,
+		QDir::currentPath(), trans_ftype);
 	ui->open_file_name->setText(filename);
 }
 
 //The load file button
 void MainGUI::on_loadFile_clicked() {
 	ui->listWidget->clear();
+	//qDebug() << qApp->translate("MainGUI", "Chart auto repair complete, press save button to save it or use the width changing options to make further changes.", nullptr) << "cccc";
 	if (ui->open_file_name->text() == "") {
 		ui->loaded_file->setText("");
 		//no file loaded or load error, lock all objects
@@ -85,6 +100,10 @@ void MainGUI::on_loadFile_clicked() {
 	try {
 		int success = cs.readfile(qstr2str_utf8(ui->open_file_name->text()));
 		//fixing stage
+        bool fix_stage=false;
+        if(success!=0){
+            fix_stage=true;
+        }
 		//missing barpm
 		if (success & BARPM_MISSING) {
 			double new_barpm = 0;
@@ -182,10 +201,29 @@ void MainGUI::on_loadFile_clicked() {
 					cs.m_right.erase(ii.first);
 				}
 			}
-			QMessageBox::warning(this, "Hint", "This chart has Hold-Sub mismatch problems, and they have been automatically fixed.");
+            dlg=new HintDlg(
+				HintDlg::Warning,
+				trans_1,
+				trans_2,
+                HintDlg::Ok,this);
+            dlg->setAttribute(Qt::WA_DeleteOnClose); //关掉消息框后删除指针
+
+			dlg->exec();
+            //QMessageBox::warning(this, "Hint", "This chart has Hold-Sub mismatch problems, and they have been automatically fixed.");
 			//set status to success
 			success &= (~(int)HOLD_SUB_MISMATCH);
 		}
+        if(fix_stage){
+            dlg=new HintDlg(HintDlg::Warning,
+				trans_1,
+				trans_3,
+                HintDlg::Ok,this);
+			
+			
+            dlg->setAttribute(Qt::WA_DeleteOnClose); //关掉消息框后删除指针
+			//qDebug() << qApp->translate("MainGUI", "Chart auto repair complete, press save button to save it or use the width changing options to make further changes.", nullptr) <<"cccc";
+			dlg->exec();
+        }
 		if (success != 0) {
 			throw std::logic_error("Unknown error");
 		}

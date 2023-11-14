@@ -61,6 +61,8 @@ set(PROJECT_SOURCES
     resources.rc
     defs.h
     qdefs.h
+    hintdlg.cpp
+    hintdlg.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
