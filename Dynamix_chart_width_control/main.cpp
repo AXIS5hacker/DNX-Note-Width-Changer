@@ -318,17 +318,21 @@ int main(int argc, char* argv[])
 			}
 			//Hold-sub mismatch autofix
 			if (fail_read & HOLD_SUB_MISMATCH) {
-				cout << "mismatched notes found:" << endl;
+				cout << "mismatched notes found:\n\n" ;
+				cout << "note_id\tside\ttime" << endl;
 				for (auto& ii : cs.mismatched_notes) {
-					cout << ii.first << '\t' << ii.second << endl;
+					
 					//fix
 					if (ii.second == "middle") {
+						cout << ii.first << '\t' << ii.second << '\t' << cs.m_notes[ii.first].time << endl;
 						cs.m_notes.erase(ii.first);
 					}
 					else if (ii.second == "left") {
+						cout << ii.first << '\t' << ii.second << '\t' << cs.m_left[ii.first].time << endl;
 						cs.m_left.erase(ii.first);
 					}
 					else if (ii.second == "right") {
+						cout << ii.first << '\t' << ii.second << '\t' << cs.m_right[ii.first].time << endl;
 						cs.m_right.erase(ii.first);
 					}
 				}

@@ -210,99 +210,97 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="75"/>
+        <location filename="maingui.cpp" line="42"/>
         <source>Choose an XML chart file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="44"/>
-        <location filename="maingui.cpp" line="63"/>
+        <location filename="maingui.cpp" line="41"/>
         <source>XML Chart files (*.xml);;All files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="111"/>
+        <location filename="maingui.cpp" line="119"/>
         <source>Barpm fix</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="112"/>
+        <location filename="maingui.cpp" line="120"/>
         <source>Illegal Barpm! Please enter a valid Barpm:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="126"/>
-        <location filename="maingui.cpp" line="145"/>
+        <location filename="maingui.cpp" line="134"/>
+        <location filename="maingui.cpp" line="153"/>
         <source>Left side fix</source>
         <oldsource>Left side Fix</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="127"/>
+        <location filename="maingui.cpp" line="135"/>
         <source>Left side type is not specified! Please enter a valid side type</source>
         <oldsource>Left side type is not specified!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="146"/>
-        <location filename="maingui.cpp" line="179"/>
+        <location filename="maingui.cpp" line="154"/>
+        <location filename="maingui.cpp" line="187"/>
         <source>Invalid side type! Please enter again!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="159"/>
-        <location filename="maingui.cpp" line="178"/>
+        <location filename="maingui.cpp" line="167"/>
+        <location filename="maingui.cpp" line="186"/>
         <source>Right side fix</source>
         <oldsource>Right side Fix</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="160"/>
+        <location filename="maingui.cpp" line="168"/>
         <source>Right side type is not specified! Please enter a valid side type</source>
         <oldsource>Right side type is not specified! Please enter a valid side type.</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="41"/>
-        <location filename="maingui.cpp" line="60"/>
+        <location filename="maingui.cpp" line="38"/>
         <source>Hint</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="42"/>
-        <location filename="maingui.cpp" line="61"/>
-        <source>This chart has Hold-Sub mismatch problems, and they have been automatically fixed.</source>
-        <translation type="unfinished"></translation>
+        <location filename="maingui.cpp" line="39"/>
+        <source>This chart has Hold-Sub mismatch problems, and they have been automatically fixed.
+For more info, see %1 for details.</source>
+        <oldsource>This chart has Hold-Sub mismatch problems, and they have been automatically fixed.</oldsource>
+        <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="43"/>
-        <location filename="maingui.cpp" line="62"/>
+        <location filename="maingui.cpp" line="40"/>
         <source>Chart auto repair complete, press save button to save it or use the width changing options to make further changes.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="363"/>
+        <location filename="maingui.cpp" line="405"/>
         <source>Start time must be less than end time!</source>
         <oldsource>Start time must be lesser than end time!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="368"/>
+        <location filename="maingui.cpp" line="410"/>
         <source>Hold-Sub mismatch!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="372"/>
+        <location filename="maingui.cpp" line="414"/>
         <source>Width change applied!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="429"/>
+        <location filename="maingui.cpp" line="471"/>
         <source>Save chart to</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="430"/>
+        <location filename="maingui.cpp" line="472"/>
         <source>XML Chart files (*.xml)</source>
         <translation></translation>
     </message>

@@ -106,7 +106,7 @@ void chart_store::clear() {
 int chart_store::readfile(string fn) {
 	/** The function that reads a chart.
 	*  fn:filename
-	*  return:0:success;others:see defs.h;
+	*  return: 0:success; others:see defs.h;
 	*/
 
 	//empty the maps that stores the previous chart

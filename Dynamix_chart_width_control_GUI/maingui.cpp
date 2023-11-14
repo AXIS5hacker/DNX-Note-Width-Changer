@@ -7,7 +7,12 @@
 #include<QInputDialog>
 #include"../version.h"
 #include"hintdlg.h"
+#include<sstream>
+#include<ctime>
 using std::exception;
+using std::ofstream;
+using std::ostringstream;
+using std::endl;
 extern QString customfont;
 MainGUI::MainGUI(QWidget* parent) :
 	QMainWindow(parent),
@@ -28,9 +33,10 @@ MainGUI::MainGUI(QWidget* parent) :
 	ui->label_7->setFont(QFont(customfont, 18, 300));
 }
 
+//retranslate texts
 void MainGUI::retranslate_text() {
 	trans_1 = qApp->translate("MainGUI", "Hint", nullptr);
-	trans_2 = qApp->translate("MainGUI", "This chart has Hold-Sub mismatch problems, and they have been automatically fixed.", nullptr);
+	trans_2 = qApp->translate("MainGUI", "This chart has Hold-Sub mismatch problems, and they have been automatically fixed.\nFor more info, see %1 for details.", nullptr);
 	trans_3 = qApp->translate("MainGUI", "Chart auto repair complete, press save button to save it or use the width changing options to make further changes.", nullptr);
 	trans_ftype = qApp->translate("MainGUI", "XML Chart files (*.xml);;All files (*.*)", nullptr);
 	trans_choose = tr("Choose an XML chart file");
@@ -188,23 +194,57 @@ void MainGUI::on_loadFile_clicked() {
 		}
 		//Hold-sub mismatch autofix
 		if (success & HOLD_SUB_MISMATCH) {
+			//generate log
+			QDir d = QDir::currentPath();
+			if (!d.exists("logs")) {
+				d.mkdir("logs");
+				d.refresh();
+			}
+			d.cd("logs");
+			time_t timer = time(NULL);
+			struct tm *tblock = localtime(&timer);
+			ostringstream ostr;
+			string tarpath_string = d.path().toStdString();
+			ostr << tarpath_string<< "/" << "_" << tblock->tm_hour << "_" << tblock->tm_min << "_" << tblock->tm_sec << ".log";
+			string fname = ostr.str();
+			ofstream flog;
+			bool log_avail = true;
+			//create log
+			flog.open(fname);
+			if (flog.fail()) {
+				log_avail = false;
+			}
+			if (log_avail) {
+				flog << "mismatched notes found:\n\n";
+				flog << "note_id\tside\ttime" << endl;
+			}
 			for (auto& ii : cs.mismatched_notes) {
-
 				//fix
 				if (ii.second == "middle") {
+					if (log_avail) {
+						flog << ii.first << '\t' << ii.second << '\t' << cs.m_notes[ii.first].time << endl;
+					}
 					cs.m_notes.erase(ii.first);
 				}
 				else if (ii.second == "left") {
+					if (log_avail) {
+						flog << ii.first << '\t' << ii.second << '\t' << cs.m_left[ii.first].time << endl;
+					}
 					cs.m_left.erase(ii.first);
 				}
 				else if (ii.second == "right") {
+					if (log_avail) {
+						flog << ii.first << '\t' << ii.second << '\t' << cs.m_right[ii.first].time << endl;
+					}
 					cs.m_right.erase(ii.first);
 				}
 			}
+			flog << "The note(s) above is(are) automatically deleted." << endl;
+			flog.close();
             dlg=new HintDlg(
 				HintDlg::Warning,
 				trans_1,
-				trans_2,
+				trans_2.arg(QString::fromStdString(fname)),
                 HintDlg::Ok,this);
             dlg->setAttribute(Qt::WA_DeleteOnClose); //关掉消息框后删除指针
 
