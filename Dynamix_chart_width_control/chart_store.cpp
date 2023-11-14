@@ -6,7 +6,32 @@
 #include"defs.h"
 
 using namespace std;
+//functions used
+bool numcheck_int(string s) {
+	for (auto& p : s) {
+		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t'&&p!='-'&&p!='+') {
+			return false;
+		}
+	}
+	return true;
+}
 
+bool numcheck_decimal(string s) {
+	bool decimal_point_exists = false;
+	for (auto& p : s) {
+		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t' && p != '-' && p != '+') {
+			if (p == '.'&& (!decimal_point_exists)) {
+				decimal_point_exists = true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+//functions in class
 void chart_store::skip_space() {
 	/**
 	*  The function skips the white space and new line in xml file
@@ -269,8 +294,9 @@ void chart_store::parse_elem() {
 			//normal xml tag:<...>
 			buf_index++;//'>'
 			if (tag == "m_notes") {//start reading notes
-				if (modes == 0)modes = 1;
+				if (modes == 0)modes = 1;//middle mode
 				else if (modes == 1 || modes == 2 || modes == 3) {
+					//start reading notes
 					note_trigger = true;
 				}
 				else {
@@ -283,16 +309,27 @@ void chart_store::parse_elem() {
 				}
 			}
 			else if (tag == "CMapNoteAsset") {//head of a note
-				if (!note_reading) {
-					note_reading = true;
-					tempnote = new note;
+				if (note_trigger) {
+					if (!note_reading) {
+						note_reading = true;
+						tempnote = new note;
+					}
+					else {
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read notes error: <CMapNoteAsset> note asset error, triggered at line "
+							+ string(lln));
+						return;
+					}
 				}
 				else {
 					//get error position
 					char lln[64];
 					snprintf(lln, sizeof(lln), "%d.", lines);
 
-					throw std::logic_error("Read notes error: <CMapNoteAsset> note asset error, triggered at line "
+					throw std::logic_error("Read notes error: Unexpected note detected outside the note lists, triggered at line "
 						+ string(lln));
 					return;
 				}
@@ -320,7 +357,17 @@ void chart_store::parse_elem() {
 				}
 			}
 			//read text
-			string text = parse_elem_text();
+			string text = "";
+			try {
+				text = parse_elem_text();
+			}
+			catch (exception& ex) {
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.", tag_line);
+				string errmsg = ex.what();
+				throw std::logic_error(errmsg+" Tag begins at line " + string(lln));
+				return;
+			}
 			if (text != "") {
 				if (tag == "m_path") { //read name
 					name = text;
@@ -377,88 +424,202 @@ void chart_store::parse_elem() {
 					name_id = text;
 				}
 				else if (tag == "m_id") {//note id
-					extr.str(text);
-					if (tempnote != NULL) {
-						extr >> tempnote->id;//read current note id
-					}
-					else {
-						throw std::logic_error("Read notes error: Unable to create object \"note\"");
-						return;
-					}
-					extr.clear();
-				}
-				else if (tag == "m_type") {//note type
-					if (tempnote != NULL) {
-						if (text == "NORMAL")
-						{
-							tempnote->notetype = NORMAL;
+					if (note_reading) {
+						//only numbers should exist in id
+						bool valid = numcheck_int(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read note error: ID is not an integer. Occured at line " + string(lln));
+							return;
 						}
-						else if (text == "CHAIN") {
-							tempnote->notetype = CHAIN;
-						}
-						else if (text == "HOLD") {
-							tempnote->notetype = HOLD;
-						}
-						else if (text == "SUB") {
-							tempnote->notetype = SUB;
+						extr.str(text);
+						if (tempnote != NULL) {
+							extr >> tempnote->id;//read current note id
+							if (extr.fail()) {
+								printf("boo\n");
+							}
 						}
 						else {
-							char errnote[64], lln[64];
-							snprintf(errnote, sizeof(errnote), "%d", tempnote->id);
-							snprintf(lln, sizeof(lln), "%d.", lines);
-							throw std::logic_error("Read notes error: Invalid note type at note #" + string(errnote) + ".\n Please check line " + string(lln));
+							throw std::logic_error("Read notes error: Unable to create object \"note\"");
+							return;
+						}
+						extr.clear();
+					}
+					else {	//not in <CMapNoteAsset>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
 
+						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
+						return;
+					}
+				}
+				else if (tag == "m_type") {//note type
+					if (note_reading) {
+						if (tempnote != NULL) {
+							if (text == "NORMAL")
+							{
+								tempnote->notetype = NORMAL;
+							}
+							else if (text == "CHAIN") {
+								tempnote->notetype = CHAIN;
+							}
+							else if (text == "HOLD") {
+								tempnote->notetype = HOLD;
+							}
+							else if (text == "SUB") {
+								tempnote->notetype = SUB;
+							}
+							else {
+								char errnote[64], lln[64];
+								snprintf(errnote, sizeof(errnote), "%d", tempnote->id);
+								snprintf(lln, sizeof(lln), "%d.", lines);
+								throw std::logic_error("Read notes error: Invalid note type at note #" + string(errnote) + ".\n Please check line " + string(lln));
+
+							}
+						}
+						else {
+
+							throw std::logic_error("Read notes error: Invalid note type at undefined note");
 						}
 					}
-					else {
+					else {//not in <CMapNoteAsset>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
 
-						throw std::logic_error("Read notes error: Invalid note type at undefined note");
+						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
+						return;
 					}
 				}
 				else if (tag == "m_time" && note_trigger == true) {//note time
-					extr.str(text);
-					if (tempnote != NULL) {
-						extr >> tempnote->time;//read current note time
-						extr.clear();
+					if (note_reading) {
+						bool valid = numcheck_decimal(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read note error: time is not a valid decimal expression. Occured at line " + string(lln));
+							return;
+						}
+						extr.str(text);
+						if (tempnote != NULL) {
+							extr >> tempnote->time;//read current note time
+							extr.clear();
+						}
+						else {
+							throw std::logic_error("Read notes error: Unable to create object \"note\"");
+							return;
+						}
 					}
-					else {
-						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+					else {//not in <CMapNoteAsset>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
 						return;
 					}
 				}
 				else if (tag == "m_position") {//note position
-					extr.str(text);
-					if (tempnote != NULL) {
-						extr >> tempnote->position;//read current note position
-						extr.clear();
+					if (note_reading) {
+						bool valid = numcheck_decimal(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read note error: note position is not a valid decimal expression. Occured at line " + string(lln));
+							return;
+						}
+						extr.str(text);
+						if (tempnote != NULL) {
+							extr >> tempnote->position;//read current note position
+							extr.clear();
+						}
+						else {
+							throw std::logic_error("Read notes error: Unable to create object \"note\"");
+							return;
+						}
 					}
-					else {
-						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+					else {//not in <CMapNoteAsset>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
 						return;
+
 					}
 				}
 				else if (tag == "m_width") {//note width
-					extr.str(text);
-					if (tempnote != NULL) {
-						extr >> tempnote->width;//read current note width
-						extr.clear();
+					if (note_reading) {
+						bool valid = numcheck_decimal(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read note error: note width is not a valid decimal expression. Occured at line " + string(lln));
+							return;
+						}
+						extr.str(text);
+						if (tempnote != NULL) {
+							extr >> tempnote->width;//read current note width
+							extr.clear();
+						}
+						else {
+							throw std::logic_error("Read notes error: Unable to create object \"note\"");
+							return;
+						}
 					}
-					else {
-						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+					else {//not in <CMapNoteAsset>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
 						return;
+
 					}
 				}
 				else if (tag == "m_subId") {//sub id of a hold,-1 for non-hold notes
-					extr.str(text);
-					if (tempnote != NULL) {
-						extr >> tempnote->subid;//read subId
-						extr.clear();
+					if (note_reading) {
+						//only numbers should exist in id
+						bool valid = numcheck_int(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read note error: note sub ID is not an integer. Occured at line " + string(lln));
+							return;
+						}
+						extr.str(text);
+						if (tempnote != NULL) {
+							extr >> tempnote->subid;//read subId
+							extr.clear();
+						}
+						else {
+							throw std::logic_error("Read notes error: Unable to create object \"note\"");
+							return;
+						}
 					}
-					else {
-						throw std::logic_error("Read notes error: Unable to create object \"note\"");
+					else {//not in <CMapNoteAsset>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
 						return;
+
 					}
 				}
+				//ignore all other tags
 			}
 		}
 		else if (t_buf[buf_index] == '<') {
@@ -653,6 +814,8 @@ void chart_store::parse_elem() {
 							break;
 						default:
 							delete tempnote;
+							//need to set to NULL after deletion
+							tempnote = NULL;
 							//get error position
 							char lln[64];
 							snprintf(lln, sizeof(lln), "%d.", lines);
@@ -660,6 +823,8 @@ void chart_store::parse_elem() {
 							throw std::logic_error("Read notes error at line " + string(lln));
 						}
 						delete tempnote;
+						//need to set to NULL after deletion
+						tempnote = NULL;
 						note_reading = false;
 					}
 					else {
@@ -731,7 +896,11 @@ void chart_store::parse_elem() {
 				string val = parse_elem_attr_val();
 			}
 			catch (exception& ex) {
-				throw std::logic_error(ex.what());
+				char lln[64];
+				snprintf(lln, sizeof(lln), "%d.",tag_line);
+				string errmsg = ex.what();
+
+				throw std::logic_error(errmsg+" The xml tag begins at line "+string(lln));
 				return;
 			}
 		}
@@ -884,7 +1053,7 @@ string chart_store::parse_elem_attr_val() {
 		buf_index++;
 		//missing the right quotation mark
 		if (buf_index >= t_buf.length()) {
-			throw std::logic_error("attribute value syntax error");
+			throw std::logic_error("attribute value not closed (missing quotation mark).");
 			return "";
 		}
 	}

@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 {
 	cout << "Dynamix Chart Width Changer " << VERSION_H << endl;
 	cout << "Created by AXIS5" << endl;
-	cout << "Special thanks: i0ntempest" << endl << endl << endl;
+	cout << "Special thanks: i0ntempest, NordLandeW" << endl << endl << endl;
 	char pbuf[260];
 #if defined(_WIN64)||defined(WIN32)||defined(_WIN32)
 	_getcwd(pbuf, 260);
