@@ -7,7 +7,7 @@ A tool for changing the note width in a Dynamix Fanmade Chart.
 
 Created by AXIS5 (a.k.a.AXIS5Hacker).
 
-Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile, and [NordlandeW](https://github.com/Nagaselori) for helping testing the chart repairing module.
+Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile, and [NordlandeW](https://github.com/NagaseIori) for helping testing the chart repairing module.
 
 The project contains a graphic application (Dynamix_note_width_changer_GUI.exe on Windows) and a console application(Dynamix_chart_width_control_x64.exe on Windows).
 
