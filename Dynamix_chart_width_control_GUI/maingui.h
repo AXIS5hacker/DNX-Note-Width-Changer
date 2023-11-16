@@ -46,6 +46,9 @@ private:
 	Ui::MainGUI* ui;
 	HintDlg* dlg;
 	void retranslate_text();
+	//translators
+	QTranslator cn_trans;//Chinese
+	QTranslator en_trans;//English
 	//translation strings;
 	QString trans_1;//"Hint"
 	QString trans_2;//"This chart has Hold-Sub mismatch problems, and they have been automatically fixed."

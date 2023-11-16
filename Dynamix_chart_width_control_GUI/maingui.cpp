@@ -19,6 +19,9 @@ MainGUI::MainGUI(QWidget* parent) :
 	ui(new Ui::MainGUI)
 {
 	ui->setupUi(this);
+	//load translators
+	cn_trans.load(":/translations/DNX_widthGUI_zh_CN.qm");
+	en_trans.load(":/translations/DNX_widthGUI_en_en.qm");
 	translate_en();
 	//connect the slider to the spinbox
 	connect(ui->horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(change_multiplier(int)));
@@ -31,6 +34,8 @@ MainGUI::MainGUI(QWidget* parent) :
 	connect(ui->active_randomizer1, SIGNAL(clicked()), this, SLOT(activate_multiplier()));
 	connect(ui->active_randomizer2, SIGNAL(clicked()), this, SLOT(activate_multiplier()));
 	ui->label_7->setFont(QFont(customfont, 18, 300));
+	
+	
 }
 
 //retranslate texts
@@ -44,8 +49,6 @@ void MainGUI::retranslate_text() {
 
 //translate to Chinese
 void MainGUI::translate_cn() {
-	QTranslator cn_trans;
-	cn_trans.load(":/translations/DNX_widthGUI_zh_CN.qm");
 	QString tmptext = ui->loaded_file->text();
 	if (!qApp->installTranslator(&cn_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
@@ -60,8 +63,6 @@ void MainGUI::translate_cn() {
 
 //translate to English
 void MainGUI::translate_en() {
-	QTranslator en_trans;
-	en_trans.load(":/translations/DNX_widthGUI_en_en.qm");
 	QString tmptext = ui->loaded_file->text();
 	if (!qApp->installTranslator(&en_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
