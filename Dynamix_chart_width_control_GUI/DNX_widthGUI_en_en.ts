@@ -220,48 +220,48 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="133"/>
+        <location filename="maingui.cpp" line="139"/>
         <source>Barpm fix</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="134"/>
+        <location filename="maingui.cpp" line="140"/>
         <source>Illegal Barpm! Please enter a valid Barpm:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="140"/>
+        <location filename="maingui.cpp" line="146"/>
         <source>Barpm is set to %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="148"/>
-        <location filename="maingui.cpp" line="167"/>
+        <location filename="maingui.cpp" line="154"/>
+        <location filename="maingui.cpp" line="173"/>
         <source>Left side fix</source>
         <oldsource>Left side Fix</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="149"/>
+        <location filename="maingui.cpp" line="155"/>
         <source>Left side type is not specified! Please enter a valid side type</source>
         <oldsource>Left side type is not specified!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="168"/>
-        <location filename="maingui.cpp" line="201"/>
+        <location filename="maingui.cpp" line="174"/>
+        <location filename="maingui.cpp" line="207"/>
         <source>Invalid side type! Please enter again!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="181"/>
-        <location filename="maingui.cpp" line="200"/>
+        <location filename="maingui.cpp" line="187"/>
+        <location filename="maingui.cpp" line="206"/>
         <source>Right side fix</source>
         <oldsource>Right side Fix</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="182"/>
+        <location filename="maingui.cpp" line="188"/>
         <source>Right side type is not specified! Please enter a valid side type</source>
         <oldsource>Right side type is not specified! Please enter a valid side type.</oldsource>
         <translation></translation>
@@ -284,33 +284,35 @@ For more info, see %1 for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="284"/>
+        <location filename="maingui.cpp" line="65"/>
+        <location filename="maingui.cpp" line="88"/>
+        <location filename="maingui.cpp" line="290"/>
         <source>Current Chart File: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="419"/>
+        <location filename="maingui.cpp" line="425"/>
         <source>Start time must be less than end time!</source>
         <oldsource>Start time must be lesser than end time!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="424"/>
+        <location filename="maingui.cpp" line="430"/>
         <source>Hold-Sub mismatch!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="428"/>
+        <location filename="maingui.cpp" line="434"/>
         <source>Width change applied!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="485"/>
+        <location filename="maingui.cpp" line="491"/>
         <source>Save chart to</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="486"/>
+        <location filename="maingui.cpp" line="492"/>
         <source>XML Chart files (*.xml)</source>
         <translation></translation>
     </message>
