@@ -229,65 +229,70 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="42"/>
+        <location filename="maingui.cpp" line="48"/>
         <source>Choose an XML chart file</source>
         <translation>选择XML谱面</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="41"/>
+        <location filename="maingui.cpp" line="47"/>
         <source>XML Chart files (*.xml);;All files (*.*)</source>
         <translation>XML 谱面文件 (*.xml);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="119"/>
+        <location filename="maingui.cpp" line="133"/>
         <source>Barpm fix</source>
         <oldsource>Barpm Fix</oldsource>
         <translation>Barpm修复</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="120"/>
+        <location filename="maingui.cpp" line="134"/>
         <source>Illegal Barpm! Please enter a valid Barpm:</source>
         <translation>无效的Barpm! 请输入合法的Barpm数值:</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="134"/>
-        <location filename="maingui.cpp" line="153"/>
+        <location filename="maingui.cpp" line="140"/>
+        <source>Barpm is set to %1</source>
+        <translation>Barpm已设置为%1</translation>
+    </message>
+    <message>
+        <location filename="maingui.cpp" line="148"/>
+        <location filename="maingui.cpp" line="167"/>
         <source>Left side fix</source>
         <oldsource>Left side Fix</oldsource>
         <translation>左侧面类型修复</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="135"/>
+        <location filename="maingui.cpp" line="149"/>
         <source>Left side type is not specified! Please enter a valid side type</source>
         <oldsource>Left side type is not specified!</oldsource>
         <translation>未指定左侧面类型! 请输入合法的左侧面类型</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="154"/>
-        <location filename="maingui.cpp" line="187"/>
+        <location filename="maingui.cpp" line="168"/>
+        <location filename="maingui.cpp" line="201"/>
         <source>Invalid side type! Please enter again!</source>
         <translation>侧面类型无效! 请重新输入!</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="167"/>
-        <location filename="maingui.cpp" line="186"/>
+        <location filename="maingui.cpp" line="181"/>
+        <location filename="maingui.cpp" line="200"/>
         <source>Right side fix</source>
         <oldsource>Right side Fix</oldsource>
         <translation>右侧面类型修复</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="168"/>
+        <location filename="maingui.cpp" line="182"/>
         <source>Right side type is not specified! Please enter a valid side type</source>
         <oldsource>Right side type is not specified! Please enter a valid side type.</oldsource>
         <translation>未指定右侧面类型! 请输入合法的右侧面类型</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="38"/>
+        <location filename="maingui.cpp" line="44"/>
         <source>Hint</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="39"/>
+        <location filename="maingui.cpp" line="45"/>
         <source>This chart has Hold-Sub mismatch problems, and they have been automatically fixed.
 For more info, see %1 for details.</source>
         <oldsource>This chart has Hold-Sub mismatch problems, and they have been automatically fixed.</oldsource>
@@ -295,33 +300,38 @@ For more info, see %1 for details.</source>
 详情见%1。</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="40"/>
+        <location filename="maingui.cpp" line="46"/>
         <source>Chart auto repair complete, press save button to save it or use the width changing options to make further changes.</source>
         <translation>谱面自动修复完成，您可以点击保存修改按钮将其保存，或者用键宽缩放选项作更多修改。</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="405"/>
+        <location filename="maingui.cpp" line="284"/>
+        <source>Current Chart File: %1</source>
+        <translation>当前谱面文件: %1</translation>
+    </message>
+    <message>
+        <location filename="maingui.cpp" line="419"/>
         <source>Start time must be less than end time!</source>
         <oldsource>Start time must be lesser than end time!</oldsource>
         <translation>开始时间必须小于结束时间!</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="410"/>
+        <location filename="maingui.cpp" line="424"/>
         <source>Hold-Sub mismatch!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="414"/>
+        <location filename="maingui.cpp" line="428"/>
         <source>Width change applied!</source>
         <translation>键宽缩放已应用!</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="471"/>
+        <location filename="maingui.cpp" line="485"/>
         <source>Save chart to</source>
         <translation>保存谱面到</translation>
     </message>
     <message>
-        <location filename="maingui.cpp" line="472"/>
+        <location filename="maingui.cpp" line="486"/>
         <source>XML Chart files (*.xml)</source>
         <translation>XML谱面文件 (*.xml)</translation>
     </message>

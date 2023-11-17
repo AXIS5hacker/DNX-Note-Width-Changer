@@ -19,6 +19,7 @@ MainGUI::MainGUI(QWidget* parent) :
 	ui(new Ui::MainGUI)
 {
 	ui->setupUi(this);
+	translator_loaded = false;
 	//load translators
 	cn_trans.load(":/translations/DNX_widthGUI_zh_CN.qm");
 	en_trans.load(":/translations/DNX_widthGUI_en_en.qm");
@@ -49,11 +50,20 @@ void MainGUI::retranslate_text() {
 
 //translate to Chinese
 void MainGUI::translate_cn() {
-	QString tmptext = ui->loaded_file->text();
+	QString tmptext = "";
+	//need to uninstall the current translator before loading a new one
+	if (translator_loaded) {
+		qApp->removeTranslator(currentTranslator);
+	}
 	if (!qApp->installTranslator(&cn_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
 	}
+	currentTranslator = &cn_trans;
+	translator_loaded = true;
 	ui->retranslateUi(this);
+	if (cs.chart_filename != "") {
+		tmptext = tr("Current Chart File: %1").arg(QString::fromStdString(cs.chart_filename));
+	}
 	//save translation text
 	retranslate_text();
 	//qDebug() << qApp->translate("MainGUI", "Chart auto repair complete, press save button to save it or use the width changing options to make further changes.", nullptr) << "cccc";
@@ -63,11 +73,20 @@ void MainGUI::translate_cn() {
 
 //translate to English
 void MainGUI::translate_en() {
-	QString tmptext = ui->loaded_file->text();
+	QString tmptext = "";
+	//need to uninstall the current translator before loading a new one
+	if (translator_loaded) {
+		qApp->removeTranslator(currentTranslator);
+	}
 	if (!qApp->installTranslator(&en_trans)) {
 		QMessageBox::critical(this, "Error", "Translation not found");
 	}
+	currentTranslator = &en_trans;
+	translator_loaded = true;
 	ui->retranslateUi(this);
+	if (cs.chart_filename != "") {
+		tmptext = tr("Current Chart File: %1").arg(QString::fromStdString(cs.chart_filename));
+	}
 	//save translation text
 	retranslate_text();
 	ui->loaded_file->setText(tmptext);
@@ -124,7 +143,7 @@ void MainGUI::on_loadFile_clicked() {
 
 
 			cs.set_barpm(new_barpm);
-			QMessageBox::warning(this, "Hint", "Barpm is set to " + QString::number(new_barpm));
+			QMessageBox::warning(this, trans_1, tr("Barpm is set to %1").arg(new_barpm));
 			success &= (~(int)BARPM_MISSING);
 		}
 		//missing left side
@@ -268,7 +287,7 @@ void MainGUI::on_loadFile_clicked() {
 		if (success != 0) {
 			throw std::logic_error("Unknown error");
 		}
-		ui->loaded_file->setText(QString("Current Chart File: ") + ui->open_file_name->text());
+		ui->loaded_file->setText(tr("Current Chart File: %1").arg(QString::fromStdString(cs.chart_filename)));
 	}
 	catch (exception& ex) {
 		ui->loaded_file->setText("");

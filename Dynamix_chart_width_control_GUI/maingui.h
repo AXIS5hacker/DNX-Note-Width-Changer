@@ -45,10 +45,12 @@ private:
 	chart_store cs;
 	Ui::MainGUI* ui;
 	HintDlg* dlg;
+	bool translator_loaded;//the flag for whether a translator is already loaded
 	void retranslate_text();
 	//translators
 	QTranslator cn_trans;//Chinese
 	QTranslator en_trans;//English
+	QTranslator *currentTranslator;//current translator pointer
 	//translation strings;
 	QString trans_1;//"Hint"
 	QString trans_2;//"This chart has Hold-Sub mismatch problems, and they have been automatically fixed."
