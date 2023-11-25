@@ -3,6 +3,6 @@
 * The header that specifies the program version.
 *
 * */
-#define VERSION_H "v1.2.31"
+#define VERSION_H "v1.2.32"
 
 #endif

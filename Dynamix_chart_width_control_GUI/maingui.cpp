@@ -224,7 +224,7 @@ void MainGUI::on_loadFile_clicked() {
 			time_t timer = time(NULL);
 			struct tm *tblock = localtime(&timer);
 			ostringstream ostr;
-			string tarpath_string = d.path().toStdString();
+			string tarpath_string = qstr2str_utf8(d.path());
 			ostr << tarpath_string<< "/" << "_" << tblock->tm_hour << "_" << tblock->tm_min << "_" << tblock->tm_sec << ".log";
 			string fname = ostr.str();
 			ofstream flog;
@@ -233,6 +233,7 @@ void MainGUI::on_loadFile_clicked() {
 			flog.open(fname);
 			if (flog.fail()) {
 				log_avail = false;
+				//QMessageBox::information(this, "info", str2qstr_utf8(fname));
 			}
 			if (log_avail) {
 				flog << "mismatched notes found:\n\n";
@@ -264,7 +265,7 @@ void MainGUI::on_loadFile_clicked() {
             dlg=new HintDlg(
 				HintDlg::Warning,
 				trans_1,
-				trans_2.arg(QString::fromStdString(fname)),
+				trans_2.arg(str2qstr_utf8(fname)),
                 HintDlg::Ok,this);
             dlg->setAttribute(Qt::WA_DeleteOnClose); //关掉消息框后删除指针
 
