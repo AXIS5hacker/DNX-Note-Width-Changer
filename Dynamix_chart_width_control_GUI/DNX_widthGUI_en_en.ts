@@ -220,6 +220,12 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="maingui.cpp" line="88"/>
+        <location filename="maingui.cpp" line="290"/>
+        <source>Current Chart File: </source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="maingui.cpp" line="139"/>
         <source>Barpm fix</source>
         <translation></translation>
@@ -285,8 +291,6 @@ For more info, see %1 for details.</source>
     </message>
     <message>
         <location filename="maingui.cpp" line="65"/>
-        <location filename="maingui.cpp" line="88"/>
-        <location filename="maingui.cpp" line="290"/>
         <source>Current Chart File: %1</source>
         <translation></translation>
     </message>

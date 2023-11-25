@@ -239,6 +239,12 @@
         <translation>XML 谱面文件 (*.xml);;所有文件 (*.*)</translation>
     </message>
     <message>
+        <location filename="maingui.cpp" line="88"/>
+        <location filename="maingui.cpp" line="290"/>
+        <source>Current Chart File: </source>
+        <translation>当前谱面文件: </translation>
+    </message>
+    <message>
         <location filename="maingui.cpp" line="139"/>
         <source>Barpm fix</source>
         <oldsource>Barpm Fix</oldsource>
@@ -306,8 +312,6 @@ For more info, see %1 for details.</source>
     </message>
     <message>
         <location filename="maingui.cpp" line="65"/>
-        <location filename="maingui.cpp" line="88"/>
-        <location filename="maingui.cpp" line="290"/>
         <source>Current Chart File: %1</source>
         <translation>当前谱面文件: %1</translation>
     </message>

@@ -85,7 +85,7 @@ void MainGUI::translate_en() {
 	translator_loaded = true;
 	ui->retranslateUi(this);
 	if (cs.chart_filename != "") {
-		tmptext = tr("Current Chart File: %1").arg(QString::fromStdString(cs.chart_filename));
+		tmptext = (tr("Current Chart File: ")+str2qstr_utf8(cs.chart_filename));
 	}
 	//save translation text
 	retranslate_text();
@@ -287,7 +287,7 @@ void MainGUI::on_loadFile_clicked() {
 		if (success != 0) {
 			throw std::logic_error("Unknown error");
 		}
-		ui->loaded_file->setText(tr("Current Chart File: %1").arg(QString::fromStdString(cs.chart_filename)));
+		ui->loaded_file->setText(tr("Current Chart File: ") + str2qstr_utf8(cs.chart_filename));
 	}
 	catch (exception& ex) {
 		ui->loaded_file->setText("");
