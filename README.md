@@ -1,4 +1,4 @@
-﻿# DNX-Note-Width-Changer
+# DNX-Note-Width-Changer
 ![Github stars](https://img.shields.io/github/stars/AXIS5hacker/DNX-Note-Width-Changer?logo=github)
 ![GitHub](https://img.shields.io/github/license/AXIS5hacker/DNX-Note-Width-Changer)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/AXIS5hacker/DNX-Note-Width-Changer?color=violet)](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases/tag/v1.0.5)
@@ -9,7 +9,7 @@ Created by AXIS5 (a.k.a.AXIS5Hacker).
 
 Special thanks to [i0ntempest](https://github.com/i0ntempest) for helping me debugging and making the Makefile, and [NordlandeW](https://github.com/NagaseIori) for helping testing the chart repairing module.
 
-The project contains a graphic application (Dynamix_note_width_changer_GUI.exe on Windows) and a console application(Dynamix_chart_width_control_x64.exe on Windows).
+The project contains a graphic application (Dynamix_note_width_changer_GUI.exe on Windows) and a console application (Dynamix_chart_width_control_x64.exe on Windows).
 
 # Installation
 
@@ -23,45 +23,70 @@ Or you can download `DNX_width_changer_setup.exe` and run this setup program to 
 
 If you can't run the programs on your computer, try running `vc_redist.x64.exe` in the "GUI" directory to install a MICROSOFT VISUAL C++ 2019 RUNTIME on your computer to run the program.
 
-### macOS & Linux (for the console application)
+### macOS
+
+#### GUI Application
+
+Download  `Dynamix Chart Width Changer.dmg` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases), drag the app to Applications folder and open from Launchpad.
+
+*Note: This app supports the latest major version of macOS and Apple silicon (arm64) Macs only. If you're running an older OS or using an Intel (x86_64) Mac, MacPorts can build the app for your platform.*
+
+Or install using [MacPorts](https://www.macports.org): 
+
+1. Install Xcode Command Line Tools: using terminal, `xcode-select --install`
+2. [Install MacPorts](https://www.macports.org/install.php)
+3. Install the app: using terminal, `sudo port install dynamix-chart-width-control-gui`, then open the app from Launchpad.
+
+#### CLI Application
 
 Install using [MacPorts](https://www.macports.org): `sudo port install dynamix-chart-width-control`
 
-Or download `dynamix-chart-width-control-macos` (x86_64+arm64 universal binary) from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run in Terminal
+Or download `dynamix-chart-width-control-macos` (x86_64+arm64 universal binary, supports macOS 12 and later) from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run in Terminal
 
-Or build manually:
+### Building the GUI application on macOS & Linux
 
-1. Download the tarball from release, or clone the project
-2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix\ chart\ width\ control/`
-3. `make && sudo make install` installs the binary to `/usr/local/bin` by default
+This application is built with Qt 6. To build the GUI application on macOS and Linux systems, you need to download Qt 6, and install CMake build system as well as support libraries for Qt applications.
 
-### Building the GUI application on Linux
+#### macOS ([Xcode](https://developer.apple.com/xcode/) and [MacPorts](https://www.macports.org)):
 
-To build the GUI program on Linux systems, you need to download Qt 6.2.4 first, then install support for Qt applications on Linux machines.
+Install Xcode Command Line Tools:
 
-Debian/Ubuntu (apt-get):
+`xcode-select --install`
+
+Then [install MacPorts](https://www.macports.org/install.php), then:
+
+`sudo port install cmake qt6-qtbase qt6-qttools`
+
+#### Debian/Ubuntu (apt-get):
 
 `sudo apt-get install build-essential libgl1-mesa-dev`
 
-Fedora/RHEL/CentOS (yum):
+#### Fedora/RHEL/CentOS (yum):
 
 ```
 sudo yum groupinstall "C Development Tools and Libraries"
 sudo yum install mesa-libGL-devel
 ```
 
-openSUSE (zypper):
+#### openSUSE (zypper):
 
 `sudo zypper install -t pattern devel_basis`
 
 Then you can proceed with CMake:
 
 1. Clone the project
-2. Using terminal,change to the base directory of this project
+2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix_chart_width_control_GUI/`
 3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it.
 4. `cmake --build ./exampleBuildDirectory`, and you will get the program.
 
-# Arguments(for console application)
+### Building the CLI application on macOS & Linux
+
+1. Download the tarball from release, or clone the project
+2. (macOS only) Using terminal, `xcode-select --install`  will install Xcode Command Line Tools for you
+3. Using terminal, `cd DNX-Note-Width-Changer/Dynamix_chart_width_control/`
+4. `make && sudo make install` installs the binary to `/usr/local/bin` by default
+
+# Arguments (for console application)
 
 filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
 
