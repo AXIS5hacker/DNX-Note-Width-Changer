@@ -62,7 +62,7 @@ void MainGUI::translate_cn() {
 	translator_loaded = true;
 	ui->retranslateUi(this);
 	if (cs.chart_filename != "") {
-		tmptext = tr("Current Chart File: %1").arg(QString::fromStdString(cs.chart_filename));
+		tmptext = (tr("Current Chart File: ") + str2qstr_utf8(cs.chart_filename));
 	}
 	//save translation text
 	retranslate_text();
