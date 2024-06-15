@@ -1,6 +1,7 @@
 ﻿/**
 * Creator:AXIS5
 * This is the realization of class chart_store
+* Note: this file must be the same in both CLI application and GUI application
 */
 #include "chart_store.h"
 #include"defs.h"
@@ -9,7 +10,7 @@ using namespace std;
 //functions used
 bool numcheck_int(string s) {
 	for (auto& p : s) {
-		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t'&&p!='-'&&p!='+') {
+		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t' && p != '-' && p != '+') {
 			return false;
 		}
 	}
@@ -20,7 +21,7 @@ bool numcheck_decimal(string s) {
 	bool decimal_point_exists = false;
 	for (auto& p : s) {
 		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t' && p != '-' && p != '+') {
-			if (p == '.'&& (!decimal_point_exists)) {
+			if (p == '.' && (!decimal_point_exists)) {
 				decimal_point_exists = true;
 			}
 			else {
@@ -101,6 +102,11 @@ void chart_store::clear() {
 	ltype = sides::UNKNOWN;
 	rtype = sides::UNKNOWN;
 	lines = 1;//beginning
+
+	//erase note count
+	tap_count = 0;
+	chain_count = 0;
+	hold_count = 0;
 }
 
 int chart_store::readfile(string fn) {
@@ -207,6 +213,7 @@ int chart_store::readfile(string fn) {
 				//store mismatch hold
 				mismatched_notes.push_back(make_pair(it.first, "middle"));
 				mismatch = true;
+				hold_count--;//hold count - 1
 			}
 			else {
 				sub_mid.erase(it.second);
@@ -225,6 +232,7 @@ int chart_store::readfile(string fn) {
 				//store mismatch hold
 				mismatched_notes.push_back(make_pair(it.first, "left"));
 				mismatch = true;
+				hold_count--;//hold count - 1
 			}
 			else {
 				sub_left.erase(it.second);
@@ -243,6 +251,7 @@ int chart_store::readfile(string fn) {
 				//store mismatch hold
 				mismatched_notes.push_back(make_pair(it.first, "right"));
 				mismatch = true;
+				hold_count--;//hold count - 1
 			}
 			else {
 				sub_right.erase(it.second);
@@ -365,7 +374,7 @@ void chart_store::parse_elem() {
 				char lln[64];
 				snprintf(lln, sizeof(lln), "%d.", tag_line);
 				string errmsg = ex.what();
-				throw std::logic_error(errmsg+" Tag begins at line " + string(lln));
+				throw std::logic_error(errmsg + " Tag begins at line " + string(lln));
 				return;
 			}
 			if (text != "") {
@@ -749,17 +758,24 @@ void chart_store::parse_elem() {
 						}
 						//note info is complete
 						switch (modes) {
-						case 1:
+						case 1://middle
 							//scan for duplicated note id
 							if (m_notes.find(temp_id) == m_notes.end()) {
 								m_notes.insert(make_pair(temp_id, *tempnote));
 								//store hold for hold-sub checking
 								if (tempnote->notetype == types::HOLD) {
 									hold_mid.insert(make_pair(temp_id, tempnote->subid));
+									hold_count++;
 								}
 								//store sub for hold-sub checking
 								else if (tempnote->notetype == types::SUB) {
 									sub_mid.insert(temp_id);
+								}
+								else if (tempnote->notetype == types::NORMAL) {
+									tap_count++;
+								}
+								else if (tempnote->notetype == types::CHAIN) {
+									chain_count++;
 								}
 							}
 							//duplicated
@@ -770,17 +786,24 @@ void chart_store::parse_elem() {
 								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
 							}
 							break;
-						case 2:
+						case 2://left
 							//scan for duplicated note id
 							if (m_left.find(temp_id) == m_left.end()) {
 								m_left.insert(make_pair(temp_id, *tempnote));
 								//store hold for hold-sub checking
 								if (tempnote->notetype == types::HOLD) {
 									hold_left.insert(make_pair(temp_id, tempnote->subid));
+									hold_count++;
 								}
 								//store sub for hold-sub checking
 								else if (tempnote->notetype == types::SUB) {
 									sub_left.insert(temp_id);
+								}
+								else if (tempnote->notetype == types::NORMAL) {
+									tap_count++;
+								}
+								else if (tempnote->notetype == types::CHAIN) {
+									chain_count++;
 								}
 							}
 							//duplicated
@@ -791,17 +814,24 @@ void chart_store::parse_elem() {
 								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
 							}
 							break;
-						case 3:
+						case 3://right
 							//scan for duplicated note id
 							if (m_right.find(temp_id) == m_right.end()) {
 								m_right.insert(make_pair(temp_id, *tempnote));
 								//store hold for hold-sub checking
 								if (tempnote->notetype == types::HOLD) {
 									hold_right.insert(make_pair(temp_id, tempnote->subid));
+									hold_count++;
 								}
 								//store sub for hold-sub checking
 								else if (tempnote->notetype == types::SUB) {
 									sub_right.insert(temp_id);
+								}
+								else if (tempnote->notetype == types::NORMAL) {
+									tap_count++;
+								}
+								else if (tempnote->notetype == types::CHAIN) {
+									chain_count++;
 								}
 							}
 							//duplicated
@@ -897,10 +927,10 @@ void chart_store::parse_elem() {
 			}
 			catch (exception& ex) {
 				char lln[64];
-				snprintf(lln, sizeof(lln), "%d.",tag_line);
+				snprintf(lln, sizeof(lln), "%d.", tag_line);
 				string errmsg = ex.what();
 
-				throw std::logic_error(errmsg+" The xml tag begins at line "+string(lln));
+				throw std::logic_error(errmsg + " The xml tag begins at line " + string(lln));
 				return;
 			}
 		}

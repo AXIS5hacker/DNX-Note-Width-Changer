@@ -1,6 +1,7 @@
 ﻿/**
 * Creator:AXIS5
 * This is the definition of class chart_store
+* Note: this file must be the same in both CLI application and GUI application
 */
 #ifndef CHART_STORE_H
 #define CHART_STORE_H
@@ -19,7 +20,7 @@ using std::map;
 using std::set;
 
 //added default note type: NULLTP
-enum types { NORMAL = 1, CHAIN, HOLD, SUB , NULLTP};
+enum types { NORMAL = 1, CHAIN, HOLD, SUB, NULLTP };
 //added default sides type: UNKNOWN
 enum sides { PAD, MIXER, MULTI, UNKNOWN };
 struct note {
@@ -30,11 +31,11 @@ struct note {
 	double width;
 	int subid;
 	//constructor
-	note() :id(-1), 
-		notetype(types::NULLTP), 
-		time(-1e8), 
-		position(-1e8), 
-		width(-1e8), 
+	note() :id(-1),
+		notetype(types::NULLTP),
+		time(-1e8),
+		position(-1e8),
+		width(-1e8),
 		subid(INT_MIN) {}
 };
 class chart_store
@@ -58,6 +59,13 @@ public:
 	void set_lside(sides x) { ltype = x; }
 	void set_rside(sides x) { rtype = x; }
 
+	//fetch note count
+	int get_mid_count() { return m_notes.size(); }
+	int get_left_count() { return m_left.size(); }
+	int get_right_count() { return m_right.size(); }
+	int get_tap_count() { return tap_count; }
+	int get_chain_count() { return chain_count; }
+	int get_hold_count() { return hold_count; }
 private:
 
 	string name;//song name
@@ -85,7 +93,10 @@ private:
 	string parse_elem_text();//parsing element text
 	string parse_elem_attr_key();//parsing element attribute name
 	string parse_elem_attr_val();//parsing element attribute value
-
+	//note counter
+	int tap_count;
+	int chain_count;
+	int hold_count;
 
 };
 

@@ -120,7 +120,14 @@ void MainGUI::on_loadFile_clicked() {
 		ui->widthSpinBox->setEnabled(false);
 		ui->widthMultiply->setEnabled(false);
 		ui->modeSelect->setEnabled(false);
-		QMessageBox::critical(this, "Error", "Empty filename.");
+		//reset note count
+		ui->middleCount->setText("");
+		ui->leftCount->setText("");
+		ui->rightCount->setText("");
+		ui->tapCount->setText("");
+		ui->chainCount->setText("");
+		ui->holdCount->setText("");
+		QMessageBox::critical(this, "Error", tr("Empty filename."));
 		return;
 	}
 	try {
@@ -289,6 +296,13 @@ void MainGUI::on_loadFile_clicked() {
 			throw std::logic_error("Unknown error");
 		}
 		ui->loaded_file->setText(tr("Current Chart File: ") + str2qstr_utf8(cs.chart_filename));
+		//show note count
+		ui->middleCount->setText(QString::number(cs.get_mid_count()));
+		ui->leftCount->setText(QString::number(cs.get_left_count()));
+		ui->rightCount->setText(QString::number(cs.get_right_count()));
+		ui->tapCount->setText(QString::number(cs.get_tap_count()));
+		ui->chainCount->setText(QString::number(cs.get_chain_count()));
+		ui->holdCount->setText(QString::number(cs.get_hold_count()));
 	}
 	catch (exception& ex) {
 		ui->loaded_file->setText("");
@@ -301,6 +315,13 @@ void MainGUI::on_loadFile_clicked() {
 		ui->widthSpinBox->setEnabled(false);
 		ui->widthMultiply->setEnabled(false);
 		ui->modeSelect->setEnabled(false);
+		//reset note count
+		ui->middleCount->setText("");
+		ui->leftCount->setText("");
+		ui->rightCount->setText("");
+		ui->tapCount->setText("");
+		ui->chainCount->setText("");
+		ui->holdCount->setText("");
 		QMessageBox::critical(this, "Error", ex.what());
 		return;
 	}
