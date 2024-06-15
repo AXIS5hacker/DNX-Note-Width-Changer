@@ -88,7 +88,7 @@ Then you can proceed with CMake:
 
 # Arguments (for console application)
 
-filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]
+filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r] [-c]
 
 
 -w width_multiplier	   change the width of a chart, width_multiplier is a decimal number
@@ -114,6 +114,8 @@ filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(b
 -?                      help
 
 -h                      help, same as -?
+
+-c                   show the detailed note quantity of this chart (v1.3.x and newer)
 
 # About the random width modes
 
