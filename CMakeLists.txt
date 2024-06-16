@@ -1,4 +1,4 @@
-#Compile all
+﻿#Compile all
 cmake_minimum_required(VERSION 3.5)
 
 project(Dynamix_note_width_changer)

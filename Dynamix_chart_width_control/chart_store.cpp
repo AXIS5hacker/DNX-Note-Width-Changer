@@ -1,6 +1,7 @@
 ﻿/**
 * Creator:AXIS5
 * This is the realization of class chart_store
+* Note: this file must be the same in both CLI application and GUI application
 */
 #include "chart_store.h"
 #include"defs.h"
@@ -9,7 +10,7 @@ using namespace std;
 //functions used
 bool numcheck_int(string s) {
 	for (auto& p : s) {
-		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t'&&p!='-'&&p!='+') {
+		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t' && p != '-' && p != '+') {
 			return false;
 		}
 	}
@@ -20,7 +21,7 @@ bool numcheck_decimal(string s) {
 	bool decimal_point_exists = false;
 	for (auto& p : s) {
 		if ((p < '0' || p > '9') && p != '\n' && p != ' ' && p != '\t' && p != '-' && p != '+') {
-			if (p == '.'&& (!decimal_point_exists)) {
+			if (p == '.' && (!decimal_point_exists)) {
 				decimal_point_exists = true;
 			}
 			else {
@@ -90,6 +91,8 @@ void chart_store::clear() {
 	sub_mid.clear();
 	sub_left.clear();
 	sub_right.clear();
+	//init bpm list
+	bpm_list.clear();
 	//init mismatched note list
 	mismatched_notes.clear();
 
@@ -101,6 +104,11 @@ void chart_store::clear() {
 	ltype = sides::UNKNOWN;
 	rtype = sides::UNKNOWN;
 	lines = 1;//beginning
+
+	//erase note count
+	tap_count = 0;
+	chain_count = 0;
+	hold_count = 0;
 }
 
 int chart_store::readfile(string fn) {
@@ -116,10 +124,14 @@ int chart_store::readfile(string fn) {
 	ifstream fin;
 	bool mismatch = false;//check if hold-sub mismatch
 
-	modes = 0;//0->none 1->middle 2->left 3->right
+	modes = 0;//0->none 1->middle 2->left 3->right 4->bpmchange
 	tempnote = NULL;
+	temp_bpm = NULL;
 	note_trigger = false;
 	note_reading = false;//if reading a note
+
+	bpm_mode = false;//if reading bpm section
+	bpm_reading = false;//if reading bpm
 
 	int chart_flags = 0;
 
@@ -207,6 +219,7 @@ int chart_store::readfile(string fn) {
 				//store mismatch hold
 				mismatched_notes.push_back(make_pair(it.first, "middle"));
 				mismatch = true;
+				hold_count--;//hold count - 1
 			}
 			else {
 				sub_mid.erase(it.second);
@@ -225,6 +238,7 @@ int chart_store::readfile(string fn) {
 				//store mismatch hold
 				mismatched_notes.push_back(make_pair(it.first, "left"));
 				mismatch = true;
+				hold_count--;//hold count - 1
 			}
 			else {
 				sub_left.erase(it.second);
@@ -243,6 +257,7 @@ int chart_store::readfile(string fn) {
 				//store mismatch hold
 				mismatched_notes.push_back(make_pair(it.first, "right"));
 				mismatch = true;
+				hold_count--;//hold count - 1
 			}
 			else {
 				sub_right.erase(it.second);
@@ -356,6 +371,55 @@ void chart_store::parse_elem() {
 					return;
 				}
 			}
+			else if (tag == "m_argument") {//barpm change argument
+				if (modes == 0)modes = 4;
+				else {
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read bpmchange error: Syntax Error when reading BPM change info. Occured at line " + string(lln));
+					return;
+				}
+			}
+			else if (tag == "m_bpmchange") {//barpm change
+				if (modes == 4) bpm_mode = true;
+				else {
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read bpmchange error: Syntax Error when reading BPM change info. Occured at line " + string(lln));
+					return;
+				}
+			}
+			else if (tag == "CBpmchange") { //head of a bpm change info
+				if (bpm_mode) {
+					if (!bpm_reading) {
+						bpm_reading = true;
+						temp_bpm = new bpmchange;
+					}
+					else {
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read bpmchange error: <CBpmchange> asset error, triggered at line "
+							+ string(lln));
+						return;
+					}
+				}
+				else {//not bpm change mode
+					//get error position
+					char lln[64];
+					snprintf(lln, sizeof(lln), "%d.", lines);
+
+					throw std::logic_error("Read bpmchange error: Unexpected BPM change info detected outside the BPM lists, triggered at line "
+						+ string(lln));
+					return;
+				}
+			}
+
 			//read text
 			string text = "";
 			try {
@@ -365,7 +429,7 @@ void chart_store::parse_elem() {
 				char lln[64];
 				snprintf(lln, sizeof(lln), "%d.", tag_line);
 				string errmsg = ex.what();
-				throw std::logic_error(errmsg+" Tag begins at line " + string(lln));
+				throw std::logic_error(errmsg + " Tag begins at line " + string(lln));
 				return;
 			}
 			if (text != "") {
@@ -495,7 +559,7 @@ void chart_store::parse_elem() {
 						return;
 					}
 				}
-				else if (tag == "m_time" && note_trigger == true) {//note time
+				else if (tag == "m_time" && note_trigger) {//note time
 					if (note_reading) {
 						bool valid = numcheck_decimal(text);
 						if (!valid) {
@@ -617,6 +681,66 @@ void chart_store::parse_elem() {
 						throw std::logic_error("Read note error: Note info detected outside <CMapNoteAsset>. Occured at line " + string(lln));
 						return;
 
+					}
+				}
+				else if (tag == "m_time" && bpm_mode) {//bpm change time
+					if (bpm_reading) {
+						bool valid = numcheck_decimal(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read bpmchange error: time is not a valid decimal expression. Occured at line " + string(lln));
+							return;
+						}
+						extr.str(text);
+						if (temp_bpm != NULL) {
+							extr >> temp_bpm->time;//read current bpm change time
+							extr.clear();
+						}
+						else {
+							throw std::logic_error("Read bpmchange error: Unable to create object \"bpmchange\"");
+							return;
+						}
+					}
+					else {//not in <CBpmchange>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read bpmchange error: BPM change info detected outside <CBpmchange>. Occured at line " + string(lln));
+						return;
+					}
+				}
+				else if (tag == "m_value") {//bpm change value
+					if (bpm_reading) {
+						bool valid = numcheck_decimal(text);
+						if (!valid) {
+							//get error position
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", lines);
+
+							throw std::logic_error("Read bpmchange error: barpm value is not a valid decimal expression. Occured at line " + string(lln));
+							return;
+						}
+						extr.str(text);
+						if (temp_bpm != NULL) {
+							extr >> temp_bpm->bpm;//read current barpm
+							extr.clear();
+						}
+						else {
+							throw std::logic_error("Read bpmchange error: Unable to create object \"bpmchange\"");
+							return;
+						}
+					}
+					else {//not in <CBpmchange>
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read bpmchange error: BPM change info detected outside <CBpmchange>. Occured at line " + string(lln));
+						return;
 					}
 				}
 				//ignore all other tags
@@ -749,17 +873,24 @@ void chart_store::parse_elem() {
 						}
 						//note info is complete
 						switch (modes) {
-						case 1:
+						case 1://middle
 							//scan for duplicated note id
 							if (m_notes.find(temp_id) == m_notes.end()) {
 								m_notes.insert(make_pair(temp_id, *tempnote));
 								//store hold for hold-sub checking
 								if (tempnote->notetype == types::HOLD) {
 									hold_mid.insert(make_pair(temp_id, tempnote->subid));
+									hold_count++;
 								}
 								//store sub for hold-sub checking
 								else if (tempnote->notetype == types::SUB) {
 									sub_mid.insert(temp_id);
+								}
+								else if (tempnote->notetype == types::NORMAL) {
+									tap_count++;
+								}
+								else if (tempnote->notetype == types::CHAIN) {
+									chain_count++;
 								}
 							}
 							//duplicated
@@ -770,17 +901,24 @@ void chart_store::parse_elem() {
 								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
 							}
 							break;
-						case 2:
+						case 2://left
 							//scan for duplicated note id
 							if (m_left.find(temp_id) == m_left.end()) {
 								m_left.insert(make_pair(temp_id, *tempnote));
 								//store hold for hold-sub checking
 								if (tempnote->notetype == types::HOLD) {
 									hold_left.insert(make_pair(temp_id, tempnote->subid));
+									hold_count++;
 								}
 								//store sub for hold-sub checking
 								else if (tempnote->notetype == types::SUB) {
 									sub_left.insert(temp_id);
+								}
+								else if (tempnote->notetype == types::NORMAL) {
+									tap_count++;
+								}
+								else if (tempnote->notetype == types::CHAIN) {
+									chain_count++;
 								}
 							}
 							//duplicated
@@ -791,17 +929,24 @@ void chart_store::parse_elem() {
 								throw std::logic_error("Error: Duplicated note id: " + string(id_string) + ".\nThe note begins at line " + string(lln) + " in the XML.");
 							}
 							break;
-						case 3:
+						case 3://right
 							//scan for duplicated note id
 							if (m_right.find(temp_id) == m_right.end()) {
 								m_right.insert(make_pair(temp_id, *tempnote));
 								//store hold for hold-sub checking
 								if (tempnote->notetype == types::HOLD) {
 									hold_right.insert(make_pair(temp_id, tempnote->subid));
+									hold_count++;
 								}
 								//store sub for hold-sub checking
 								else if (tempnote->notetype == types::SUB) {
 									sub_right.insert(temp_id);
+								}
+								else if (tempnote->notetype == types::NORMAL) {
+									tap_count++;
+								}
+								else if (tempnote->notetype == types::CHAIN) {
+									chain_count++;
 								}
 							}
 							//duplicated
@@ -858,7 +1003,59 @@ void chart_store::parse_elem() {
 						return;
 					}
 				}
+				else if (tag == "m_argument") {//m_argument end
+					if (modes == 4)modes = 0;
+					else {
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
 
+						throw std::logic_error("Read bpmchange error: Syntax error when stop reading bpm change info.\nOccured at line " + string(lln));
+						return;
+					}
+				}
+				else if (tag == "m_bpmchange") {//m_bpmchange end
+					if (bpm_mode)bpm_mode = false;//stop reading bpm change list
+					else {
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read bpmchange error: Syntax error when stop reading bpm change info.\nOccured at line " + string(lln));
+						return;
+					}
+				}
+				else if (tag == "CBpmchange") {//end of a bpm change info
+					if (bpm_reading) {
+						//checking bpm change info integrity
+
+						//time
+						if (temp_bpm->time < -1e7) {
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", tag_line);
+							throw std::logic_error("Read bpmchange error: bpm change info missing time.\nThe bpm change info begins at line " + string(lln));
+						}
+						//bpm value
+						if (temp_bpm->bpm < -1e7) {
+							char lln[64];
+							snprintf(lln, sizeof(lln), "%d.", tag_line);
+							throw std::logic_error("Read bpmchange error: bpm change info missing bpm value.\nThe bpm change info begins at line " + string(lln));
+						}
+						//bpm change info is complete
+						bpm_list.push_back(*temp_bpm);//add the info to bpm change list
+						delete temp_bpm;
+						temp_bpm = NULL;
+						bpm_reading = false;
+					}
+					else {
+						//get error position
+						char lln[64];
+						snprintf(lln, sizeof(lln), "%d.", lines);
+
+						throw std::logic_error("Read bpmchange error: Syntax error when stop reading bpm change info.\nOccured at line " + string(lln));
+						return;
+					}
+				}
 				//finish parsing element
 				break;
 			}
@@ -897,10 +1094,10 @@ void chart_store::parse_elem() {
 			}
 			catch (exception& ex) {
 				char lln[64];
-				snprintf(lln, sizeof(lln), "%d.",tag_line);
+				snprintf(lln, sizeof(lln), "%d.", tag_line);
 				string errmsg = ex.what();
 
-				throw std::logic_error(errmsg+" The xml tag begins at line "+string(lln));
+				throw std::logic_error(errmsg + " The xml tag begins at line " + string(lln));
 				return;
 			}
 		}
@@ -1090,7 +1287,23 @@ void chart_store::side_out(const map<int, note>& v, ofstream& of) {//output each
 		of << "</CMapNoteAsset>" << endl;
 	}
 }
-
+void chart_store::bpm_out(const vector<bpmchange>& v, ofstream& of) {
+	of << fixed << setprecision(6);
+	if (v.empty()) {
+		of << "<m_bpmchange />" << endl;
+		return;
+	}
+	else {
+		of << "<m_bpmchange>" << endl;
+		for (const bpmchange& item : v) {
+			of << "<CBpmchange>" << endl;
+			of << "<m_time>" << item.time << "</m_time>" << endl;
+			of << "<m_value>" << item.bpm << "</m_value>" << endl;
+			of << "</CBpmchange>" << endl;
+		}
+		of << "</m_bpmchange>" << endl;
+	}
+}
 bool chart_store::to_file(string f) {
 	ofstream fout;
 	fout.open(f);
@@ -1131,7 +1344,6 @@ bool chart_store::to_file(string f) {
 		//notes middle
 		fout << "<m_notes>" << endl;
 		fout << "<m_notes>" << endl;
-
 		side_out(m_notes, fout);
 		fout << "</m_notes>" << endl;
 		fout << "</m_notes>" << endl;
@@ -1147,6 +1359,12 @@ bool chart_store::to_file(string f) {
 		side_out(m_right, fout);
 		fout << "</m_notes>" << endl;
 		fout << "</m_notesRight>" << endl;
+		//bpm list
+		fout << "<m_argument>" << endl;
+		
+		bpm_out(bpm_list, fout);
+		
+		fout << "</m_argument>" << endl;
 		//end
 		fout << "</CMap>" << endl;
 		fout.close();

@@ -42,6 +42,7 @@ int main(int argc, char* argv[])
 	bool next_width = false;
 	bool next_filename = false;//if specifying filename
 	bool default_filename = true;//if filename not specified
+	bool show_notecount = false;//if showing note count
 
 	bool def_stimestamp = true;//using default start time
 	bool def_etimestamp = true;//using default end time
@@ -153,7 +154,10 @@ int main(int argc, char* argv[])
 		else if (arglist[i] == "-rnd2") {
 			random_trigger = 2;
 		}
-		else if (argc == 1 || argc > 14) {//not specified arguments or too many arguments
+		else if (arglist[i] == "-c") {
+			show_notecount = true;
+		}
+		else if (argc == 1 || argc > 15) {//not specified arguments or too many arguments
 			false_usage = true;
 		}
 		else if (i > 1) {//wrong argument detected
@@ -162,7 +166,7 @@ int main(int argc, char* argv[])
 	}
 	if (help_only) {
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
+		cout << "filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r] [-c]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
@@ -175,6 +179,7 @@ int main(int argc, char* argv[])
 		cout << "-rnd2\tchange the note width randomly, using random mode 2(will ignore the \"-w\" argument)" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
+		cout << "-c\tshow the detailed note quantity of this chart" << endl;
 	}
 	else if (next_width) {
 		cout << "please specify a width multiplier" << endl;
@@ -182,7 +187,7 @@ int main(int argc, char* argv[])
 	else if (false_usage) {
 		cout << "invalid arguments" << endl;
 		cout << "usage:" << endl;
-		cout << "filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r]" << endl << endl;
+		cout << "filename [-w width_multiplier|-rnd1|-rnd2] [-o output_filename] [-s start_time(bar)] [-e end_time(bar)] [-?|-h] [-m] [-l] [-r] [-c]" << endl << endl;
 		cout << "-w width_multiplier\tchange the width of a chart, width_multiplier is a decimal number" << endl;
 		cout << "-o output_filename\tspecify the filename of the changed chart" << endl;
 		cout << "-s start_time(bar)\tspecify the start time of the time range you want to change, in the unit of bar." << endl;
@@ -195,6 +200,7 @@ int main(int argc, char* argv[])
 		cout << "-rnd2\tchange the note width randomly, using random mode 2(will ignore the \"-w\" argument)" << endl;
 		cout << "-?\thelp" << endl;
 		cout << "-h\thelp, same as -?" << endl;
+		cout << "-c\tshow the detailed note quantity of this chart" << endl;
 	}
 	else {
 		filename = arglist[1];
@@ -356,6 +362,16 @@ int main(int argc, char* argv[])
 					cout << "Cannot save changed chart file." << endl;//invalid output chart name
 				}
 				else {
+					//show note count
+					if (show_notecount) {
+						cout << "Note Count" << endl;
+						cout << "===============================" << endl;
+						cout << "Middle:\t" << cs.get_mid_count() << "\tTap:\t" << cs.get_tap_count() << endl;
+						cout << "Left:\t" << cs.get_left_count() << "\tChain:\t" << cs.get_chain_count() << endl;
+						cout << "Right:\t" << cs.get_right_count() << "\tHold:\t" << cs.get_hold_count() << endl;
+						cout << "===============================" << endl;
+					}
+					//side change info output
 					cout << "Changed sides: ";
 					if (side_mask & MID_CHANGE) {
 						cout << "middle ";
