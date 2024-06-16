@@ -22,3 +22,5 @@ qrc_*.cpp
 /Dynamix_chart_width_control_GUI(qmake)/.qmake.stash
 /Dynamix_chart_width_control_GUI(qmake)/msvc_make.bat
 *.aps
+
+/*.json
