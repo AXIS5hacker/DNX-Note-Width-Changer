@@ -45,7 +45,7 @@ Or download `dynamix-chart-width-control-macos` (x86_64+arm64 universal binary, 
 
 ### Building the GUI application on macOS & Linux
 
-This application is built with Qt 6. To build the GUI application on macOS and Linux systems, you need to download Qt 6, and install CMake build system as well as support libraries for Qt applications.
+This application is built with Qt 6. To build the GUI application on macOS and Linux systems, you need to **download Qt 6**, and install CMake build system as well as support libraries for Qt applications.
 
 #### macOS ([Xcode](https://developer.apple.com/xcode/) and [MacPorts](https://www.macports.org)):
 
