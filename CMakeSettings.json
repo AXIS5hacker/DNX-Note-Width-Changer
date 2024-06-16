@@ -48,10 +48,9 @@
       "remoteBuildRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/build/${name}",
       "remoteInstallRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/install/${name}",
       "remoteCopySources": true,
-      "rsyncCommandArgs": "-t --delete --delete-excluded",
+      "rsyncCommandArgs": "-a -t --delete --delete-excluded",
       "remoteCopyBuildOutput": false,
-      "remoteCopySourcesMethod": "rsync",
-      "variables": []
+      "remoteCopySourcesMethod": "rsync"
     }
   ]
 }
