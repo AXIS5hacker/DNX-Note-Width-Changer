@@ -23,6 +23,7 @@ using std::set;
 enum types { NORMAL = 1, CHAIN, HOLD, SUB, NULLTP };
 //added default sides type: UNKNOWN
 enum sides { PAD, MIXER, MULTI, UNKNOWN };
+//note
 struct note {
 	int id;
 	types notetype;
@@ -38,6 +39,14 @@ struct note {
 		width(-1e8),
 		subid(INT_MIN) {}
 };
+//bpmchange
+struct bpmchange {
+	double time;
+	double bpm;
+	//constructor
+	bpmchange() :time(-1e8), bpm(-1e8) {}
+};
+//chart
 class chart_store
 {
 public:
@@ -51,6 +60,8 @@ public:
 	set<int> sub_mid, sub_left, sub_right;
 	//mismatch note list(used for hold-sub autofix)
 	vector<pair<int, string> > mismatched_notes;
+	//bpmchange list
+	vector<bpmchange> bpm_list;
 
 	bool to_file(string f);//print to XML
 	int readfile(string fn);//read XML
@@ -74,16 +85,21 @@ private:
 	double barpm;//Bar per minute
 	sides ltype, rtype;//left type and right type
 	void side_out(const map<int, note>& v, ofstream& of);//output each side
+	void bpm_out(const vector<bpmchange>& v, ofstream& of);//output bpm change list
 	void clear();
 
 	//xml parser members
 	string t_buf;//the string buffer
 	int buf_index;//the current index in the string buffer
-	int modes;//0->none 1->middle 2->left 3->right
+	int modes;//0->none 1->middle 2->left 3->right 4->bpmchange
 	note* tempnote;
+	bpmchange* temp_bpm;
 	bool note_trigger;
 	bool note_reading;//if reading a note
 	int lines;//at which line in xml
+
+	bool bpm_mode = false;//if reading bpm section
+	bool bpm_reading = false;//if reading bpm
 
 	void skip_space();//skip the space when parsing
 	bool parse_decl();//if declaration
