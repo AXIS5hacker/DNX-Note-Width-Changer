@@ -19,6 +19,8 @@ For console application, download `Dynamix_chart_width_control.zip` from [Releas
 
 For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_note_width_changer_GUI.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6.
 
+*Note: If you decided to build this program manually on Windows, you need to add a system variable called "CMAKE_PREFIX_PATH" and add your QT library path into this variable (i.e. ${your qt installation path}/${your qt version}/${your qt platform}/lib/cmake).*
+
 Or you can download `DNX_width_changer_setup.exe` and run this setup program to install.
 
 If you can't run the programs on your computer, try running `vc_redist.x64.exe` in the "GUI" directory to install a MICROSOFT VISUAL C++ 2019 RUNTIME on your computer to run the program.
