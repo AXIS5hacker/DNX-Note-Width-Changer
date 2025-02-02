@@ -30,28 +30,29 @@ if (MSVC)
 endif(MSVC)
 
 
-set(PROJECT_SOURCES
-    chart_store.cpp
-    chart_store.h
+set(PROJECT_SOURCES   
     main.cpp
     width.cpp
-    defs.h
 )
 
-if(UNIX)
-message("Unix-based systems, skip.")
-elseif(WIN32)
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        add_executable(Dynamix_chart_width_control_x64
-        ${PROJECT_SOURCES}
-        )
-    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-        add_executable(Dynamix_chart_width_control_x86
-        ${PROJECT_SOURCES}
-        )
-    else()
-        add_executable(Dynamix_chart_width_control
-        ${PROJECT_SOURCES}
-        )
-    endif()
+
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    add_executable(${PROJECT_NAME}_x64
+    ${PROJECT_SOURCES}
+    )
+    add_dependencies(${PROJECT_NAME}_x64 Chartstore)
+    target_link_libraries(${PROJECT_NAME}_x64 PRIVATE Chartstore)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    add_executable(${PROJECT_NAME}_x86
+    ${PROJECT_SOURCES}
+    )
+    add_dependencies(${PROJECT_NAME}_x86 Chartstore)
+    target_link_libraries(${PROJECT_NAME}_x86 PRIVATE Chartstore)
+else()
+    add_executable(${PROJECT_NAME}
+    ${PROJECT_SOURCES}
+    )
+    add_dependencies(${PROJECT_NAME} Chartstore)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Chartstore)
 endif()

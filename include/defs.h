@@ -1,7 +1,7 @@
 ﻿#ifndef DEFS_H
 #define DEFS_H
 /**
-  * Some global definitions of the program
+  * Some global definitions of the entire project (CLI & GUI program)
   * Author: AXIS5
   *
 */

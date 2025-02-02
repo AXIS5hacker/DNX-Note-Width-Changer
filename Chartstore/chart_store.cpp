@@ -4,7 +4,7 @@
 * Note: this file must be the same in both CLI application and GUI application
 */
 #include "chart_store.h"
-#include"defs.h"
+#include "defs.h"
 
 using namespace std;
 //functions used
@@ -1154,12 +1154,13 @@ text_parse:
 		}
 
 		//illegal characters
-		if (t_buf[buf_index] == '\'' || t_buf[buf_index] == '\"' || t_buf[buf_index] == '>') {
+		//since ' may appear in chart name, it is removed from illegal character list
+		if (t_buf[buf_index] == '\"' || t_buf[buf_index] == '>') {
 			//get error position
 			char lln[64];
 			snprintf(lln, sizeof(lln), "%d.", lines);
 
-			throw std::logic_error("Illegal character in XML file at line " + string(lln));
+			throw std::logic_error("Illegal character detected in XML file at line " + string(lln) + string(": character ") + t_buf[buf_index]);
 		}
 		else if (t_buf[buf_index] == '&') {//start of escape character
 			if (escape_char) {

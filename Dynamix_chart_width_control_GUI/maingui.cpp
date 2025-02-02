@@ -5,7 +5,7 @@
 #include"qdefs.h"
 #include<QMessageBox>
 #include<QInputDialog>
-#include"../version.h"
+#include"version.h"
 #include"hintdlg.h"
 #include<sstream>
 #include<ctime>

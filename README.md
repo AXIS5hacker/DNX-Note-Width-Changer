@@ -77,16 +77,18 @@ sudo yum install mesa-libGL-devel
 Then you can proceed with CMake:
 
 1. Clone the project
-2. Using terminal, `cd DNX-Note-Width-Changer/Dynamix_chart_width_control_GUI/`
+2. Using terminal, `cd DNX-Note-Width-Changer/`
 3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it.
-4. `cmake --build ./exampleBuildDirectory`, and you will get the program.
+4. `cmake --build ./exampleBuildDirectory`, and you will get the program in the `DNX-Note-Width-Changer/exampleBuildDirectory/bin` directory.
 
 ### Building the CLI application on macOS & Linux
 
 1. Download the tarball from release, or clone the project
-2. (macOS only) Using terminal, `xcode-select --install`  will install Xcode Command Line Tools for you
-3. Using terminal, `cd DNX-Note-Width-Changer/Dynamix_chart_width_control/`
-4. `make && sudo make install` installs the binary to `/usr/local/bin` by default
+2. (macOS only) Using terminal, `xcode-select --install`  will install Xcode Command Line Tools for you.
+3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it.
+4. `cmake --build ./exampleBuildDirectory`, and you will get the program in the `DNX-Note-Width-Changer/exampleBuildDirectory/bin` directory.
+5. If you want to install it on macOS or Linux, run `sudo cmake --install ./exampleBuildDirectory` after building.
+6. If you want to uninstall the CLI application, run `cd ./exampleBuildDirectory && sudo make uninstall`.
 
 # Arguments (for console application)
 

@@ -4,7 +4,7 @@
 */
 #include"defs.h"
 #include"chart_store.h"
-#include"../version.h"
+#include"version.h"
 #include<iostream>
 using namespace std;
 
