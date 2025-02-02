@@ -22,7 +22,7 @@ jobs:
       run: cmake ./Dynamix_chart_width_control/CMakeLists.txt -B ./out
 
     - name: cmake build CLI
-      run: cd ./out && cmake CMakeLists.txt --build .
+      run: cmake --build ./out
 
     - uses: actions/upload-artifact@v4
       with:
