@@ -8,8 +8,10 @@
 using namespace std;
 ifstream fin;
 ofstream fout;
-istringstream mult;
-ostringstream proc;
+
+//These are obsolete variables which are useless since the new xml reading method was applied.
+//istringstream mult;
+//ostringstream proc;
 
 
 bool _isNum(string s) {//detect if the string is a number

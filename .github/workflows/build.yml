@@ -17,9 +17,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: make
-      run: cd "Dynamix_chart_width_control" && make
-    - uses: actions/upload-artifact@v3
+
+    - name: cmake
+      run: cmake ./Dynamix_chart_width_control/CMakeLists.txt -B ./out
+
+    - name: cmake build CLI
+      run: cmake --build ./out
+
+    - uses: actions/upload-artifact@v4
       with:
         name: DNX-Note-Width-Changer-${{ matrix.os }}
-        path: "./Dynamix_chart_width_controll/dynamix-chart-width-control*"
+        path: "./out/bin/Dynamix-chart-width-control*"

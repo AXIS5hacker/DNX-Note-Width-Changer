@@ -24,6 +24,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
+#if this directory is set as the top level
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    message("Building GUI program only.")
+    add_subdirectory("../Chartstore" ${CMAKE_BINARY_DIR}/lib)
+    include_directories ("../include")
+endif()
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
@@ -48,8 +55,7 @@ if (MSVC)
 endif(MSVC)
 
 set(PROJECT_SOURCES
-    chart_store.cpp
-    chart_store.h
+    
     DNX_widthGUI_en_en.ts
     DNX_widthGUI_zh_CN.ts
     main.cpp
@@ -59,7 +65,6 @@ set(PROJECT_SOURCES
     maingui.qrc
     width_change.cpp
     resources.rc
-    defs.h
     qdefs.h
     hintdlg.cpp
     hintdlg.h
@@ -71,6 +76,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         WIN32
         ${PROJECT_SOURCES}
     )
+    add_dependencies(Dynamix_note_width_changer_GUI Chartstore)
 else()
     if(ANDROID)
         add_library(Dynamix_note_width_changer_GUI SHARED
@@ -82,9 +88,13 @@ else()
             WIN32
             ${PROJECT_SOURCES}
         )
+        add_dependencies(Dynamix_note_width_changer_GUI Chartstore)
     endif()
 endif()
 
 qt_add_translations(Dynamix_note_width_changer_GUI TS_FILES DNX_widthGUI_en_en.ts DNX_widthGUI_zh_CN.ts)
 
+
+target_link_libraries(Dynamix_note_width_changer_GUI PRIVATE Chartstore)
 target_link_libraries(Dynamix_note_width_changer_GUI PRIVATE Qt${QT_VERSION_MAJOR}::Widgets PRIVATE Qt${QT_VERSION_MAJOR}::Core PRIVATE Qt${QT_VERSION_MAJOR}::Gui)
+

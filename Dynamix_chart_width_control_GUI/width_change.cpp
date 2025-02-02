@@ -17,7 +17,7 @@ bool _isNum(string s) {//detect if the string is a number
     return true;
 }
 
-int width_change(chart_store& cs, double w, double st, double ed, int side_mask,int random) {
+int width_change(chart_store& cs, double w, double st, double ed, int side_mask, int random) {
     /* The function that changes the width of a chart.
     *  cs:chart store object, w:width multiplier, st:start time, ed:end time
     *  side_mask: specify the sides to change
