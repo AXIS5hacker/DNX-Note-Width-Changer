@@ -24,6 +24,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
+#if this directory is set as the top level
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    message("Building GUI program only.")
+    add_subdirectory("../Chartstore" ${CMAKE_BINARY_DIR}/lib)
+    include_directories ("../include")
+endif()
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)

@@ -9,6 +9,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 
+#if this directory is set as the top level
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    message("Building console program only.")
+    add_subdirectory("../Chartstore" ${CMAKE_BINARY_DIR}/lib)
+    include_directories ("../include")
+endif()
+
 #set static compile flags in MSVC
 if (MSVC)
     set(CMAKE_BUILD_TYPE "Release")
@@ -34,8 +41,6 @@ set(PROJECT_SOURCES
     main.cpp
     width.cpp
 )
-
-
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     add_executable(${PROJECT_NAME}_x64

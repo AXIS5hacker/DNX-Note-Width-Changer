@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 
+#set include directories
+include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/../include")
+
 #set static compile flags in MSVC
 if (MSVC)
     set(CMAKE_BUILD_TYPE "Release")
