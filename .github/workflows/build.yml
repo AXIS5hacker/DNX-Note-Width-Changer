@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: cmake
-      run: cmake ./Dynamix_chart_width_control/CMakeLists.txt -B ./out
+      run: cmake ./CMakeLists.txt -DBUILD_GUI=OFF -B ./out
 
     - name: cmake build CLI
       run: cmake --build ./out
@@ -27,4 +27,4 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: DNX-Note-Width-Changer-${{ matrix.os }}
-        path: "./out/bin/Dynamix-chart-width-control*"
+        path: "./out/bin/Dynamix_chart_width_control*"
