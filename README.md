@@ -17,7 +17,7 @@ The project contains a graphic application (Dynamix_note_width_changer_GUI.exe o
 
 For console application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_chart_width_control_x86.exe` (for i386 users) or `Dynamix_chart_width_control_x64.exe` (for x86_64 users) in the "console" directory in command prompt to use it, or build manually with Visual Studio.
 
-For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_note_width_changer_GUI.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6.
+For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_note_width_changer_GUI.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6 (need Windows 10 build 1809 or higher).
 
 *Note: If you decided to build this program manually on Windows, you need to add a system variable called "CMAKE_PREFIX_PATH" and add your QT library path into this variable (i.e. ${your qt installation path}/${your qt version}/${your qt platform}/lib/cmake).*
 
@@ -78,14 +78,14 @@ Then you can proceed with CMake:
 
 1. Clone the project
 2. Using terminal, `cd DNX-Note-Width-Changer/`
-3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it.
+3. `cmake CMakeLists.txt -DBUILD_GUI=ON -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it. If you don't want to build the CLI program along with the GUI program, use `cmake CMakeLists.txt -DBUILD_GUI=ON -DBUILD_CLI=OFF -B ./exampleBuildDirectory`.
 4. `cmake --build ./exampleBuildDirectory`, and you will get the program in the `DNX-Note-Width-Changer/exampleBuildDirectory/bin` directory.
 
 ### Building the CLI application on macOS & Linux
 
 1. Download the tarball from release, or clone the project
 2. (macOS only) Using terminal, `xcode-select --install`  will install Xcode Command Line Tools for you.
-3. `cmake CMakeLists.txt -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it.
+3. `cmake CMakeLists.txt -DBUILD_CLI=ON -B ./exampleBuildDirectory`, exampleBuildDirectory is the directory name where you want to build the program, and you can customize it. If you don't want to build the GUI program along with the CLI program, use `cmake CMakeLists.txt -DBUILD_CLI=ON -DBUILD_GUI=OFF -B ./exampleBuildDirectory`.
 4. `cmake --build ./exampleBuildDirectory`, and you will get the program in the `DNX-Note-Width-Changer/exampleBuildDirectory/bin` directory.
 5. If you want to install it on macOS or Linux, run `sudo cmake --install ./exampleBuildDirectory` after building.
 6. If you want to uninstall the CLI application, run `cd ./exampleBuildDirectory && sudo make uninstall`.

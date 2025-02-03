@@ -18,9 +18,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) #Apps
 message("Building libraries...")
 add_subdirectory("./Chartstore")
 
-#compile CLI program
+option(BUILD_CLI "Build console application" ON)
+option(BUILD_GUI "Build console application" ON)
+
+#CLI application option
+if(BUILD_CLI)
+#compile CLI application
 message("Building console program...")
 add_subdirectory("./Dynamix_chart_width_control")
+
 
 #set install prefix
 set(CMAKE_INSTALL_PREFIX /usr/local)
@@ -38,6 +44,8 @@ if(UNIX)
     install(FILES ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/${PROJECT_NAME})
 endif()
 
+endif()
+
 #uninstall CLI application
 if(UNIX)
 	#install_manifest.txt is a list of files installed
@@ -46,6 +54,8 @@ if(UNIX)
 	)
 endif()
 
+#GUI application option
+if(BUILD_GUI)
 #compile GUI program
 #Build in 64-bit environments only
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -53,4 +63,5 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	add_subdirectory("./Dynamix_chart_width_control_GUI")
 else()
 	message("The GUI program cannot be compiled in a 32-bit environment.")
+endif()
 endif()
