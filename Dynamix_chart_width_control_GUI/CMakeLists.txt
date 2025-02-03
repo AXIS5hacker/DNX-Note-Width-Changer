@@ -11,6 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
 # They need to be set before the find_package( ...) calls below.
@@ -29,6 +31,11 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
     message("Building GUI program only.")
     add_subdirectory("../Chartstore" ${CMAKE_BINARY_DIR}/lib)
     include_directories ("../include")
+endif()
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    # specify windows version
+    set(CMAKE_SYSTEM_VERSION 10.0.19041) 
 endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
