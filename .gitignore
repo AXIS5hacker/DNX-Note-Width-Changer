@@ -15,6 +15,12 @@
 /Dynamix_chart_width_control_GUI/build
 /out
 
+/Dynamix_chart_width_control/.vs
+/Dynamix_chart_width_control/x64
+/Dynamix_chart_width_control/out
+/Dynamix_chart_width_control/build
+/out
+
 #qt generated files
 moc_*.cpp
 ui_*.h
