@@ -33,10 +33,11 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
     include_directories ("../include")
 endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+# specifying the version seems to be a bad idea
+# if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     # specify windows version
-    set(CMAKE_SYSTEM_VERSION 10.0.19041) 
-endif()
+#    set(CMAKE_SYSTEM_VERSION 10.0.19041) 
+# endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
