@@ -17,7 +17,7 @@ The project contains a graphic application (Dynamix_note_width_changer_GUI.exe o
 
 For console application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_chart_width_control_x86.exe` (for i386 users) or `Dynamix_chart_width_control_x64.exe` (for x86_64 users) in the "console" directory in command prompt to use it, or build manually with Visual Studio.
 
-For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_note_width_changer_GUI.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6 (for compatibility issues, compiling with QT 6.3.2 or lower is recommended).
+For GUI application, download `Dynamix_chart_width_control.zip` from [Releases](https://github.com/AXIS5hacker/DNX-Note-Width-Changer/releases) and run `Dynamix_note_width_changer_GUI.exe` in the "GUI" directory to use it, or build manually with Visual Studio and Qt6 (for compatibility issues, compiling with QT 6.2.4 or lower is recommended since the compiled apps and dlls can run on the earliest versions of Windows 10).
 
 *Note: If you decided to build this program manually on Windows, you need to add a system variable called "CMAKE_PREFIX_PATH" and add your QT library path into this variable (i.e. ${your qt installation path}/${your qt version}/${your qt platform}/lib/cmake).*
 
