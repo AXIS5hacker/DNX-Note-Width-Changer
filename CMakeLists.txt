@@ -29,31 +29,31 @@ add_subdirectory("./Dynamix_chart_width_control")
 
 #install CLI application
 if(UNIX)
-	# Installation rules for UNIX-based systems
-	set(BIN_NAME "dynamix-chart-width-control")
-	install(TARGETS ${BIN_NAME} 
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-	install(FILES ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/${BIN_NAME})
+    # Installation rules for UNIX-based systems
+    set(BIN_NAME "dynamix-chart-width-control")
+    install(TARGETS ${BIN_NAME} 
+    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+    install(FILES ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/${BIN_NAME})
 endif()
 
 endif()
 
 #uninstall CLI application
 if(UNIX)
-	#install_manifest.txt is a list of files installed
-	add_custom_target(uninstall
-		COMMAND "xargs" "rm" "<" "${CMAKE_BINARY_DIR}/install_manifest.txt"
-	)
+    #install_manifest.txt is a list of files installed
+    add_custom_target(uninstall
+        COMMAND "xargs" "rm" "<" "${CMAKE_BINARY_DIR}/install_manifest.txt"
+    )
 endif()
 
 #GUI application option
 if(BUILD_GUI)
 #compile GUI program
 #Build in 64-bit environments only
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	message("Building graphical application...")
-	add_subdirectory("./Dynamix_chart_width_control_GUI")
-else()
-	message("The GUI program cannot be compiled in a 32-bit environment.")
-endif()
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        message("Building graphical application...")
+        add_subdirectory("./Dynamix_chart_width_control_GUI")
+    else()
+        message("The GUI program cannot be compiled in a 32-bit environment.")
+    endif()
 endif()
