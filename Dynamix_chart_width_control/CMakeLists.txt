@@ -1,6 +1,10 @@
 ﻿cmake_minimum_required (VERSION 3.5)
 
-project (Dynamix_chart_width_control LANGUAGES CXX)
+if(UNIX)
+    project (dynamix-chart-width-control LANGUAGES CXX)
+else()
+    project (Dynamix_chart_width_control LANGUAGES CXX)
+endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -42,13 +46,13 @@ set(PROJECT_SOURCES
     width.cpp
 )
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+if(WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
     add_executable(${PROJECT_NAME}_x64
     ${PROJECT_SOURCES}
     )
     add_dependencies(${PROJECT_NAME}_x64 Chartstore)
     target_link_libraries(${PROJECT_NAME}_x64 PRIVATE Chartstore)
-elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+elseif(WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 4)
     add_executable(${PROJECT_NAME}_x86
     ${PROJECT_SOURCES}
     )
