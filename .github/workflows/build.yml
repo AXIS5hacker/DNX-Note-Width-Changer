@@ -27,4 +27,4 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: DNX-Note-Width-Changer-${{ matrix.os }}
-        path: "./out/bin/Dynamix_chart_width_control**"
+        path: "./out/bin/dynamix-chart-width-control**"
