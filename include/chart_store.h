@@ -77,6 +77,10 @@ public:
 	int get_tap_count() { return tap_count; }
 	int get_chain_count() { return chain_count; }
 	int get_hold_count() { return hold_count; }
+
+	//export offset and barpm
+	double get_offset() const { return offset; }
+	double get_barpm() const { return barpm; }
 private:
 
 	string name;//song name
